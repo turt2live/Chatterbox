@@ -2,8 +2,7 @@ name: Chatterbox
 main: org.royaldev.chatterbox.Chatterbox
 version: ${pluginversion}
 authors: [jkcclemens, gdude2002]
-# TODO: How do we determine softdepends for loading in dependencies? Load them in after server start using a task?
-description: Do chat things. # TODO: Change
+description:  Simple, elegant, powerful. Minecraft chat as it was supposed to be.
 
 reflectcommands:
 - commands.impl.Whatever
