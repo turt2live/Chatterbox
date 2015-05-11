@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class CPlayers {
+public final class CPlayers {
 
     private final static LoadingCache<UUID, CPlayer> players = CacheBuilder.newBuilder()
         .softValues()
@@ -21,11 +21,13 @@ public class CPlayers {
             }
         });
 
+    @NotNull
     public static CPlayer getCPlayer(@NotNull final UUID uuid) {
         Preconditions.checkNotNull(uuid, "uuid was null");
         return CPlayers.players.getUnchecked(uuid);
     }
 
+    @NotNull
     public static CPlayer getCPlayer(@NotNull final OfflinePlayer player) {
         Preconditions.checkNotNull(player, "player was null");
         return CPlayers.getCPlayer(player.getUniqueId());
