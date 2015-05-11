@@ -1,0 +1,144 @@
+################
+### LANGUAGE ###
+################
+
+# Language options
+language:
+  # The language file to use for in-game messages
+  file: "lang/en_us.yml"
+
+###############
+### FORMATS ###
+###############
+
+formats:
+  say: ""
+  action: ""
+
+##############
+### TITLES ###
+##############
+
+# Title options. These are ordered from highest importance to least importance.
+titles:
+  # Titles to apply to individuals
+  individuals:
+    jkcclemens:
+      prefix: "[Developer]"
+      suffix: ""
+  # Titles to apply to permission groups
+  groups:
+    Admin:
+      prefix: "[Admin]"
+      suffix: ""
+  # Titles to apply to everyone
+  "*":
+    prefix: ""
+    suffix: ""
+
+##############
+### MASTER ###
+##############
+
+# Master options. If options are not specified in a channel but are specified here, these values will be used.
+master:
+  # Variables MUST be entirely lowercase.
+  format:
+    text: "<{json:name}{player-name}{/json:name}> {message}"
+    json:
+      name:
+      - "{player-group}"
+
+################
+### CHANNELS ###
+################
+
+# The first listed channel will become the default channel.
+# NOTE: If you only want one, main channel for all chat on your server, simply create one, all-worlds, no-radius
+# channel. It will become the default if listed first, thereby forcing everyone to use it.
+channels:
+  # This channel contains the default values for all configurations available for channels. If you do not include a
+  # configuration value in a channel, the default will be filled in. You may change this channel, but the underlying
+  # default values will not change with it.
+    # This is the name of the channel
+  - name: default
+    tag: d
+    # The format for messages in this channel.
+    format:
+      text: "{json:display-name}{player-name}{/json:display-name}: {message}"
+      json:
+        display-name:
+        - "Display name:"
+        - "{player-display-name}"
+    # These are the settings for broadcasting to other channels. Note that having a radius will override this. If there
+    # is a radius, all players will be set to receive the message, then only those still in the radius will receive the
+    # message.
+    others:
+      # Should the message be broadcasted to all other channels? Useful for global channels.
+      all: false
+      individual:
+        # Should the message be broadcast to the given channel name?
+        #name: true
+    # These are the radius options
+    radius:
+      # If this is set to false, the horizontal and vertical options will be ignored, but the defaults are listed.
+      enabled: false
+      # The horizontal radius in which to broadcast the message
+      horizontal: 0.0
+      # The vertical radius in which to broadcast the message
+      vertical: 0.0
+    # Maximum options
+    maximum:
+      # The maximum amount of members allowed to join this channel. 0 means unlimited.
+      members: 0
+    # World options
+    worlds:
+      # Should the message be broadcast to all worlds?
+      all: true
+      # Should the message be broadcast to the world the player is in?
+      self: true
+      individual:
+        # Should the message be broadcast to the given world name?
+        # world: true
+  # A local channel. Notice that several options are not included, as the defaults match the desired functionality.
+  - name: local
+    tag: l
+    radius:
+      enabled: true
+      horizontal: 36.0
+      vertical: 18.0
+    worlds:
+      all: false
+      self: true
+  # This channel uses the rythm engine (all channels do) to determine the chat format
+  - name: rythmformat
+    tag: rf
+    format:
+      file: rf.txt # TODO: Should we have this? Load in the file and render it.
+      text: "[{json:channel}@channel.getTag(){/json:channel}]
+             {json:player-info}@player.getDisplayName(){/json:player-info}:
+             @message.capFirst()"
+      json:
+        channel:
+          - "&9&lChannel"
+          # @chatterbox.doNotRender() is a special method that prints out a special string that indicates that this line
+          # should be ignored.
+          # channel.getName().equals(channel.getTag()) is equivalent, but using s() is null-safe # TODO: Is it really?
+          - "@if (s().eq(channel.getName(), channel.getTag())) {
+               @chatterbox.doNotRender()
+             } else {
+               &9Name: &7@channel.getName()
+             }"
+          # Here, Rythm's len() is used, to get the length of the members, regardless of if they're contained in an array
+          # or a collection.
+          - "&9Members: &7@channel.getMembers().len()"
+        player-info:
+          - "&9&lPlayer"
+          # @chatterbox.cancelJSON() outputs a special string that completely disables the current JSON segment. If the
+          # player's real name is the same as his display name, this whole JSON segment should not be included in the
+          # final result.
+          - "@if (!player.getDisplayName().equals(player.getName())) {
+               &9Real name: &7@player.getName()
+             } else {
+               @chatterbox.cancelJSON()
+             }"
