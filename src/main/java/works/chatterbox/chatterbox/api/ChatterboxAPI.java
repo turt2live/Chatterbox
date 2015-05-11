@@ -2,15 +2,18 @@ package works.chatterbox.chatterbox.api;
 
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.Chatterbox;
+import works.chatterbox.chatterbox.api.message.MessageAPI;
 import works.chatterbox.chatterbox.api.player.PlayerAPI;
 
 public class ChatterboxAPI {
 
     private final Chatterbox chatterbox;
     private final PlayerAPI playerAPI = new PlayerAPI();
+    private final MessageAPI messageAPI;
 
     public ChatterboxAPI(final Chatterbox chatterbox) {
         this.chatterbox = chatterbox;
+        this.messageAPI = new MessageAPI(this.chatterbox);
     }
 
     /**
@@ -21,5 +24,10 @@ public class ChatterboxAPI {
     @NotNull
     public PlayerAPI getPlayerAPI() {
         return this.playerAPI;
+    }
+
+    @NotNull
+    public MessageAPI getMessageAPI() {
+        return this.messageAPI;
     }
 }

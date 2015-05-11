@@ -2,9 +2,18 @@ package works.chatterbox.chatterbox.messages;
 
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.jetbrains.annotations.NotNull;
+import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 public interface Message {
+
+    /**
+     * Gets the channel that this message is destined for.
+     *
+     * @return Channel
+     */
+    @NotNull
+    Channel getChannel();
 
     /**
      * Gets the format of this message. In most cases, it is originally a copy of
