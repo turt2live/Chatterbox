@@ -9,7 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
-import works.chatterbox.chatterbox.shaded.fanciful.FancyMessage;
+import works.chatterbox.chatterbox.shaded.mkremins.fanciful.FancyMessage;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
