@@ -14,7 +14,7 @@ plugins {
     id 'findbugs'
 
     // id 'com.github.johnrengelman.shadow' version '1.2.0'  // Faster shading than fatJar
-    id "de.undercouch.download" version "1.2"  // Download tasks for libs that aren't on maven
+    id "de.undercouch.download" version "1.2"  // Download tasks for libs that aren't on maven (or files in general)
 
     id 'maven-publish'
     id 'ivy-publish'
