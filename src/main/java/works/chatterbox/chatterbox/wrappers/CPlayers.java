@@ -1,5 +1,6 @@
 package works.chatterbox.chatterbox.wrappers;
 
+import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -21,10 +22,12 @@ public class CPlayers {
         });
 
     public static CPlayer getCPlayer(@NotNull final UUID uuid) {
+        Preconditions.checkNotNull(uuid, "uuid was null");
         return CPlayers.players.getUnchecked(uuid);
     }
 
     public static CPlayer getCPlayer(@NotNull final OfflinePlayer player) {
+        Preconditions.checkNotNull(player, "player was null");
         return CPlayers.getCPlayer(player.getUniqueId());
     }
 
