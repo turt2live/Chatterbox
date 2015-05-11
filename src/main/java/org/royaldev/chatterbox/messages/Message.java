@@ -1,8 +1,8 @@
 package org.royaldev.chatterbox.messages;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.jetbrains.annotations.NotNull;
+import org.royaldev.chatterbox.wrappers.CPlayer;
 
 public interface Message {
 
@@ -39,12 +39,11 @@ public interface Message {
     void setMessage(@NotNull final String message);
 
     /**
-     * Gets the Player that sent this message.
-     * TODO: Determine if we should use wrappers
+     * Gets the CPlayer that sent this message.
      *
-     * @return Player
+     * @return CPlayer
      */
     @NotNull
-    Player getPlayer();
+    CPlayer getSender();
 
 }
