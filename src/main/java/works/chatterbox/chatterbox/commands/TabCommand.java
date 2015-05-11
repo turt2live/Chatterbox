@@ -28,7 +28,7 @@ public abstract class TabCommand<T extends Plugin> extends CACommand<T> implemen
     }
 
     /**
-     * An array of all Enum values used by {@link org.royaldev.storage.commands.TabCommand.CompletionType#ENUM}.
+     * An array of all Enum values used by {@link works.chatterbox.chatterbox.commands.TabCommand.CompletionType#ENUM}.
      *
      * @param cs    CommandSender completing
      * @param cmd   Command being completed
@@ -43,7 +43,7 @@ public abstract class TabCommand<T extends Plugin> extends CACommand<T> implemen
     }
 
     /**
-     * A list of values used by {@link org.royaldev.storage.commands.TabCommand.CompletionType#LIST}.
+     * A list of values used by {@link works.chatterbox.chatterbox.commands.TabCommand.CompletionType#LIST}.
      *
      * @param cs    CommandSender completing
      * @param cmd   Command being completed

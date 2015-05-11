@@ -9,7 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
-import org.royaldev.storage.shaded.mkremins.fanciful.FancyMessage;
+import works.chatterbox.chatterbox.shaded.fanciful.FancyMessage;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -181,7 +181,7 @@ public abstract class BaseCommand<T extends Plugin> implements CommandExecutor {
      *
      * @param args Arguments to generate CommandArguments from
      * @return CommandArguments
-     * @see org.royaldev.storage.commands.CACommand
+     * @see works.chatterbox.chatterbox.commands.CACommand
      */
     protected CommandArguments getCommandArguments(final String[] args) {
         return new CommandArguments(args);
