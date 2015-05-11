@@ -1,22 +1,23 @@
 # Eclipse stuff
-/.classpath
-/.project
-/.settings
+.classpath/
+.project/
+.settings/
 
-# netbeans
-/nbproject
+# Netbeans
+nbproject/
 
-# we use maven!
+# Maven
 build.xml
-
-# maven
-/target
+target/
 dependency-reduced-pom.xml
 
-# vim
+# Gradle
+.gradle
+
+# Vim
 .*.sw[a-p]
 
-# various other potential build files
+# Various other potential build files
 target
 build
 bin
@@ -27,7 +28,7 @@ package
 # Mac filesystem dust
 .DS_Store
 
-# intellij
+# Intellij
 *.iml
 *.ipr
 *.iws
