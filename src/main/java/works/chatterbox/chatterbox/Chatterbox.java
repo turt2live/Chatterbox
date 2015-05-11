@@ -1,11 +1,11 @@
-package org.royaldev.chatterbox;
+package works.chatterbox.chatterbox;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.royaldev.chatterbox.api.ChatterboxAPI;
-import org.royaldev.chatterbox.commands.ReflectiveCommandRegistrar;
-import org.royaldev.chatterbox.pipeline.MessagePipeline;
-import org.royaldev.chatterbox.pipeline.stages.impl.color.ColorStage;
-import org.royaldev.chatterbox.pipeline.stages.impl.rythm.RythmStage;
+import works.chatterbox.chatterbox.api.ChatterboxAPI;
+import works.chatterbox.chatterbox.commands.ReflectiveCommandRegistrar;
+import works.chatterbox.chatterbox.pipeline.MessagePipeline;
+import works.chatterbox.chatterbox.pipeline.stages.impl.color.ColorStage;
+import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.RythmStage;
 
 import java.util.Arrays;
 

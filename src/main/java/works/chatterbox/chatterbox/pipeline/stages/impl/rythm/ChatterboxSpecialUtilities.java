@@ -1,4 +1,4 @@
-package org.royaldev.chatterbox.pipeline.stages.impl.rythm;
+package works.chatterbox.chatterbox.pipeline.stages.impl.rythm;
 
 import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;

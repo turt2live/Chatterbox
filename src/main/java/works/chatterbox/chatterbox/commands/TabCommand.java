@@ -1,4 +1,4 @@
-package org.royaldev.chatterbox.commands;
+package works.chatterbox.chatterbox.commands;
 
 import org.bukkit.Material;
 import org.bukkit.World;

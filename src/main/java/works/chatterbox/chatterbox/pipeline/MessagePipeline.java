@@ -1,11 +1,11 @@
-package org.royaldev.chatterbox.pipeline;
+package works.chatterbox.chatterbox.pipeline;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
-import org.royaldev.chatterbox.messages.Message;
-import org.royaldev.chatterbox.pipeline.stages.Stage;
+import works.chatterbox.chatterbox.messages.Message;
+import works.chatterbox.chatterbox.pipeline.stages.Stage;
 
 import java.util.List;
 

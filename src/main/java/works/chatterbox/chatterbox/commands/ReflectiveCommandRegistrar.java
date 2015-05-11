@@ -1,4 +1,4 @@
-package org.royaldev.chatterbox.commands;
+package works.chatterbox.chatterbox.commands;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;

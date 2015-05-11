@@ -1,6 +1,6 @@
-package org.royaldev.chatterbox.api;
+package works.chatterbox.chatterbox.api;
 
-import org.royaldev.chatterbox.Chatterbox;
+import works.chatterbox.chatterbox.Chatterbox;
 
 public class ChatterboxAPI {
 

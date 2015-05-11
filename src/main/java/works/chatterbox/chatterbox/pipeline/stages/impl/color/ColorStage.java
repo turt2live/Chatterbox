@@ -1,12 +1,12 @@
-package org.royaldev.chatterbox.pipeline.stages.impl.color;
+package works.chatterbox.chatterbox.pipeline.stages.impl.color;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.royaldev.chatterbox.messages.Message;
-import org.royaldev.chatterbox.pipeline.stages.Stage;
+import works.chatterbox.chatterbox.messages.Message;
+import works.chatterbox.chatterbox.pipeline.stages.Stage;
 
 /**
  * The color stage. This stage handles all color code processing.

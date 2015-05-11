@@ -22,7 +22,7 @@ plugins {
 
 version = "1.0.0-SNAPSHOT"
 sourceCompatibility = 1.8
-group = "org.royaldev.chatterbox"
+group = "works.chatterbox.chatterbox"
 
 tasks.withType(FindBugs) {
     reports {

@@ -1,9 +1,9 @@
-package org.royaldev.chatterbox.pipeline.stages.impl.rythm;
+package works.chatterbox.chatterbox.pipeline.stages.impl.rythm;
 
 import com.google.common.collect.Maps;
 import org.jetbrains.annotations.NotNull;
-import org.royaldev.chatterbox.messages.Message;
-import org.royaldev.chatterbox.pipeline.stages.Stage;
+import works.chatterbox.chatterbox.messages.Message;
+import works.chatterbox.chatterbox.pipeline.stages.Stage;
 import org.rythmengine.RythmEngine;
 
 import java.util.Map;

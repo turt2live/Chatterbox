@@ -1,4 +1,4 @@
-package org.royaldev.chatterbox.wrappers;
+package works.chatterbox.chatterbox.wrappers;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;

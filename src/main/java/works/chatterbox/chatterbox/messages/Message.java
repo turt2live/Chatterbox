@@ -1,8 +1,8 @@
-package org.royaldev.chatterbox.messages;
+package works.chatterbox.chatterbox.messages;
 
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.jetbrains.annotations.NotNull;
-import org.royaldev.chatterbox.wrappers.CPlayer;
+import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 public interface Message {
 

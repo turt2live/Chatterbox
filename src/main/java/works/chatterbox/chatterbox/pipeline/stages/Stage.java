@@ -1,7 +1,7 @@
-package org.royaldev.chatterbox.pipeline.stages;
+package works.chatterbox.chatterbox.pipeline.stages;
 
 import org.jetbrains.annotations.NotNull;
-import org.royaldev.chatterbox.messages.Message;
+import works.chatterbox.chatterbox.messages.Message;
 
 public interface Stage {
 

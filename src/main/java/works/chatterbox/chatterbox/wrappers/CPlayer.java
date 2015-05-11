@@ -1,10 +1,10 @@
-package org.royaldev.chatterbox.wrappers;
+package works.chatterbox.chatterbox.wrappers;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.royaldev.chatterbox.channels.Channel;
+import works.chatterbox.chatterbox.channels.Channel;
 
 import java.util.Set;
 
