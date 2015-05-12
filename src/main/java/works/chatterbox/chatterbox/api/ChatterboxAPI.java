@@ -1,7 +1,9 @@
 package works.chatterbox.chatterbox.api;
 
+import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.Chatterbox;
+import works.chatterbox.chatterbox.api.channel.ChannelAPI;
 import works.chatterbox.chatterbox.api.message.MessageAPI;
 import works.chatterbox.chatterbox.api.player.PlayerAPI;
 
@@ -10,11 +12,29 @@ public class ChatterboxAPI {
     private final Chatterbox chatterbox;
     private final PlayerAPI playerAPI;
     private final MessageAPI messageAPI;
+    private final ChannelAPI channelAPI;
 
-    public ChatterboxAPI(final Chatterbox chatterbox) {
+    public ChatterboxAPI(@NotNull final Chatterbox chatterbox) {
+        Preconditions.checkNotNull(chatterbox, "chatterbox was null");
         this.chatterbox = chatterbox;
         this.playerAPI = new PlayerAPI(this.chatterbox);
         this.messageAPI = new MessageAPI(this.chatterbox);
+        this.channelAPI = new ChannelAPI(this.chatterbox);
+    }
+
+    @NotNull
+    public ChannelAPI getChannelAPI() {
+        return this.channelAPI;
+    }
+
+    @NotNull
+    public Chatterbox getChatterbox() {
+        return this.chatterbox;
+    }
+
+    @NotNull
+    public MessageAPI getMessageAPI() {
+        return this.messageAPI;
     }
 
     /**
@@ -25,10 +45,5 @@ public class ChatterboxAPI {
     @NotNull
     public PlayerAPI getPlayerAPI() {
         return this.playerAPI;
-    }
-
-    @NotNull
-    public MessageAPI getMessageAPI() {
-        return this.messageAPI;
     }
 }
