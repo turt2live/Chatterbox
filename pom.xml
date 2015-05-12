@@ -37,6 +37,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>ninja.leaping.configurate</groupId>
+            <artifactId>configurate-yaml</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>13.0</version>
