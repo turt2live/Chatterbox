@@ -12,6 +12,7 @@ import java.util.Map;
 public class RythmAPI {
 
     private final RythmEngine rythm = new RythmEngine();
+    private final Map<String, Object> perMessageVariables = Maps.newHashMap();
     private final Map<String, Object> variables = Maps.newHashMap();
 
     private void ensureNotPrivate(@NotNull final String key) {
@@ -23,6 +24,11 @@ public class RythmAPI {
         Preconditions.checkNotNull(key, "key was null");
         this.ensureNotPrivate(key);
         this.variables.put(key, value);
+    }
+
+    @NotNull
+    public Map<String, Object> getPerMessageVariables() {
+        return this.perMessageVariables;
     }
 
     @NotNull

@@ -12,11 +12,12 @@ import works.chatterbox.chatterbox.wrappers.CPlayer;
 public class MessageAPI {
 
     private final Chatterbox chatterbox;
-    private final MessagePipeline pipeline = new MessagePipeline();
+    private final MessagePipeline pipeline;
 
     public MessageAPI(@NotNull final Chatterbox chatterbox) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");
         this.chatterbox = chatterbox;
+        this.pipeline = new MessagePipeline(this.chatterbox);
     }
 
     @NotNull
