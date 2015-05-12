@@ -18,6 +18,33 @@
                 </includes>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.rythmengine</pattern>
+                                    <shadedPattern>works.chatterbox.chatterbox.shaded.org.rythmengine</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>ninja.leaping</pattern>
+                                    <shadedPattern>works.chatterbox.chatterbox.shaded.ninja.leaping</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
     <repositories>
         <repository>
@@ -40,11 +67,6 @@
             <groupId>ninja.leaping.configurate</groupId>
             <artifactId>configurate-yaml</artifactId>
             <version>1.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>ro.fortsoft.pf4j</groupId>
-            <artifactId>pf4j</artifactId>
-            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

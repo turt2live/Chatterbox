@@ -5,9 +5,9 @@ import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import ro.fortsoft.pf4j.DefaultPluginManager;
 import works.chatterbox.chatterbox.api.ChatterboxAPI;
 import works.chatterbox.chatterbox.commands.ReflectiveCommandRegistrar;
+import works.chatterbox.chatterbox.hooks.HookManager;
 import works.chatterbox.chatterbox.listeners.PipelineListener;
 import works.chatterbox.chatterbox.pipeline.stages.impl.color.ColorStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.RythmStage;
@@ -42,9 +42,11 @@ public class Chatterbox extends JavaPlugin {
     }
 
     private void loadHooks() {
-        final ro.fortsoft.pf4j.PluginManager pm = new DefaultPluginManager(new File(this.getDataFolder(), "hooks"));
-        pm.loadPlugins();
-        pm.startPlugins();
+        final Runnable r = () -> {
+            final HookManager hm = new HookManager(this);
+            hm.loadPlugins();
+        };
+        this.getServer().getScheduler().runTask(this, r);
     }
 
     private void registerCommands() {
@@ -80,6 +82,6 @@ public class Chatterbox extends JavaPlugin {
         this.registerCommands();
         this.addInternalPipelineStages();
         this.registerListeners();
-        this.loadHooks(); // load hooks last
+        this.loadHooks();
     }
 }
