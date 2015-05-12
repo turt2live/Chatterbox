@@ -16,9 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-// TODO: Make task for loading dependencies, which brings me to number two
-// TODO: Dependencies
-
 public class Chatterbox extends JavaPlugin {
 
     private ChatterboxAPI api;
@@ -74,6 +71,7 @@ public class Chatterbox extends JavaPlugin {
     @Override
     public void onEnable() {
         this.api = new ChatterboxAPI(this); // api must be initialized before anything else
+        this.saveDefaultConfig(); // save the default config before loading it
         if (!this.loadConfiguration()) {
             this.getLogger().severe("Could not load configuration. Disabling plugin.");
             this.getServer().getPluginManager().disablePlugin(this);
