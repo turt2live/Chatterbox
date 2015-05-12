@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -82,7 +81,7 @@ public class HookManager {
             descriptor = this.getHookDescriptor(file);
             Preconditions.checkState(descriptor.getNode("name").getValue() != null, "Hook had no name in the hook.yml");
             Preconditions.checkState(descriptor.getNode("main").getValue() != null, "Hook had no main class in the hook.yml");
-            final ClassLoader cl = new URLClassLoader(new URL[]{file.toURI().toURL()}, this.getClass().getClassLoader());
+            final ClassLoader cl = new ChatterboxHookLoader(new URL[]{file.toURI().toURL()}, this.getClass().getClassLoader());
             final Class<?> mainClass = cl.loadClass(descriptor.getNode("main").getString());
             Preconditions.checkState(ChatterboxHook.class.isAssignableFrom(mainClass), "The main class did not extend ChatterboxHook");
             hook = (ChatterboxHook) mainClass.newInstance();
