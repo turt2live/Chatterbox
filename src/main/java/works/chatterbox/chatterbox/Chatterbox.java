@@ -5,6 +5,7 @@ import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import ro.fortsoft.pf4j.DefaultPluginManager;
 import works.chatterbox.chatterbox.api.ChatterboxAPI;
 import works.chatterbox.chatterbox.commands.ReflectiveCommandRegistrar;
 import works.chatterbox.chatterbox.listeners.PipelineListener;
@@ -40,6 +41,12 @@ public class Chatterbox extends JavaPlugin {
         }
     }
 
+    private void loadHooks() {
+        final ro.fortsoft.pf4j.PluginManager pm = new DefaultPluginManager(new File(this.getDataFolder(), "hooks"));
+        pm.loadPlugins();
+        pm.startPlugins();
+    }
+
     private void registerCommands() {
         final ReflectiveCommandRegistrar<Chatterbox> rcr = new ReflectiveCommandRegistrar<>(this);
         rcr.registerCommands();
@@ -64,7 +71,7 @@ public class Chatterbox extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.api = new ChatterboxAPI(this);
+        this.api = new ChatterboxAPI(this); // api must be initialized before anything else
         if (!this.loadConfiguration()) {
             this.getLogger().severe("Could not load configuration. Disabling plugin.");
             this.getServer().getPluginManager().disablePlugin(this);
@@ -73,5 +80,6 @@ public class Chatterbox extends JavaPlugin {
         this.registerCommands();
         this.addInternalPipelineStages();
         this.registerListeners();
+        this.loadHooks(); // load hooks last
     }
 }
