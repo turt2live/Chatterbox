@@ -104,7 +104,7 @@ public class HookManager {
         Preconditions.checkState(files != null, "Could not list the files in the hooks directory.");
         Arrays.stream(files)
             .filter(file -> file.toLowerCase().endsWith(".jar"))
-            .map(File::new)
+            .map(file -> new File(hooksDirectory, file))
             .filter(File::isFile)
             .forEach(this::loadHook);
     }
