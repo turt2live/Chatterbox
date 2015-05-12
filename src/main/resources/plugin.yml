@@ -1,5 +1,5 @@
 name: Chatterbox
-main: org.royaldev.chatterbox.Chatterbox
+main: works.chatterbox.chatterbox.Chatterbox
 version: ${pluginversion}
 authors: [jkcclemens, gdude2002]
 description:  Simple, elegant, powerful. Minecraft chat as it was supposed to be.
