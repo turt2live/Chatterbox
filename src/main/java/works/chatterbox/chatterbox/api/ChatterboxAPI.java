@@ -8,11 +8,12 @@ import works.chatterbox.chatterbox.api.player.PlayerAPI;
 public class ChatterboxAPI {
 
     private final Chatterbox chatterbox;
-    private final PlayerAPI playerAPI = new PlayerAPI();
+    private final PlayerAPI playerAPI;
     private final MessageAPI messageAPI;
 
     public ChatterboxAPI(final Chatterbox chatterbox) {
         this.chatterbox = chatterbox;
+        this.playerAPI = new PlayerAPI(this.chatterbox);
         this.messageAPI = new MessageAPI(this.chatterbox);
     }
 

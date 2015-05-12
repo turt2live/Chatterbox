@@ -16,6 +16,8 @@ public interface CPlayer {
     @NotNull
     Channel getMainChannel();
 
+    void setMainChannel(@NotNull final Channel channel);
+
     @NotNull
     OfflinePlayer getOfflinePlayer();
 
