@@ -100,7 +100,8 @@ public class HookManager {
     }
 
     public void loadHooks() {
-        final String[] files = this.getHooksDirectory().list();
+        final File hooksDirectory = this.getHooksDirectory();
+        final String[] files = hooksDirectory.list();
         Preconditions.checkState(files != null, "Could not list the files in the hooks directory.");
         Arrays.stream(files)
             .filter(file -> file.toLowerCase().endsWith(".jar"))
