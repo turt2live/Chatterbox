@@ -100,8 +100,12 @@ public class HookManager {
     }
 
     public void loadHooks() {
-        final File[] files = this.getHooksDirectory().listFiles();
+        final String[] files = this.getHooksDirectory().list();
         Preconditions.checkState(files != null, "Could not list the files in the hooks directory.");
-        Arrays.stream(files).forEach(this::loadHook);
+        Arrays.stream(files)
+            .filter(file -> file.toLowerCase().endsWith(".jar"))
+            .map(File::new)
+            .filter(File::isFile)
+            .forEach(this::loadHook);
     }
 }
