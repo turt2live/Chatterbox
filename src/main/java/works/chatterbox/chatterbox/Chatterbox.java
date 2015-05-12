@@ -44,7 +44,7 @@ public class Chatterbox extends JavaPlugin {
     private void loadHooks() {
         final Runnable r = () -> {
             final HookManager hm = new HookManager(this);
-            hm.loadPlugins();
+            hm.loadHooks();
         };
         this.getServer().getScheduler().runTask(this, r);
     }

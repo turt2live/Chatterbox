@@ -29,18 +29,18 @@ public class HookManager {
     public HookManager(final Chatterbox chatterbox) {
         this.chatterbox = chatterbox;
         try {
-            Files.createDirectories(this.getPluginsDirectory().toPath());
+            Files.createDirectories(this.getHooksDirectory().toPath());
         } catch (final IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    private ConfigurationNode getPluginDescriptor(@NotNull final File file) {
+    private ConfigurationNode getHookDescriptor(@NotNull final File file) {
         Preconditions.checkNotNull(file, "file was null");
         try (final ZipFile zf = new ZipFile(file)) {
-            final ZipEntry plugin = zf.getEntry("hook.yml");
-            Preconditions.checkState(plugin != null, "hook.yml didn't exist");
-            return this.loadYAML(this.inputStreamToString(zf.getInputStream(plugin)));
+            final ZipEntry hook = zf.getEntry("hook.yml");
+            Preconditions.checkState(hook != null, "hook.yml didn't exist");
+            return this.loadYAML(this.inputStreamToString(zf.getInputStream(hook)));
         } catch (final IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -69,17 +69,17 @@ public class HookManager {
         return ImmutableSet.copyOf(this.hooks);
     }
 
-    public File getPluginsDirectory() {
+    public File getHooksDirectory() {
         return new File(this.chatterbox.getDataFolder(), "hooks");
     }
 
-    public void loadPlugin(@NotNull final File file) {
+    public void loadHook(@NotNull final File file) {
         Preconditions.checkNotNull(file, "file was null");
         Preconditions.checkArgument(file.isFile(), "file was not a file");
         final ChatterboxHook hook;
         final ConfigurationNode descriptor;
         try {
-            descriptor = this.getPluginDescriptor(file);
+            descriptor = this.getHookDescriptor(file);
             Preconditions.checkState(descriptor.getNode("name").getValue() != null, "Hook had no name in the hook.yml");
             Preconditions.checkState(descriptor.getNode("main").getValue() != null, "Hook had no main class in the hook.yml");
             final ClassLoader cl = new URLClassLoader(new URL[]{file.toURI().toURL()}, this.getClass().getClassLoader());
@@ -89,7 +89,7 @@ public class HookManager {
         } catch (final Throwable ex) {
             throw new RuntimeException(ex);
         }
-        hook.internalInit(this.chatterbox, new File(this.getPluginsDirectory(), descriptor.getNode("name").getString()), descriptor);
+        hook.internalInit(this.chatterbox, new File(this.getHooksDirectory(), descriptor.getNode("name").getString()), descriptor);
         try {
             hook.init();
         } catch (final Throwable t) {
@@ -99,9 +99,9 @@ public class HookManager {
         this.hooks.add(hook);
     }
 
-    public void loadPlugins() {
-        final File[] files = this.getPluginsDirectory().listFiles();
-        Preconditions.checkState(files != null, "Could not list the files in the plugins directory.");
-        Arrays.stream(files).forEach(this::loadPlugin);
+    public void loadHooks() {
+        final File[] files = this.getHooksDirectory().listFiles();
+        Preconditions.checkState(files != null, "Could not list the files in the hooks directory.");
+        Arrays.stream(files).forEach(this::loadHook);
     }
 }
