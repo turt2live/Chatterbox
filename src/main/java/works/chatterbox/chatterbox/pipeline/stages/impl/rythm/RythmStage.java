@@ -22,7 +22,11 @@ public class RythmStage implements Stage {
 
     private Map<String, Object> getVariablesFor(@NotNull final Message message) {
         Preconditions.checkNotNull(message, "message was null");
-        return Maps.newHashMap();
+        final Map<String, Object> vars = Maps.newHashMap();
+        vars.put("message", message.getMessage());
+        vars.put("player", message.getSender().getPlayer());
+        vars.put("channel", message.getChannel());
+        return vars;
     }
 
     @Override
