@@ -48,6 +48,7 @@ public class ConfigChannel implements Channel {
         return this.node.getNode("radius").getValue(input -> {
             if (!(input instanceof ConfigurationNode)) return null;
             final ConfigurationNode node = (ConfigurationNode) input;
+            if (!node.getNode("enabled").getBoolean()) return null;
             return new Radius(node.getNode("horizontal").getDouble(), node.getNode("vertical").getDouble());
         });
     }
