@@ -9,6 +9,7 @@ import works.chatterbox.chatterbox.api.ChatterboxAPI;
 import works.chatterbox.chatterbox.commands.ReflectiveCommandRegistrar;
 import works.chatterbox.chatterbox.hooks.HookManager;
 import works.chatterbox.chatterbox.listeners.PipelineListener;
+import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.color.ColorStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.RythmStage;
 
@@ -23,8 +24,9 @@ public class Chatterbox extends JavaPlugin {
 
     private void addInternalPipelineStages() {
         Arrays.asList(
-            new RythmStage(this),
-            new ColorStage()
+            new ChannelStage(), // Sets the base format
+            new RythmStage(this), // Processes the Rythm syntax
+            new ColorStage() // Applies colors
         ).forEach(this.api.getMessageAPI().getMessagePipeline()::addStage);
     }
 
