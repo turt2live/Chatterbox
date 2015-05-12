@@ -6,6 +6,7 @@ import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.api.channel.ChannelAPI;
 import works.chatterbox.chatterbox.api.message.MessageAPI;
 import works.chatterbox.chatterbox.api.player.PlayerAPI;
+import works.chatterbox.chatterbox.api.rythm.RythmAPI;
 
 public class ChatterboxAPI {
 
@@ -13,6 +14,7 @@ public class ChatterboxAPI {
     private final PlayerAPI playerAPI;
     private final MessageAPI messageAPI;
     private final ChannelAPI channelAPI;
+    private final RythmAPI rythmAPI;
 
     public ChatterboxAPI(@NotNull final Chatterbox chatterbox) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");
@@ -20,6 +22,7 @@ public class ChatterboxAPI {
         this.playerAPI = new PlayerAPI(this.chatterbox);
         this.messageAPI = new MessageAPI(this.chatterbox);
         this.channelAPI = new ChannelAPI(this.chatterbox);
+        this.rythmAPI = new RythmAPI();
     }
 
     @NotNull
@@ -45,5 +48,10 @@ public class ChatterboxAPI {
     @NotNull
     public PlayerAPI getPlayerAPI() {
         return this.playerAPI;
+    }
+
+    @NotNull
+    public RythmAPI getRythmAPI() {
+        return this.rythmAPI;
     }
 }

@@ -26,7 +26,7 @@ public class Chatterbox extends JavaPlugin {
 
     private void addInternalPipelineStages() {
         Arrays.asList(
-            new RythmStage(),
+            new RythmStage(this),
             new ColorStage()
         ).forEach(this.api.getMessageAPI().getMessagePipeline()::addStage);
     }
