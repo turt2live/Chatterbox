@@ -114,7 +114,6 @@ channels:
   - name: rythmformat
     tag: rf
     format:
-      file: rf.txt # TODO: Should we have this? Load in the file and render it. If so, we should probably cache it.
       text: "[{json:channel}@channel.getTag(){/json:channel}]
              {json:player-info}@player.getDisplayName(){/json:player-info}:
              @message.capFirst()"
@@ -142,3 +141,14 @@ channels:
              } else {
                @chatterbox.cancelJSON()
              }"
+  - name: rythminfile
+    tag: rif
+    format:
+      # Specifies that the Rythm for the format is in plugins/Chatterbox/rif.txt. These files may use templates and
+      # anything available to Rythm. They are cached for an hour from their last access. Files are read with linebreaks
+      # as spaces to mimic the behavior seen in this file.
+      file: rif.txt
+      json:
+        channel:
+        - "&9&lChannel"
+        - "@channel.getName()"

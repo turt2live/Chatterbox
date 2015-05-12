@@ -35,7 +35,7 @@ public class ChannelAPI {
     @Nullable
     private Channel getDefaultChannelOrNull() {
         final List<? extends ConfigurationNode> channels = this.chatterbox.getConfiguration().getNode("channels").getChildrenList();
-        return channels.isEmpty() ? null : new ConfigChannel(channels.get(0));
+        return channels.isEmpty() ? null : new ConfigChannel(this.chatterbox, channels.get(0));
     }
 
     @NotNull

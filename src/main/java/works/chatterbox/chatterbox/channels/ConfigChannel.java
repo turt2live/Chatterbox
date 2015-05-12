@@ -6,28 +6,66 @@ import ninja.leaping.configurate.ConfigurationNode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.Chatterbox;
+import works.chatterbox.chatterbox.channels.files.FormatFiles;
 import works.chatterbox.chatterbox.channels.radius.Radius;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
+import java.io.File;
 import java.util.Set;
 
 public class ConfigChannel implements Channel {
 
+    private final static FormatFiles formatFiles = new FormatFiles();
     private final ConfigurationNode node;
     private final Set<CPlayer> members = Sets.newHashSet();
+    private final Chatterbox chatterbox;
 
     public ConfigChannel(@NotNull final Chatterbox chatterbox, @NotNull final String name) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");
         Preconditions.checkNotNull(name, "name was null");
+        this.chatterbox = chatterbox;
         this.node = chatterbox.getConfiguration().getNode("channels").getChildrenList().stream()
             .filter(node -> name.equals(node.getNode("name").getString()))
             .findFirst()
             .orElseThrow(() -> new IllegalStateException("No channel by the name " + name));
     }
 
-    public ConfigChannel(@NotNull final ConfigurationNode node) {
+    public ConfigChannel(@NotNull final Chatterbox chatterbox, @NotNull final ConfigurationNode node) {
+        Preconditions.checkNotNull(chatterbox, "chatterbox was null");
         Preconditions.checkNotNull(node, "node was null");
+        this.chatterbox = chatterbox;
         this.node = node;
+    }
+
+    @Nullable
+    private String determineFormat() {
+        final ConfigurationNode format = this.node.getNode("format");
+        if (!format.getNode("file").isVirtual()) {
+            return this.getFileFormat(format);
+        }
+        if (!format.getNode("text").isVirtual()) {
+            return this.getTextFormat(format);
+        }
+        return null;
+    }
+
+    @Nullable
+    private String getFileFormat(final ConfigurationNode formatNode) {
+        return ConfigChannel.formatFiles.getFileContents(
+            new File(this.chatterbox.getDataFolder(), formatNode.getNode("file").getString())
+        );
+    }
+
+    @Nullable
+    private String getTextFormat(final ConfigurationNode formatNode) {
+        return formatNode.getNode("text").getString();
+    }
+
+    @NotNull
+    @Override
+    public String getFormat() {
+        final String format = this.determineFormat();
+        return format == null ? "" : format;
     }
 
     @NotNull

@@ -14,6 +14,14 @@ import java.util.Set;
 public interface Channel {
 
     /**
+     * Gets the format String for this channel, in valid Rythm syntax.
+     *
+     * @return Format String
+     */
+    @NotNull
+    String getFormat();
+
+    /**
      * Gets all the members of this channel.
      *
      * @return Set of members
