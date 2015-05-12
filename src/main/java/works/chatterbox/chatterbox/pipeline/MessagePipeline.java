@@ -25,6 +25,18 @@ public class MessagePipeline {
     }
 
     /**
+     * Adds a stage to this pipeline at the specified index.
+     *
+     * @param index Index to add stage at
+     * @param stage Stage to add
+     */
+    public void addStage(int index, @NotNull final Stage stage) {
+        Preconditions.checkArgument(index >= 0 && index <= this.stages.size(), "index was not valid");
+        Preconditions.checkNotNull(stage, "stage was null");
+        this.stages.add(index, stage);
+    }
+
+    /**
      * Adds a stage to this pipeline.
      *
      * @param stage Stage to add
