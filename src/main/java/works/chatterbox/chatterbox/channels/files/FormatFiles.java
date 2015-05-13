@@ -1,6 +1,7 @@
 package works.chatterbox.chatterbox.channels.files;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -55,5 +56,27 @@ public class FormatFiles {
     @Nullable
     public String getFileContents(final File file) {
         return this.getFileContents(file.getAbsolutePath());
+    }
+
+    /**
+     * Invalidates the stored contents for the given path. This will make the next call to
+     * {@link #getFileContents(String)} load the file again and re-cache the value.
+     *
+     * @param path Path to invalidate
+     */
+    public void invalidateCacheFor(@NotNull final String path) {
+        Preconditions.checkNotNull(path, "path was null");
+        this.cachedFiles.invalidate(path);
+    }
+
+    /**
+     * Calls {@link #invalidateCacheFor(String)} using {@link File#getAbsolutePath()} on {@code file}.
+     *
+     * @param file File to invalidate
+     * @see #invalidateCacheFor(String)
+     */
+    public void invalidateCacheFor(@NotNull final File file) {
+        Preconditions.checkNotNull(file, "file was null");
+        this.invalidateCacheFor(file.getAbsolutePath());
     }
 }
