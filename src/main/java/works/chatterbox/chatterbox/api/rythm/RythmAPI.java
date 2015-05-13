@@ -98,9 +98,10 @@ public class RythmAPI {
         Preconditions.checkNotNull(extraVariables, "extraVariables was null");
         extraVariables.putAll(this.getVariables());
         final Wrapper<String> wrapper = new Wrapper<>();
-        ContextTool.withContext(this.chatterbox.getClass().getClassLoader(), () -> {
-            wrapper.value = this.rythm.render(this.addArgsDirective(template, extraVariables), extraVariables);
-        });
+        ContextTool.withContext(
+            this.chatterbox.getClass().getClassLoader(),
+            () -> wrapper.value = this.rythm.render(this.addArgsDirective(template, extraVariables), extraVariables)
+        );
         return wrapper.value;
     }
 
