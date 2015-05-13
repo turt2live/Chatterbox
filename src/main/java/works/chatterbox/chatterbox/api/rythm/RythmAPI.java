@@ -7,29 +7,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.rythmengine.RythmEngine;
 import works.chatterbox.chatterbox.Chatterbox;
-import works.chatterbox.chatterbox.tools.ContextTool;
-import works.chatterbox.chatterbox.tools.Wrapper;
 
 import java.util.Map;
 
 public class RythmAPI {
 
-    private final Chatterbox chatterbox;
     private final RythmEngine rythm;
     private final Map<String, Object> perMessageVariables = Maps.newHashMap();
     private final Map<String, Object> variables = Maps.newHashMap();
 
     public RythmAPI(@NotNull final Chatterbox chatterbox) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");
-        this.chatterbox = chatterbox;
-        // Note: Not using ContextTool#withContext because rythm is final (and final fields cannot be assigned in lambdas)
-        final ClassLoader orig = Thread.currentThread().getContextClassLoader();
-        try {
-            Thread.currentThread().setContextClassLoader(this.chatterbox.getClass().getClassLoader());
-            this.rythm = new RythmEngine();
-        } finally {
-            Thread.currentThread().setContextClassLoader(orig);
-        }
+        final Map<String, Object> config = Maps.newHashMap();
+        config.put("engine.class_loader.parent.impl", chatterbox.getClass().getClassLoader());
+        this.rythm = new RythmEngine(config);
     }
 
     private String addArgsDirective(@NotNull final String template, @NotNull final Map<String, Object> allArgs) {
@@ -97,12 +88,7 @@ public class RythmAPI {
         Preconditions.checkNotNull(template, "template was null");
         Preconditions.checkNotNull(extraVariables, "extraVariables was null");
         extraVariables.putAll(this.getVariables());
-        final Wrapper<String> wrapper = new Wrapper<>();
-        ContextTool.withContext(
-            this.chatterbox.getClass().getClassLoader(),
-            () -> wrapper.value = this.rythm.render(this.addArgsDirective(template, extraVariables), extraVariables)
-        );
-        return wrapper.value;
+        return this.rythm.render(this.addArgsDirective(template, extraVariables), extraVariables);
     }
 
 }
