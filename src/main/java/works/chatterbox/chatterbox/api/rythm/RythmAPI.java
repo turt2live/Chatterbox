@@ -74,7 +74,9 @@ public class RythmAPI {
      */
     @NotNull
     public RythmEngine getRythmEngine() {
-        return this.rythm;
+        synchronized (this.rythm) {
+            return this.rythm;
+        }
     }
 
     /**
@@ -119,7 +121,9 @@ public class RythmAPI {
         Preconditions.checkNotNull(template, "template was null");
         Preconditions.checkNotNull(extraVariables, "extraVariables was null");
         extraVariables.putAll(this.getVariables());
-        return this.rythm.render(this.addArgsDirective(template, extraVariables), extraVariables);
+        synchronized (this.rythm) {
+            return this.rythm.render(this.addArgsDirective(template, extraVariables), extraVariables);
+        }
     }
 
 }
