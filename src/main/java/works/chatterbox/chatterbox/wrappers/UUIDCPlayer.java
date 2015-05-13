@@ -26,6 +26,13 @@ public class UUIDCPlayer implements CPlayer {
         this.chatterbox = chatterbox;
     }
 
+    /**
+     * Returns {@code thing} if it is not null. If it is null, {@code other} will be returned, which should not be null.
+     *
+     * @param thing Thing to return if it isn't null
+     * @param other Thing to return if {@code thing} is null (not null)
+     * @return {@code thing} or {@code other}
+     */
     private <T> T or(@Nullable final T thing, @NotNull final T other) {
         Preconditions.checkNotNull(other, "other was null");
         return thing == null ? other : thing;
@@ -66,6 +73,11 @@ public class UUIDCPlayer implements CPlayer {
         return this.getPlayer() != null;
     }
 
+    /**
+     * Gets the UUID that this CPlayer represents.
+     *
+     * @return UUID
+     */
     @NotNull
     public UUID getUUID() {
         return this.uuid;

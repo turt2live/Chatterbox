@@ -25,23 +25,38 @@ public class ChatterboxAPI {
         this.rythmAPI = new RythmAPI(this.chatterbox);
     }
 
+    /**
+     * Gets the Channel API, which is used for channel functions.
+     *
+     * @return ChannelAPI
+     */
     @NotNull
     public ChannelAPI getChannelAPI() {
         return this.channelAPI;
     }
 
+    /**
+     * Gets the instance of Chatterbox that this API interfaces with.
+     *
+     * @return Chatterbox
+     */
     @NotNull
     public Chatterbox getChatterbox() {
         return this.chatterbox;
     }
 
+    /**
+     * Gets the Message API, which is used to make and process messages.
+     *
+     * @return MessageAPI
+     */
     @NotNull
     public MessageAPI getMessageAPI() {
         return this.messageAPI;
     }
 
     /**
-     * Gets the player API, which has methods pertaining to players and their various functions in Chatterbox.
+     * Gets the Player API, which has methods pertaining to players and their various functions in Chatterbox.
      *
      * @return PlayerAPI
      */
@@ -50,6 +65,11 @@ public class ChatterboxAPI {
         return this.playerAPI;
     }
 
+    /**
+     * Gets the Rythm API, which is used to format templates and add custom variables to the formatting engine.
+     *
+     * @return RythmAPI
+     */
     @NotNull
     public RythmAPI getRythmAPI() {
         return this.rythmAPI;

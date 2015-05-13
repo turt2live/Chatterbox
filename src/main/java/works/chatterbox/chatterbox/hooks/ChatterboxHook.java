@@ -67,6 +67,14 @@ public abstract class ChatterboxHook {
     }
 
     final void internalInit(final Chatterbox chatterbox, final File dataFolder, final ConfigurationNode descriptor) {
+    /**
+     * Sets necessary values for the hook. Called before {@link #init()}. This is done to prevent extending classes from
+     * having to make a constructor that matches this class.
+     *
+     * @param chatterbox Chatterbox instance
+     * @param dataFolder Data folder for this hook
+     * @param descriptor This hook's descriptor node
+     */
         this.chatterbox = chatterbox;
         this.dataFolder = dataFolder;
         this.descriptor = descriptor;
@@ -81,6 +89,11 @@ public abstract class ChatterboxHook {
         return this.enabled;
     }
 
+    /**
+     * Sets if this plugin is enabled. Used for {@link #isEnabled()} so hooks can see their own status.
+     *
+     * @param enabled Enabled status
+     */
     final void setEnabled(final boolean enabled) {
         this.enabled = enabled;
     }

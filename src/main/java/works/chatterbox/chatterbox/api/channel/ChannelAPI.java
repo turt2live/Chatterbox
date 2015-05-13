@@ -15,6 +15,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * The Channel API handles the creation and parsing of chat channels.
+ */
 public class ChannelAPI {
 
     private final Chatterbox chatterbox;
@@ -38,11 +41,22 @@ public class ChannelAPI {
         return channels.isEmpty() ? null : new ConfigChannel(this.chatterbox, channels.get(0));
     }
 
+    /**
+     * Gets all channels defined in the currently loaded config.yml.
+     *
+     * @return Collection of channels
+     */
     @NotNull
     public Collection<Channel> getAllChannels() {
         return this.channels.asMap().values();
     }
 
+    /**
+     * Gets a channel by its name or tag. If no channel can be found by that name, null will be returned.
+     *
+     * @param name Name or tag of the channel
+     * @return Channel or null
+     */
     @Nullable
     public Channel getChannel(@NotNull final String name) {
         Preconditions.checkNotNull(name, "name was null");
@@ -53,6 +67,12 @@ public class ChannelAPI {
         }
     }
 
+    /**
+     * Gets the default channel, or the first defined channel in the config.yml.
+     *
+     * @return Default channel
+     * @throws NullPointerException If there is no default channel defined
+     */
     @NotNull
     public Channel getDefaultChannel() {
         return Preconditions.checkNotNull(this.getDefaultChannelOrNull(), "No channels specified.");

@@ -35,6 +35,13 @@ public class HookManager {
         }
     }
 
+    /**
+     * Gets the descriptor for a hook. The descriptor is a {@link ConfigurationNode} representing the {@code hook.yml}.
+     *
+     * @param file Hook's jar
+     * @return ConfigurationNode
+     * @throws RuntimeException If an IOException occurs
+     */
     private ConfigurationNode getHookDescriptor(@NotNull final File file) {
         Preconditions.checkNotNull(file, "file was null");
         try (final ZipFile zf = new ZipFile(file)) {
@@ -46,12 +53,25 @@ public class HookManager {
         }
     }
 
+    /**
+     * Reads an entire InputStream into one String.
+     *
+     * @param is InputStream
+     * @return Contents of the InputStream
+     */
     private String inputStreamToString(@NotNull final InputStream is) {
         Preconditions.checkNotNull(is, "is was null");
         final Scanner s = new Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
     }
 
+    /**
+     * Creates a ConfigurationNode from a YAML string.
+     *
+     * @param string String of YAML
+     * @return ConfigurationNode
+     * @throws IOException If any IOException occurs
+     */
     private ConfigurationNode loadYAML(@NotNull final String string) throws IOException {
         Preconditions.checkNotNull(string, "string was null");
         return YAMLConfigurationLoader.builder()
@@ -69,10 +89,24 @@ public class HookManager {
         return ImmutableSet.copyOf(this.hooks);
     }
 
+    /**
+     * Gets the directory in which hooks should be stored.
+     *
+     * @return File
+     */
     public File getHooksDirectory() {
         return new File(this.chatterbox.getDataFolder(), "hooks");
     }
 
+    /**
+     * Loads a hook, given its jar file. This will ensure that the {@code hook.yml} is present and valid, ensure the
+     * hook is a subclass of {@link ChatterboxHook}, prepare the hook, call the {@link ChatterboxHook#init()} method,
+     * and then set the hook as enabled. If all of this happens without an error, the hook is added to the list of
+     * loaded hooks.
+     *
+     * @param file Hook's jar
+     * @throws RuntimeException If any exception occurs while loading the hook
+     */
     public void loadHook(@NotNull final File file) {
         Preconditions.checkNotNull(file, "file was null");
         Preconditions.checkArgument(file.isFile(), "file was not a file");
@@ -99,6 +133,9 @@ public class HookManager {
         this.hooks.add(hook);
     }
 
+    /**
+     * Loads all hooks in the hook directory ({@link #getHooksDirectory()}).
+     */
     public void loadHooks() {
         final File hooksDirectory = this.getHooksDirectory();
         final String[] files = hooksDirectory.list();

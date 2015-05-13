@@ -9,6 +9,9 @@ import works.chatterbox.chatterbox.messages.PlayerMessage;
 import works.chatterbox.chatterbox.pipeline.MessagePipeline;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
+/**
+ * The Message API handles all things messages.
+ */
 public class MessageAPI {
 
     private final Chatterbox chatterbox;
@@ -20,11 +23,22 @@ public class MessageAPI {
         this.pipeline = new MessagePipeline();
     }
 
+    /**
+     * Gets the message pipeline. All messages should pass through this pipeline to be properly formatted.
+     *
+     * @return Message pipeline
+     */
     @NotNull
     public MessagePipeline getMessagePipeline() {
         return this.pipeline;
     }
 
+    /**
+     * Makes a message from an async chat event.
+     *
+     * @param event Event to make message from
+     * @return New message object
+     */
     @NotNull
     public Message makeMessage(@NotNull final AsyncPlayerChatEvent event) {
         Preconditions.checkNotNull(event, "event was null");

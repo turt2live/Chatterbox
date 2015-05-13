@@ -32,6 +32,12 @@ public class RythmStage implements Stage {
         return vars;
     }
 
+    /**
+     * This will process the message's format using the RythmEngine provided by
+     * {@link works.chatterbox.chatterbox.api.rythm.RythmAPI RythmAPI}. Certain variables, such as the player, channel,
+     * and message, are provided to the engine.
+     * <p>Intended effect: The message's format is processed by Rythm
+     */
     @Override
     public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
         final Map<String, Object> vars = new HashMap<>(context.getCustomVariables());

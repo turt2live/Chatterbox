@@ -28,15 +28,30 @@ public class FormatFiles {
             }
         });
 
+    /**
+     * Gets the contents of a file. This will return null if any error occurs while loading.
+     * <p>These values are cached, and they expire one hour after the last access.
+     *
+     * @param path Path of the file to get
+     * @return Contents of the file or null
+     */
     @Nullable
-    public String getFileContents(final String name) {
+    public String getFileContents(@NotNull final String path) {
+        Preconditions.checkNotNull(path, "path was null");
         try {
-            return this.cachedFiles.get(name);
+            return this.cachedFiles.get(path);
         } catch (final ExecutionException ex) {
             return null;
         }
     }
 
+    /**
+     * Gets the contents of a file. See {@link #getFileContents(String)}.
+     *
+     * @param file File to get contents of
+     * @return Contents of the file or null
+     * @see #getFileContents(String)
+     */
     @Nullable
     public String getFileContents(final File file) {
         return this.getFileContents(file.getAbsolutePath());

@@ -37,6 +37,13 @@ public class ConfigChannel implements Channel {
         this.node = node;
     }
 
+    /**
+     * Determines the correct node under {@code format} to use for the format. If a {@code file} node is specified, this
+     * will load the file and return its contents. If not, this will return the contents of the {@code text} node. If
+     * both are missing, this returns null.
+     *
+     * @return Format or null
+     */
     @Nullable
     private String determineFormat() {
         final ConfigurationNode format = this.node.getNode("format");
@@ -49,6 +56,13 @@ public class ConfigChannel implements Channel {
         return null;
     }
 
+    /**
+     * Gets the cached contents of the {@code file} node in the given node. If there is any error, null will be
+     * returned.
+     *
+     * @param formatNode Format node
+     * @return File contents or null
+     */
     @Nullable
     private String getFileFormat(final ConfigurationNode formatNode) {
         return ConfigChannel.formatFiles.getFileContents(
@@ -56,6 +70,13 @@ public class ConfigChannel implements Channel {
         );
     }
 
+    /**
+     * Returns the value of the {@code text} node inside of the given node. If such a node is not present, null will be
+     * returned.
+     *
+     * @param formatNode Format node
+     * @return Node contents or null
+     */
     @Nullable
     private String getTextFormat(final ConfigurationNode formatNode) {
         return formatNode.getNode("text").getString();
