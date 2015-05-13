@@ -7,8 +7,8 @@ import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 public class PlayerMessage implements Message {
 
-    private final Channel channel;
     private final CPlayer sender;
+    private Channel channel;
     private String format, message;
 
     public PlayerMessage(@NotNull final String format, @NotNull final String message, @NotNull final Channel channel, @NotNull final CPlayer sender) {
@@ -26,6 +26,12 @@ public class PlayerMessage implements Message {
     @Override
     public Channel getChannel() {
         return this.channel;
+    }
+
+    @Override
+    public void setChannel(@NotNull final Channel channel) {
+        Preconditions.checkNotNull(channel, "channel was null");
+        this.channel = channel;
     }
 
     @NotNull

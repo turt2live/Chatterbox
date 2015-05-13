@@ -16,6 +16,13 @@ public interface Message {
     Channel getChannel();
 
     /**
+     * Sets the channel that this message is destined for.
+     *
+     * @param channel Channel to send message to
+     */
+    void setChannel(@NotNull final Channel channel);
+
+    /**
      * Gets the format of this message. In most cases, it is originally a copy of
      * {@link AsyncPlayerChatEvent#getFormat()}.
      *
