@@ -25,7 +25,7 @@ public class ConfigChannel implements Channel {
         Preconditions.checkNotNull(name, "name was null");
         this.chatterbox = chatterbox;
         this.node = chatterbox.getConfiguration().getNode("channels").getChildrenList().stream()
-            .filter(node -> name.equals(node.getNode("name").getString()))
+            .filter(node -> name.equals(node.getNode("name").getString()) || name.equals(node.getNode("tag").getString()))
             .findFirst()
             .orElseThrow(() -> new IllegalStateException("No channel by the name " + name));
     }
