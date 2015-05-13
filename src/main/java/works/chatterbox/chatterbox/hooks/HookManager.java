@@ -107,6 +107,12 @@ public class HookManager {
             .filter(file -> file.toLowerCase().endsWith(".jar"))
             .map(file -> new File(hooksDirectory, file))
             .filter(File::isFile)
-            .forEach(this::loadHook);
+            .forEach((hook) -> {
+                try {
+                    this.loadHook(hook);
+                } catch (final Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
     }
 }
