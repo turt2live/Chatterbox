@@ -42,6 +42,7 @@ public class HookManager {
      * @return ConfigurationNode
      * @throws RuntimeException If an IOException occurs
      */
+    @NotNull
     private ConfigurationNode getHookDescriptor(@NotNull final File file) {
         Preconditions.checkNotNull(file, "file was null");
         try (final ZipFile zf = new ZipFile(file)) {
@@ -59,6 +60,7 @@ public class HookManager {
      * @param is InputStream
      * @return Contents of the InputStream
      */
+    @NotNull
     private String inputStreamToString(@NotNull final InputStream is) {
         Preconditions.checkNotNull(is, "is was null");
         final Scanner s = new Scanner(is).useDelimiter("\\A");
@@ -72,6 +74,7 @@ public class HookManager {
      * @return ConfigurationNode
      * @throws IOException If any IOException occurs
      */
+    @NotNull
     private ConfigurationNode loadYAML(@NotNull final String string) throws IOException {
         Preconditions.checkNotNull(string, "string was null");
         return YAMLConfigurationLoader.builder()
@@ -85,6 +88,7 @@ public class HookManager {
      *
      * @return Immutable set
      */
+    @NotNull
     public Set<ChatterboxHook> getHooks() {
         return ImmutableSet.copyOf(this.hooks);
     }
@@ -94,6 +98,7 @@ public class HookManager {
      *
      * @return File
      */
+    @NotNull
     public File getHooksDirectory() {
         return new File(this.chatterbox.getDataFolder(), "hooks");
     }

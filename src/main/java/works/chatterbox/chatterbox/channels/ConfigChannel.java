@@ -64,7 +64,8 @@ public class ConfigChannel implements Channel {
      * @return File contents or null
      */
     @Nullable
-    private String getFileFormat(final ConfigurationNode formatNode) {
+    private String getFileFormat(@NotNull final ConfigurationNode formatNode) {
+        Preconditions.checkNotNull(formatNode, "formatNode was null");
         return ConfigChannel.formatFiles.getFileContents(
             new File(this.chatterbox.getDataFolder(), formatNode.getNode("file").getString())
         );
@@ -78,7 +79,8 @@ public class ConfigChannel implements Channel {
      * @return Node contents or null
      */
     @Nullable
-    private String getTextFormat(final ConfigurationNode formatNode) {
+    private String getTextFormat(@NotNull final ConfigurationNode formatNode) {
+        Preconditions.checkNotNull(formatNode, "formatNode was null");
         return formatNode.getNode("text").getString();
     }
 

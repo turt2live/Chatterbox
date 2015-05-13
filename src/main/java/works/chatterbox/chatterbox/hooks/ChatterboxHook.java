@@ -1,5 +1,6 @@
 package works.chatterbox.chatterbox.hooks;
 
+import com.google.common.base.Preconditions;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.Chatterbox;
@@ -66,7 +67,6 @@ public abstract class ChatterboxHook {
     public void init() {
     }
 
-    final void internalInit(final Chatterbox chatterbox, final File dataFolder, final ConfigurationNode descriptor) {
     /**
      * Sets necessary values for the hook. Called before {@link #init()}. This is done to prevent extending classes from
      * having to make a constructor that matches this class.
@@ -75,6 +75,10 @@ public abstract class ChatterboxHook {
      * @param dataFolder Data folder for this hook
      * @param descriptor This hook's descriptor node
      */
+    final void internalInit(@NotNull final Chatterbox chatterbox, @NotNull final File dataFolder, @NotNull final ConfigurationNode descriptor) {
+        Preconditions.checkNotNull(chatterbox, "chatterbox was null");
+        Preconditions.checkNotNull(dataFolder, "dataFolder was null");
+        Preconditions.checkNotNull(descriptor, "descriptor was null");
         this.chatterbox = chatterbox;
         this.dataFolder = dataFolder;
         this.descriptor = descriptor;
