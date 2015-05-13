@@ -40,10 +40,6 @@
                                     <shadedPattern>works.chatterbox.chatterbox.shaded.org.yaml</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org.rythmengine</pattern>
-                                    <shadedPattern>works.chatterbox.chatterbox.shaded.org.rythmengine</shadedPattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>org.eclipse</pattern>
                                     <shadedPattern>works.chatterbox.chatterbox.shaded.org.eclipse</shadedPattern>
                                 </relocation>
