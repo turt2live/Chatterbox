@@ -22,7 +22,7 @@ public class ChatterboxAPI {
         this.playerAPI = new PlayerAPI(this.chatterbox);
         this.messageAPI = new MessageAPI(this.chatterbox);
         this.channelAPI = new ChannelAPI(this.chatterbox);
-        this.rythmAPI = new RythmAPI();
+        this.rythmAPI = new RythmAPI(this.chatterbox);
     }
 
     @NotNull
