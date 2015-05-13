@@ -17,7 +17,7 @@ public class MessageAPI {
     public MessageAPI(@NotNull final Chatterbox chatterbox) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");
         this.chatterbox = chatterbox;
-        this.pipeline = new MessagePipeline(this.chatterbox);
+        this.pipeline = new MessagePipeline();
     }
 
     @NotNull

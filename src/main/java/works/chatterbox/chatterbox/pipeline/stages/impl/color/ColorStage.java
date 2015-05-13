@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.messages.Message;
+import works.chatterbox.chatterbox.pipeline.PipelineContext;
 import works.chatterbox.chatterbox.pipeline.stages.Stage;
 
 /**
@@ -19,7 +20,7 @@ public class ColorStage implements Stage {
     }
 
     @Override
-    public void process(@NotNull final Message message) {
+    public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
         // Always color the format, since it has been defined by the config
         message.setFormat(ChatColor.translateAlternateColorCodes('&', message.getFormat()));
         // Get the player represented by the CPlayer

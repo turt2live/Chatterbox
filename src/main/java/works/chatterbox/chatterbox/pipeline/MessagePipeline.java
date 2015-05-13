@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
-import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.pipeline.stages.Stage;
 
@@ -12,17 +11,13 @@ import java.util.List;
 
 /**
  * The message pipeline. Raw messages are sent through this pipeline in order to be processed. A Message object is given
- * to the {@link #send(Message)} method, which then applies the {@link Stage#process(Message)} method to it for every
- * stage this pipeline contains, in order. When finished, the Message object may be changed and should be ready for use.
+ * to the {@link #send(Message)} method, which then applies the {@link Stage#process(Message, PipelineContext)} method
+ * to it for every stage this pipeline contains, in order. When finished, the Message object may be changed and should
+ * be ready for use.
  */
 public class MessagePipeline {
 
-    private final Chatterbox chatterbox;
     private final List<Stage> stages = Lists.newArrayList();
-
-    public MessagePipeline(final Chatterbox chatterbox) {
-        this.chatterbox = chatterbox;
-    }
 
     /**
      * Adds a stage to this pipeline at the specified index.
@@ -74,8 +69,6 @@ public class MessagePipeline {
      */
     public void send(@NotNull final Message message) {
         Preconditions.checkNotNull(message, "message was null");
-        // Clear the per-message variables before every message is processed
-        this.chatterbox.getAPI().getRythmAPI().getPerMessageVariables().clear();
-        this.stages.forEach(stage -> stage.process(message));
+        this.stages.forEach(stage -> stage.process(message, new PipelineContext()));
     }
 }
