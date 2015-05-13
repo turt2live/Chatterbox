@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.api.ChatterboxAPI;
 import works.chatterbox.chatterbox.commands.ReflectiveCommandRegistrar;
 import works.chatterbox.chatterbox.hooks.HookManager;
-import works.chatterbox.chatterbox.listeners.PipelineListener;
+import works.chatterbox.chatterbox.listeners.ChatterboxListener;
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.color.ColorStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.RythmStage;
@@ -57,7 +57,7 @@ public class Chatterbox extends JavaPlugin {
 
     private void registerListeners() {
         final PluginManager pm = this.getServer().getPluginManager();
-        pm.registerEvents(new PipelineListener(this), this);
+        pm.registerEvents(new ChatterboxListener(this), this);
     }
 
     public ChatterboxAPI getAPI() {
