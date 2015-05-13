@@ -25,7 +25,7 @@ public class Chatterbox extends JavaPlugin {
 
     private void addInternalPipelineStages() {
         Arrays.asList(
-            new TagStage(chatterbox), // Processes any @-tags for channel destination
+            new TagStage(this), // Processes any @-tags for channel destination
             new ChannelStage(), // Sets the base format
             new RythmStage(this), // Processes the Rythm syntax
             new ColorStage() // Applies colors
