@@ -23,6 +23,7 @@ import java.util.Arrays;
 
 public class Chatterbox extends JavaPlugin {
 
+    private final HookManager hm = new HookManager(this);
     private ChatterboxAPI api;
     private ConfigurationNode configurationNode;
 
@@ -53,11 +54,7 @@ public class Chatterbox extends JavaPlugin {
     }
 
     private void loadHooks() {
-        final Runnable r = () -> {
-            final HookManager hm = new HookManager(this);
-            hm.loadHooks();
-        };
-        this.getServer().getScheduler().runTask(this, r);
+        this.getServer().getScheduler().runTask(this, this.hm::loadHooks);
     }
 
     private void registerCommands() {
@@ -80,6 +77,11 @@ public class Chatterbox extends JavaPlugin {
             this.loadConfiguration();
         }
         return this.configurationNode;
+    }
+
+    @Override
+    public void onDisable() {
+        this.hm.unloadHooks();
     }
 
     @Override

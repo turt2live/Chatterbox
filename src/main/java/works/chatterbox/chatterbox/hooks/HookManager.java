@@ -1,6 +1,7 @@
 package works.chatterbox.chatterbox.hooks;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.common.io.CharSource;
@@ -156,5 +157,24 @@ public class HookManager {
                     ex.printStackTrace();
                 }
             });
+    }
+
+    /**
+     * Unloads a hook. This will call the {@link ChatterboxHook#deinit()} method before setting the hook as disabled.
+     * After being marked as disabled, the hook is removed from the list of hooks.
+     *
+     * @param hook Hook to unload
+     */
+    public void unloadHook(@NotNull final ChatterboxHook hook) {
+        hook.deinit();
+        hook.setEnabled(false);
+        this.hooks.remove(hook);
+    }
+
+    /**
+     * Unloads all currently loaded hooks.
+     */
+    public void unloadHooks() {
+        ImmutableList.copyOf(this.hooks).forEach(this::unloadHook);
     }
 }
