@@ -14,6 +14,13 @@ import java.util.Set;
 public interface Channel {
 
     /**
+     * Adds a member to this channel.
+     *
+     * @param cp Member to add
+     */
+    void addMember(@NotNull final CPlayer cp);
+
+    /**
      * Gets the format String for this channel, in valid Rythm syntax.
      *
      * @return Format String
@@ -52,5 +59,12 @@ public interface Channel {
      */
     @NotNull
     String getTag();
+
+    /**
+     * Removes a member from this channel.
+     *
+     * @param cp Member to remove
+     */
+    void removeMember(@NotNull final CPlayer cp);
 
 }

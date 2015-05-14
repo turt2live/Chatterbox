@@ -1,6 +1,7 @@
 package works.chatterbox.chatterbox.channels;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.jetbrains.annotations.NotNull;
@@ -84,6 +85,14 @@ public class ConfigChannel implements Channel {
         return formatNode.getNode("text").getString();
     }
 
+    @Override
+    public void addMember(@NotNull final CPlayer cp) {
+        Preconditions.checkNotNull(cp, "cp was null");
+        if (this.members.contains(cp)) return;
+        this.members.add(cp);
+        cp.joinChannel(this);
+    }
+
     @NotNull
     @Override
     public String getFormat() {
@@ -91,10 +100,14 @@ public class ConfigChannel implements Channel {
         return format == null ? "" : format;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Note: the set returned is immutable.
+     */
     @NotNull
     @Override
     public Set<CPlayer> getMembers() {
-        return this.members;
+        return ImmutableSet.copyOf(this.members);
     }
 
     @NotNull
@@ -118,5 +131,13 @@ public class ConfigChannel implements Channel {
     @Override
     public String getTag() {
         return this.node.getNode("tag").getString();
+    }
+
+    @Override
+    public void removeMember(@NotNull final CPlayer cp) {
+        Preconditions.checkNotNull(cp, "cp was null");
+        if (!this.members.contains(cp)) return;
+        this.members.remove(cp);
+        cp.leaveChannel(this);
     }
 }
