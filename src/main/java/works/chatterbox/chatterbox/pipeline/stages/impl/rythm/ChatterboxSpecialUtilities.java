@@ -3,8 +3,6 @@ package works.chatterbox.chatterbox.pipeline.stages.impl.rythm;
 import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 
-// TODO: Maybe make these methods one enum?
-
 /**
  * Special utilities to be made available for Rythm rendering.
  */

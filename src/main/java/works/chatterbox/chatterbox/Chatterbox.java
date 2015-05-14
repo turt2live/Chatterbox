@@ -19,12 +19,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+// TODO: https://gist.github.com/jkcclemens/9b6c7a54f71cf0628f7b
+
 public class Chatterbox extends JavaPlugin {
 
     private ChatterboxAPI api;
     private ConfigurationNode configurationNode;
 
     private void addInternalPipelineStages() {
+        // TODO: ServerRecipientStage. Server should always get a copy of the message
         Arrays.asList(
             // Routing
             new TagStage(this), // Processes any @-tags for channel destination

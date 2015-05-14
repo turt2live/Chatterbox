@@ -20,7 +20,7 @@ public class FormatFiles {
         .build(new CacheLoader<String, String>() {
             @Override
             public String load(@NotNull final String key) throws Exception {
-                // Files should replace newlines with spaces for consistency with the YAML version
+                // TODO: Consider joining on newline
                 return Joiner.on(' ').join(
                     Files.readAllLines(
                         new File(key).toPath()
