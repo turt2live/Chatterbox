@@ -1,7 +1,6 @@
 package works.chatterbox.chatterbox.hooks;
 
 import com.google.common.base.Preconditions;
-import ninja.leaping.configurate.ConfigurationNode;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.api.ChatterboxAPI;
@@ -12,7 +11,7 @@ public abstract class ChatterboxHook {
 
     private Chatterbox chatterbox;
     private File dataFolder;
-    private ConfigurationNode descriptor;
+    private HookDescriptor descriptor;
     private boolean enabled = false;
 
     /**
@@ -57,7 +56,7 @@ public abstract class ChatterboxHook {
      * @return Descriptor
      */
     @NotNull
-    public ConfigurationNode getDescriptor() {
+    public HookDescriptor getDescriptor() {
         return this.descriptor;
     }
 
@@ -75,7 +74,7 @@ public abstract class ChatterboxHook {
      * @param dataFolder Data folder for this hook
      * @param descriptor This hook's descriptor node
      */
-    final void internalInit(@NotNull final Chatterbox chatterbox, @NotNull final File dataFolder, @NotNull final ConfigurationNode descriptor) {
+    final void internalInit(@NotNull final Chatterbox chatterbox, @NotNull final File dataFolder, @NotNull final HookDescriptor descriptor) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");
         Preconditions.checkNotNull(dataFolder, "dataFolder was null");
         Preconditions.checkNotNull(descriptor, "descriptor was null");

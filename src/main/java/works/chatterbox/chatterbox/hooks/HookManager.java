@@ -128,7 +128,7 @@ public class HookManager {
         } catch (final Throwable ex) {
             throw new RuntimeException("An exception occurred while loading a hook.", ex);
         }
-        hook.internalInit(this.chatterbox, new File(this.getHooksDirectory(), descriptor.getNode("name").getString()), descriptor);
+        hook.internalInit(this.chatterbox, new File(this.getHooksDirectory(), descriptor.getNode("name").getString()), new HookDescriptor(descriptor));
         try {
             hook.init();
         } catch (final Throwable t) {
