@@ -19,6 +19,17 @@ public class MessagePipeline {
 
     private final List<Stage> stages = Lists.newArrayList();
 
+    private int indexOf(final Class<? extends Stage> clazz) {
+        int index = -1;
+        for (int i = 0; i < this.stages.size(); i++) {
+            final Stage s = this.stages.get(i);
+            if (!clazz.isAssignableFrom(s.getClass())) continue;
+            index = i;
+            break;
+        }
+        return index;
+    }
+
     /**
      * Adds a stage to this pipeline at the specified index.
      *
@@ -39,6 +50,38 @@ public class MessagePipeline {
     public void addStage(@NotNull final Stage stage) {
         Preconditions.checkNotNull(stage, "stage was null");
         this.stages.add(stage);
+    }
+
+    /**
+     * Adds a stage to this pipeline, after the first stage that is the same class as or a subclass of the given class.
+     * <p>This will return false if the stage was not added, meaning that a class matching the class provided could not
+     * be found.
+     *
+     * @param clazz Class to add stage after
+     * @param stage Stage to add
+     * @return true if the stage was added, false if not
+     */
+    public boolean addStageAfter(final Class<? extends Stage> clazz, final Stage stage) {
+        final int index = this.indexOf(clazz);
+        if (index == -1) return false;
+        this.stages.add(index + 1, stage);
+        return true;
+    }
+
+    /**
+     * Adds a stage to this pipeline, before the first stage that is the same class as or a subclass of the given class.
+     * <p>This will return false if the stage was not added, meaning that a class matching the class provided could not
+     * be found.
+     *
+     * @param clazz Class to add stage before
+     * @param stage Stage to add
+     * @return true if the stage was added, false if not
+     */
+    public boolean addStageBefore(final Class<? extends Stage> clazz, final Stage stage) {
+        final int index = this.indexOf(clazz);
+        if (index == -1) return false;
+        this.stages.add(index, stage);
+        return true;
     }
 
     /**
