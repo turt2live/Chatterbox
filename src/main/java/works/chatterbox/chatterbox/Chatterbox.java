@@ -41,7 +41,10 @@ public class Chatterbox extends JavaPlugin {
 
     private boolean loadConfiguration() {
         try {
-            this.configurationNode = YAMLConfigurationLoader.builder().setFile(new File(this.getDataFolder(), "config.yml")).build().load();
+            this.configurationNode = YAMLConfigurationLoader.builder()
+                .setFile(new File(this.getDataFolder(), "config.yml"))
+                .build()
+                .load();
             return true;
         } catch (final IOException ex) {
             ex.printStackTrace();
