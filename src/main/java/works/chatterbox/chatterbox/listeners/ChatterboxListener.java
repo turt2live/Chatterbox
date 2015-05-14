@@ -39,8 +39,7 @@ public class ChatterboxListener implements Listener {
     public void onJoin(final PlayerJoinEvent event) {
         final CPlayer cp = this.chatterbox.getAPI().getPlayerAPI().getCPlayer(event.getPlayer());
         if (!cp.getChannels().isEmpty()) return;
-        // TODO: CPlayer#joinChannel(Channel) method?
-        cp.getChannels().add(this.chatterbox.getAPI().getChannelAPI().getDefaultChannel());
+        cp.joinChannel(this.chatterbox.getAPI().getChannelAPI().getDefaultChannel());
     }
 
 }
