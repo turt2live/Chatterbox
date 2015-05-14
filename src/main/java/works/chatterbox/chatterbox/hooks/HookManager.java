@@ -126,13 +126,13 @@ public class HookManager {
             Preconditions.checkState(ChatterboxHook.class.isAssignableFrom(mainClass), "The main class did not extend ChatterboxHook");
             hook = (ChatterboxHook) mainClass.newInstance();
         } catch (final Throwable ex) {
-            throw new RuntimeException(ex);
+            throw new RuntimeException("An exception occurred while loading a hook.", ex);
         }
         hook.internalInit(this.chatterbox, new File(this.getHooksDirectory(), descriptor.getNode("name").getString()), descriptor);
         try {
             hook.init();
         } catch (final Throwable t) {
-            throw new RuntimeException("An exception occurred while running the hook's init method.", t);
+            throw new RuntimeException("An exception occurred while running a hook's init method.", t);
         }
         hook.setEnabled(true);
         this.hooks.add(hook);
