@@ -57,4 +57,18 @@ public interface CPlayer {
      */
     boolean isOnline();
 
+    /**
+     * Adds this player to the given channel.
+     *
+     * @param channel Channel to join
+     */
+    void joinChannel(@NotNull final Channel channel);
+
+    /**
+     * Removes this player from the given channel.
+     *
+     * @param channel Channel to leave
+     */
+    void leaveChannel(@NotNull final Channel channel);
+
 }

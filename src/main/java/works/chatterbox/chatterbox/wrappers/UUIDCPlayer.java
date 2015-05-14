@@ -1,6 +1,7 @@
 package works.chatterbox.chatterbox.wrappers;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -38,10 +39,14 @@ public class UUIDCPlayer implements CPlayer {
         return thing == null ? other : thing;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Note: the set returned is immutable.
+     */
     @NotNull
     @Override
     public Set<Channel> getChannels() {
-        return this.joinedChannels;
+        return ImmutableSet.copyOf(this.joinedChannels);
     }
 
     @NotNull
@@ -71,6 +76,22 @@ public class UUIDCPlayer implements CPlayer {
     @Override
     public boolean isOnline() {
         return this.getPlayer() != null;
+    }
+
+    @Override
+    public void joinChannel(@NotNull final Channel channel) {
+        Preconditions.checkNotNull(channel, "channel was null");
+        if (this.joinedChannels.contains(channel)) return;
+        this.joinedChannels.add(channel);
+        channel.addMember(this);
+    }
+
+    @Override
+    public void leaveChannel(@NotNull final Channel channel) {
+        Preconditions.checkNotNull(channel, "channel was null");
+        if (!this.joinedChannels.contains(channel)) return;
+        this.joinedChannels.remove(channel);
+        channel.removeMember(this);
     }
 
     /**
