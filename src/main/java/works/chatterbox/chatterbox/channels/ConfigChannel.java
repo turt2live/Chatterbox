@@ -140,4 +140,16 @@ public class ConfigChannel implements Channel {
         this.members.remove(cp);
         cp.leaveChannel(this);
     }
+
+    /**
+     * Returns the {@link ConfigurationNode} that this ConfigChannel is based upon. This represents one element of the
+     * channel list in the {@code config.yml}.
+     * <p>This may be useful for developers to access custom config options.
+     *
+     * @return Node
+     */
+    @NotNull
+    public ConfigurationNode getNode() {
+        return this.node;
+    }
 }
