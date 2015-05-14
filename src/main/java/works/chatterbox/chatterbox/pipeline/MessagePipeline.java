@@ -19,7 +19,8 @@ public class MessagePipeline {
 
     private final List<Stage> stages = Lists.newArrayList();
 
-    private int indexOf(final Class<? extends Stage> clazz) {
+    private int indexOf(@NotNull final Class<? extends Stage> clazz) {
+        Preconditions.checkNotNull(clazz, "clazz was null");
         int index = -1;
         for (int i = 0; i < this.stages.size(); i++) {
             final Stage s = this.stages.get(i);
@@ -61,7 +62,9 @@ public class MessagePipeline {
      * @param stage Stage to add
      * @return true if the stage was added, false if not
      */
-    public boolean addStageAfter(final Class<? extends Stage> clazz, final Stage stage) {
+    public boolean addStageAfter(@NotNull final Class<? extends Stage> clazz, @NotNull final Stage stage) {
+        Preconditions.checkNotNull(clazz, "clazz was null");
+        Preconditions.checkNotNull(stage, "stage was null");
         final int index = this.indexOf(clazz);
         if (index == -1) return false;
         this.stages.add(index + 1, stage);
@@ -77,7 +80,9 @@ public class MessagePipeline {
      * @param stage Stage to add
      * @return true if the stage was added, false if not
      */
-    public boolean addStageBefore(final Class<? extends Stage> clazz, final Stage stage) {
+    public boolean addStageBefore(@NotNull final Class<? extends Stage> clazz, @NotNull final Stage stage) {
+        Preconditions.checkNotNull(clazz, "clazz was null");
+        Preconditions.checkNotNull(stage, "stage was null");
         final int index = this.indexOf(clazz);
         if (index == -1) return false;
         this.stages.add(index, stage);
