@@ -69,6 +69,7 @@ public class MessagePipeline {
      */
     public void send(@NotNull final Message message) {
         Preconditions.checkNotNull(message, "message was null");
-        this.stages.forEach(stage -> stage.process(message, new PipelineContext()));
+        final PipelineContext context = new PipelineContext();
+        this.stages.forEach(stage -> stage.process(message, context));
     }
 }

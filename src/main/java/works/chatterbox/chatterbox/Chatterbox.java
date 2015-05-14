@@ -9,10 +9,11 @@ import works.chatterbox.chatterbox.api.ChatterboxAPI;
 import works.chatterbox.chatterbox.commands.ReflectiveCommandRegistrar;
 import works.chatterbox.chatterbox.hooks.HookManager;
 import works.chatterbox.chatterbox.listeners.ChatterboxListener;
+import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelRecipientsStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelStage;
+import works.chatterbox.chatterbox.pipeline.stages.impl.channel.TagStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.color.ColorStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.RythmStage;
-import works.chatterbox.chatterbox.pipeline.stages.impl.tag.TagStage;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +26,10 @@ public class Chatterbox extends JavaPlugin {
 
     private void addInternalPipelineStages() {
         Arrays.asList(
+            // Routing
             new TagStage(this), // Processes any @-tags for channel destination
+            new ChannelRecipientsStage(), // Set the recipients of the message
+            // Formatting
             new ChannelStage(), // Sets the base format
             new RythmStage(this), // Processes the Rythm syntax
             new ColorStage() // Applies colors

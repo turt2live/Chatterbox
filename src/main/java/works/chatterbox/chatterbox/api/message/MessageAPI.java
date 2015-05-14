@@ -1,6 +1,7 @@
 package works.chatterbox.chatterbox.api.message;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.Chatterbox;
@@ -43,6 +44,12 @@ public class MessageAPI {
     public Message makeMessage(@NotNull final AsyncPlayerChatEvent event) {
         Preconditions.checkNotNull(event, "event was null");
         final CPlayer cp = this.chatterbox.getAPI().getPlayerAPI().getCPlayer(event.getPlayer());
-        return new PlayerMessage(event.getFormat(), event.getMessage(), cp.getMainChannel(), cp);
+        return new PlayerMessage(
+            event.getFormat(),
+            event.getMessage(),
+            Sets.newHashSet(event.getRecipients()), // clone the original
+            cp.getMainChannel(),
+            cp
+        );
     }
 }

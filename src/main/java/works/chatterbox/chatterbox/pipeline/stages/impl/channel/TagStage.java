@@ -1,4 +1,4 @@
-package works.chatterbox.chatterbox.pipeline.stages.impl.tag;
+package works.chatterbox.chatterbox.pipeline.stages.impl.channel;
 
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.Chatterbox;

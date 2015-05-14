@@ -1,23 +1,31 @@
 package works.chatterbox.chatterbox.messages;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
+import java.util.Set;
+
 public class PlayerMessage implements Message {
 
     private final CPlayer sender;
+    private final Set<Player> recipients = Sets.newHashSet();
     private Channel channel;
     private String format, message;
+    private boolean cancelled;
 
-    public PlayerMessage(@NotNull final String format, @NotNull final String message, @NotNull final Channel channel, @NotNull final CPlayer sender) {
+    public PlayerMessage(@NotNull final String format, @NotNull final String message, @NotNull final Set<Player> recipients, @NotNull final Channel channel, @NotNull final CPlayer sender) {
         Preconditions.checkNotNull(format, "format was null");
         Preconditions.checkNotNull(message, "message was null");
+        Preconditions.checkNotNull(recipients, "recipients was null");
         Preconditions.checkNotNull(channel, "channel was null");
         Preconditions.checkNotNull(sender, "sender was null");
         this.format = format;
         this.message = message;
+        this.recipients.addAll(recipients);
         this.channel = channel;
         this.sender = sender;
     }
@@ -60,7 +68,23 @@ public class PlayerMessage implements Message {
 
     @NotNull
     @Override
+    public Set<Player> getRecipients() {
+        return this.recipients;
+    }
+
+    @NotNull
+    @Override
     public CPlayer getSender() {
         return this.sender;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return this.cancelled;
+    }
+
+    @Override
+    public void setCancelled(final boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }
