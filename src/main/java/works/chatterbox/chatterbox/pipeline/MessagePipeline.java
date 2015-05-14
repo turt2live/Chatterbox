@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.pipeline.stages.Stage;
 
@@ -108,6 +109,22 @@ public class MessagePipeline {
     public boolean removeStage(@NotNull final Stage stage) {
         Preconditions.checkNotNull(stage, "stage was null");
         return this.stages.remove(stage);
+    }
+
+    /**
+     * Removes the first stage in the pipeline that is the same as or is a subclass of the provided class.
+     * <p>This will return null if the stage was not removed, meaning that a class matching the class provided could
+     * not be found.
+     *
+     * @param clazz Class of the stage to remove
+     * @return Stage that was removed or null
+     */
+    @Nullable
+    public Stage removeStage(@NotNull final Class<? extends Stage> clazz) {
+        Preconditions.checkNotNull(clazz, "clazz was null");
+        final int index = this.indexOf(clazz);
+        if (index == -1) return null;
+        return this.stages.remove(index);
     }
 
     /**
