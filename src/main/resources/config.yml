@@ -118,29 +118,29 @@ channels:
              {json:player-info}@player.getDisplayName(){/json:player-info}:
              @message.capFirst()"
       json:
-        channel:
-          - "&9&lChannel"
-          # @chatterbox.doNotRender() is a special method that prints out a special string that indicates that this line
-          # should be ignored.
-          # channel.getName().equals(channel.getTag()) is equivalent, but using s() is null-safe
-          - "@if (s().eq(channel.getName(), channel.getTag())) {
-               @chatterbox.doNotRender()
-             } else {
-               &9Name: &7@channel.getName()
-             }"
-          # Here, Rythm's len() is used, to get the length of the members, regardless of if they're contained in an array
-          # or a collection.
-          - "&9Members: &7@channel.getMembers().len()"
-        player-info:
-          - "&9&lPlayer"
-          # @chatterbox.cancelJSON() outputs a special string that completely disables the current JSON segment. If the
-          # player's real name is the same as his display name, this whole JSON segment should not be included in the
-          # final result.
-          - "@if (!s().eq(player.getDisplayName(), player.getName())) {
-               &9Real name: &7@player.getName()
-             } else {
-               @chatterbox.cancelJSON()
-             }"
+        # @chatterbox.doNotRender() is a special method that prints out a special string that indicates that this line
+        # should be ignored.
+        # channel.getName().equals(channel.getTag()) is equivalent, but using s() is null-safe
+        # Here, Rythm's len() is used, to get the length of the members, regardless of if they're contained in an array
+        # or a collection.
+        channel: |
+                 &9&lChannel
+                 @if (s().eq(channel.getName(), channel.getTag())) {
+                     @chatterbox.doNotRender()
+                 } else {
+                     &9Name: &7@channel.getName()
+                 }
+                 &9Members: &7@channel.getMembers().len()
+        # @chatterbox.cancelJSON() outputs a special string that completely disables the current JSON segment. If the
+        # player's real name is the same as his display name, this whole JSON segment should not be included in the
+        # final result.
+        player-info: |
+                     &9&lPlayer
+                     @if (s().eq(player.getDisplayName(), player.getName())) {
+                         @chatterbox.cancelJSON()
+                     } else {
+                         &9Real name: &7@player.getName()
+                     }
   - name: rythminfile
     tag: rif
     format:
