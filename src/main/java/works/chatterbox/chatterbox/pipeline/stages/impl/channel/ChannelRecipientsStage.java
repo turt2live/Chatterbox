@@ -1,5 +1,6 @@
 package works.chatterbox.chatterbox.pipeline.stages.impl.channel;
 
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.pipeline.PipelineContext;
@@ -16,5 +17,8 @@ public class ChannelRecipientsStage implements Stage {
             .map(CPlayer::getPlayer) // Map them to actual Player objects
             .filter(player -> player != null) // Filter out the null ones
             .forEach(message.getRecipients()::add); // Add the online players to the recipients set
+        final Player p = message.getSender().getPlayer();
+        if (p == null || message.getRecipients().contains(p)) return;
+        message.getRecipients().add(p); // Ensure that the sender sees his own message
     }
 }

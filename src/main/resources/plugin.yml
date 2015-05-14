@@ -5,4 +5,4 @@ authors: [jkcclemens, gdude2002]
 description:  Simple, elegant, powerful. Minecraft chat as it was supposed to be.
 
 reflectcommands:
-- commands.impl.Whatever
+- commands.impl.ChannelCommand

@@ -13,7 +13,7 @@ import works.chatterbox.chatterbox.channels.ConfigChannel;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 /**
  * The Channel API handles the creation and parsing of chat channels.
@@ -42,12 +42,38 @@ public class ChannelAPI {
     }
 
     /**
-     * Gets all channels defined in the currently loaded config.yml.
+     * Gets all channel names defined in the currently loaded config.yml.
+     *
+     * @return Collection of channel names
+     */
+    @NotNull
+    public Collection<String> getAllChannelNames() {
+        return this.chatterbox.getConfiguration().getNode("channels").getChildrenList().stream()
+            .map(node -> node.getNode("name").getString())
+            .filter(name -> name != null)
+            .collect(Collectors.toSet());
+    }
+
+    /**
+     * Gets all channel tags defined in the currently loaded config.yml.
+     *
+     * @return Collection of channel tags
+     */
+    @NotNull
+    public Collection<String> getAllChannelTags() {
+        return this.chatterbox.getConfiguration().getNode("channels").getChildrenList().stream()
+            .map(node -> node.getNode("tag").getString())
+            .filter(name -> name != null)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Gets all channels that been loaded.
      *
      * @return Collection of channels
      */
     @NotNull
-    public Collection<Channel> getAllChannels() {
+    public Collection<Channel> getAllLoadedChannels() {
         return this.channels.asMap().values();
     }
 
@@ -62,7 +88,7 @@ public class ChannelAPI {
         Preconditions.checkNotNull(name, "name was null");
         try {
             return this.channels.get(name);
-        } catch (final IllegalStateException | ExecutionException ex) {
+        } catch (final Exception ex) {
             return null;
         }
     }

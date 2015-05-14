@@ -82,6 +82,9 @@ public class UUIDCPlayer implements CPlayer {
     public void joinChannel(@NotNull final Channel channel) {
         Preconditions.checkNotNull(channel, "channel was null");
         if (this.joinedChannels.contains(channel)) return;
+        if (this.joinedChannels.isEmpty()) {
+            this.setMainChannel(channel);
+        }
         this.joinedChannels.add(channel);
         channel.addMember(this);
     }

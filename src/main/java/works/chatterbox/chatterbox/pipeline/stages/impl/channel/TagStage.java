@@ -32,8 +32,9 @@ public class TagStage implements Stage {
         if (!m.find()) return;
         final String tag = m.group(1);
         final Channel channel = this.chatterbox.getAPI().getChannelAPI().getChannel(tag);
-        if (channel == null) return;
-        message.setMessage(m.replaceFirst(""));
+        // TODO: Should this cancel the message and send an error or just ignore the @-tag?
+        if (channel == null || !message.getSender().getChannels().contains(channel)) return;
+        message.setMessage(m.replaceFirst("").trim());
         message.setChannel(channel);
     }
 }

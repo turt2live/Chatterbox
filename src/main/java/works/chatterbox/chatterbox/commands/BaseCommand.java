@@ -216,9 +216,9 @@ public abstract class BaseCommand<T extends Plugin> implements CommandExecutor {
         t.printStackTrace();
         final StringBuilder sb = new StringBuilder();
         sb
-            .append("An error occurred while handling a command. Please report this to jkcclemens or an admin.\n")
-            .append("They are available at #royalcraft @ irc.royaldev.org. If you don't know what that means, then\n")
-            .append("go to the following URL: https://irc.royaldev.org/#royalcraft\n\n")
+            .append("An error occurred while handling a command. Please report this to jkcclemens or gdude2002.\n")
+            .append("They are available at #chatterbox @ irc.esper.net. If you don't know what that means, then\n")
+            .append("go to the following URL: https://kiwiirc.com/client/irc.esper.net/?nick=cb_?#chatterbox\n\n")
             .append("---DEBUG INFO---\n\n");
         try {
             sb.append(this.plugin.getDescription().getName()).append(" Version\n\t")
