@@ -3,6 +3,7 @@ package works.chatterbox.chatterbox.channels;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.channels.radius.Radius;
+import works.chatterbox.chatterbox.channels.worlds.WorldRecipients;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.util.Set;
@@ -59,6 +60,14 @@ public interface Channel {
      */
     @NotNull
     String getTag();
+
+    /**
+     * Gets the worlds that should receive messages from this channel.
+     *
+     * @return WorldRecipients
+     */
+    @NotNull
+    WorldRecipients getWorldRecipients();
 
     /**
      * Gets whether the channel is permanent or not. A permanent channel is one that is always joined by every player.

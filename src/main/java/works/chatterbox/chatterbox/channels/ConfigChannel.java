@@ -9,11 +9,14 @@ import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.channels.files.FormatFiles;
 import works.chatterbox.chatterbox.channels.radius.Radius;
+import works.chatterbox.chatterbox.channels.worlds.WorldRecipients;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.io.File;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ConfigChannel implements Channel {
 
@@ -174,6 +177,25 @@ public class ConfigChannel implements Channel {
     public String getTag() {
         // May not use master
         return this.node.getNode(ChannelConfiguration.TAG.getKey()).getString();
+    }
+
+    @NotNull
+    @Override
+    public WorldRecipients getWorldRecipients() {
+        final Boolean toAll = this.getConfiguration(ChannelConfiguration.WORLDS_ALL, ConfigurationNode::getBoolean);
+        final Boolean toSelf = this.getConfiguration(ChannelConfiguration.WORLDS_SELF, ConfigurationNode::getBoolean);
+        final Map<String, Boolean> individual = this.getConfiguration(
+            ChannelConfiguration.WORLDS_INDIVIDUAL,
+            node -> node.getChildrenMap().entrySet().stream()
+                .collect(Collectors.toMap(
+                    entry -> entry.getKey().toString(),
+                    entry -> entry.getValue().getBoolean()
+                ))
+        );
+        Preconditions.checkState(toAll != null, "No all worlds option specified for " + this.getName());
+        Preconditions.checkState(toSelf != null, "No self world option specified for " + this.getName());
+        Preconditions.checkArgument(individual != null, "No individual worlds option specified for " + this.getName());
+        return new WorldRecipients(individual, toSelf, toAll);
     }
 
     @Override
