@@ -27,7 +27,7 @@ public class ConfigChannel implements Channel {
         Preconditions.checkNotNull(name, "name was null");
         this.chatterbox = chatterbox;
         this.node = chatterbox.getConfiguration().getNode("channels").getChildrenList().stream()
-            .filter(node -> name.equals(node.getNode("name").getString()) || name.equals(node.getNode("tag").getString()))
+            .filter(node -> name.equals(node.getNode(ChannelConfiguration.NAME.getKey()).getString()) || name.equals(node.getNode(ChannelConfiguration.TAG.getKey()).getString()))
             .findFirst()
             .orElseThrow(() -> new IllegalStateException("No channel by the name " + name));
     }
@@ -50,10 +50,10 @@ public class ConfigChannel implements Channel {
     private String determineFormat() {
         final ConfigurationNode format = this.getConfiguration(ChannelConfiguration.FORMAT, node -> node);
         Preconditions.checkState(format != null, "No format specified for " + this.getName());
-        if (!format.getNode("file").isVirtual()) {
+        if (!format.getNode(ChannelConfiguration.FORMAT_FILE.getKey()).isVirtual()) {
             return this.getFileFormat(format);
         }
-        if (!format.getNode("text").isVirtual()) {
+        if (!format.getNode(ChannelConfiguration.FORMAT_TEXT.getKey()).isVirtual()) {
             return this.getTextFormat(format);
         }
         return null;
@@ -96,7 +96,7 @@ public class ConfigChannel implements Channel {
     private String getFileFormat(@NotNull final ConfigurationNode formatNode) {
         Preconditions.checkNotNull(formatNode, "formatNode was null");
         return ConfigChannel.formatFiles.getFileContents(
-            new File(this.chatterbox.getDataFolder(), formatNode.getNode("file").getString())
+            new File(this.chatterbox.getDataFolder(), formatNode.getNode(ChannelConfiguration.FORMAT_FILE.getKey()).getString())
         );
     }
 
@@ -110,7 +110,7 @@ public class ConfigChannel implements Channel {
     @Nullable
     private String getTextFormat(@NotNull final ConfigurationNode formatNode) {
         Preconditions.checkNotNull(formatNode, "formatNode was null");
-        return formatNode.getNode("text").getString();
+        return formatNode.getNode(ChannelConfiguration.FORMAT_TEXT.getKey()).getString();
     }
 
     @Nullable
