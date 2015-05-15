@@ -47,11 +47,11 @@ master:
   # Variables MUST be entirely lowercase.
   # The format for messages in this channel.
   format:
-    text: "{json:display-name}{player-name}{/json:display-name}: {message}"
+    text: "{json:display-name}@(playerName){/json:display-name}: @(message)"
     json:
       display-name:
       - "Display name:"
-      - "{player-display-name}"
+      - "@(playerDisplayName)"
   # If a channel is permanent, it will always be joined by every player, and it can never be left. This is useful for
   # channels that are intended to be global.
   permanent: false
@@ -90,7 +90,7 @@ channels:
   # This is the default, permanent channel. Again, any values not specified here are copied from the master values
   # above.
     # This is the name of the channel. It may be used in commands to reference this channel. This MAY contain spaces.
-  - name: default
+  - name: Default
     # This is the tag for the channel. It may be used in commands and @-tags to reference this channel. This MAY NOT
     # contains spaces.
     tag: d
@@ -105,9 +105,8 @@ channels:
       vertical: 18.0
     worlds:
       all: false
-      self: true
-  # This channel uses the rythm engine (all channels do) to determine the chat format
-  - name: rythmformat
+  # This channel uses the Rythm engine (all channels do) to determine the chat format
+  - name: Rythm format
     tag: rf
     format:
       text: "[{json:channel}@channel.getTag(){/json:channel}]
@@ -121,9 +120,7 @@ channels:
         # or a collection.
         channel: |
                  &9&lChannel
-                 @if (s().eq(channel.getName(), channel.getTag())) {
-                     @chatterbox.doNotRender()
-                 } else {
+                 @if (!s().eq(channel.getName(), channel.getTag())) {
                      &9Name: &7@channel.getName()
                  }
                  &9Members: &7@channel.getMembers().len()
@@ -137,7 +134,7 @@ channels:
                      } else {
                          &9Real name: &7@player.getName()
                      }
-  - name: rythminfile
+  - name: Rythm in a file
     tag: rif
     format:
       # Specifies that the Rythm for the format is in plugins/Chatterbox/rif.txt. These files may use templates and

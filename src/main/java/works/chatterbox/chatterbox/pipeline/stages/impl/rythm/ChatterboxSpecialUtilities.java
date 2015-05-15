@@ -36,13 +36,14 @@ public class ChatterboxSpecialUtilities {
     }
 
     /**
-     * Gets the String that indicates that whatever is being rendered at the moment should be ignored.
+     * Gets the String that indicates that multiple newlines in a row (regex (\r?\n){2,}) should be replaced by one
+     * newline.
      *
      * @return String
      */
     @NotNull
-    public String doNotRender() {
-        return this.surround("Do not render");
+    public String removeMultipleNewlines() {
+        return this.surround("Remove multiple newlines");
     }
 
     /**
