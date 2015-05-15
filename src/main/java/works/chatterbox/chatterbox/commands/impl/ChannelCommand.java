@@ -44,7 +44,7 @@ public class ChannelCommand extends TabCommand<Chatterbox> {
         }
         final Player p = (Player) cs;
         final String channelName = this.spaceJoiner.join(eargs);
-        final Channel channel = this.plugin.getAPI().getChannelAPI().getChannelByName(channelName);
+        final Channel channel = this.plugin.getAPI().getChannelAPI().getChannel(channelName);
         if (channel == null) {
             // TODO: Localization
             cs.sendMessage(ChatColor.RED + "No such channel.");
