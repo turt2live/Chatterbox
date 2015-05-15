@@ -2,8 +2,10 @@ package works.chatterbox.chatterbox.pipeline.stages.impl.rythm;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.Chatterbox;
+import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.pipeline.PipelineContext;
 import works.chatterbox.chatterbox.pipeline.stages.Stage;
@@ -22,13 +24,28 @@ public class RythmStage implements Stage {
         this.vars.put("chatterbox", new ChatterboxSpecialUtilities());
     }
 
+    private void addAncientVariables(@NotNull final Map<String, Object> vars, @NotNull final Message message) {
+        Preconditions.checkNotNull(vars, "vars was null");
+        Preconditions.checkNotNull(message, "message was null");
+        final Player p = message.getSender().getPlayer();
+        if (p != null) {
+            vars.put("playerName", p.getName());
+            vars.put("playerDisplayName", p.getDisplayName());
+            vars.put("playerWorld", p.getWorld().getName());
+            vars.put("playerUUID", p.getUniqueId().toString());
+        }
+        final Channel c = message.getChannel();
+        vars.put("channelName", c.getName());
+        vars.put("channelTag", c.getTag());
+    }
+
     private Map<String, Object> getVariablesFor(@NotNull final Message message) {
         Preconditions.checkNotNull(message, "message was null");
         final Map<String, Object> vars = Maps.newHashMap();
         vars.put("message", message.getMessage());
         vars.put("player", message.getSender().getPlayer());
         vars.put("channel", message.getChannel());
-        // TODO: Old-style variables like playerName, etc.
+        this.addAncientVariables(vars, message);
         return vars;
     }
 
