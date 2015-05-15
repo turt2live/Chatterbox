@@ -132,8 +132,7 @@ public class ChannelAPI {
             .filter(name -> name != null)
             .findFirst()
             .orElse(null);
-        if (channelName == null) return null;
-        return this.getChannelByName(channelName);
+        return channelName == null ? null : this.getChannelByName(channelName);
     }
 
     /**
