@@ -31,7 +31,7 @@ public class TagStage implements Stage {
         final Matcher m = tagPattern.matcher(content);
         if (!m.find()) return;
         final String tag = m.group(1);
-        final Channel channel = this.chatterbox.getAPI().getChannelAPI().getChannel(tag);
+        final Channel channel = this.chatterbox.getAPI().getChannelAPI().getChannelByTag(tag);
         // TODO: Should this cancel the message and send an error or just ignore the @-tag?
         if (channel == null || !message.getSender().getChannels().contains(channel)) return;
         message.setMessage(m.replaceFirst("").trim());

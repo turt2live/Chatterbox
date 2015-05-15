@@ -39,8 +39,8 @@ public class ChannelAPI {
 
     @Nullable
     private Channel getDefaultChannelOrNull() {
-        final List<? extends ConfigurationNode> channels = this.chatterbox.getConfiguration().getNode("channels").getChildrenList();
-        return channels.isEmpty() ? null : new ConfigChannel(this.chatterbox, channels.get(0));
+        final List<String> channelNames = this.getAllChannelNames();
+        return channelNames.isEmpty() ? null : this.getChannelByName(channelNames.get(0));
     }
 
     /**
@@ -49,11 +49,11 @@ public class ChannelAPI {
      * @return Collection of channel names
      */
     @NotNull
-    public Collection<String> getAllChannelNames() {
+    public List<String> getAllChannelNames() {
         return this.chatterbox.getConfiguration().getNode("channels").getChildrenList().stream()
             .map(node -> node.getNode("name").getString())
             .filter(name -> name != null)
-            .collect(Collectors.toSet());
+            .collect(Collectors.toList());
     }
 
     /**
@@ -62,7 +62,7 @@ public class ChannelAPI {
      * @return Collection of channel tags
      */
     @NotNull
-    public Collection<String> getAllChannelTags() {
+    public List<String> getAllChannelTags() {
         return this.chatterbox.getConfiguration().getNode("channels").getChildrenList().stream()
             .map(node -> node.getNode("tag").getString())
             .filter(name -> name != null)
@@ -80,19 +80,60 @@ public class ChannelAPI {
     }
 
     /**
-     * Gets a channel by its name or tag. If no channel can be found by that name, null will be returned.
+     * Gets a channel by its name or by its tag. This will check names before tags. It is <strong>much</strong> more
+     * efficient to get a channel by either its name or tag, if possible. This method loops through all names and all
+     * tags in an effort to find a name or tag that matches, then calls the appropriate method to get the channel.
      *
-     * @param name Name or tag of the channel
+     * @param nameOrTag Either the name or the tag of the channel
+     * @return Channel or null if none matched
+     * @see #getChannelByName(String)
+     * @see #getChannelByTag(String)
+     */
+    @Nullable
+    public Channel getChannel(@NotNull final String nameOrTag) {
+        Preconditions.checkNotNull(nameOrTag, "nameOrTag was null");
+        if (this.getAllChannelNames().stream().anyMatch(name -> name.equalsIgnoreCase(nameOrTag))) {
+            return this.getChannelByName(nameOrTag);
+        }
+        if (this.getAllChannelTags().stream().anyMatch(tag -> tag.equalsIgnoreCase(nameOrTag))) {
+            return this.getChannelByTag(nameOrTag);
+        }
+        return null;
+    }
+
+    /**
+     * Gets a channel by its name. If no channel can be found by that name, null will be returned.
+     *
+     * @param name Name of the channel
      * @return Channel or null
      */
     @Nullable
-    public Channel getChannel(@NotNull final String name) {
+    public Channel getChannelByName(@NotNull final String name) {
         Preconditions.checkNotNull(name, "name was null");
         try {
             return this.channels.get(name);
         } catch (final Exception ex) {
             return null;
         }
+    }
+
+    /**
+     * Gets a channel by its tag. If no channel can be found by that tag, null will be returned.
+     *
+     * @param tag Tag of the channel
+     * @return Channel or null
+     */
+    @Nullable
+    public Channel getChannelByTag(@NotNull final String tag) {
+        Preconditions.checkNotNull(tag, "tag was null");
+        final String channelName = this.chatterbox.getConfiguration().getNode("channels").getChildrenList().stream()
+            .filter(node -> tag.equalsIgnoreCase(node.getNode("tag").getString()))
+            .map(node -> node.getNode("name").getString())
+            .filter(name -> name != null)
+            .findFirst()
+            .orElse(null);
+        if (channelName == null) return null;
+        return this.getChannelByName(channelName);
     }
 
     /**

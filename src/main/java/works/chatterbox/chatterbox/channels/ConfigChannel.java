@@ -1,5 +1,6 @@
 package works.chatterbox.chatterbox.channels;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -30,7 +31,7 @@ public class ConfigChannel implements Channel {
         Preconditions.checkNotNull(name, "name was null");
         this.chatterbox = chatterbox;
         this.node = chatterbox.getConfiguration().getNode("channels").getChildrenList().stream()
-            .filter(node -> name.equals(node.getNode(ChannelConfiguration.NAME.getKey()).getString()) || name.equals(node.getNode(ChannelConfiguration.TAG.getKey()).getString()))
+            .filter(node -> name.equals(node.getNode(ChannelConfiguration.NAME.getKey()).getString()))
             .findFirst()
             .orElseThrow(() -> new IllegalStateException("No channel by the name " + name));
     }
@@ -223,5 +224,14 @@ public class ConfigChannel implements Channel {
     @NotNull
     public ConfigurationNode getNode() {
         return this.node;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+            .add("name", this.getName())
+            .add("tag", this.getTag())
+            .add("members", this.members)
+            .toString();
     }
 }

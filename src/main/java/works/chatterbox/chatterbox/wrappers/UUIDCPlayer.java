@@ -1,5 +1,6 @@
 package works.chatterbox.chatterbox.wrappers;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -105,5 +106,12 @@ public class UUIDCPlayer implements CPlayer {
     @NotNull
     public UUID getUUID() {
         return this.uuid;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+            .add("uuid", this.uuid)
+            .toString();
     }
 }

@@ -34,10 +34,9 @@ public class ChatterboxListener implements Listener {
         final CPlayer cp = this.chatterbox.getAPI().getPlayerAPI().getCPlayer(event.getPlayer());
         // Get all permanent channels and join them
         this.chatterbox.getAPI().getChannelAPI().getAllChannelNames().stream()
-            .map(this.chatterbox.getAPI().getChannelAPI()::getChannel)
+            .map(this.chatterbox.getAPI().getChannelAPI()::getChannelByName)
             .filter(Channel::isPermanent)
             .forEach(cp::joinChannel);
-
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
