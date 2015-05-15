@@ -13,6 +13,7 @@ import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.io.File;
 import java.util.Set;
+import java.util.function.Function;
 
 public class ConfigChannel implements Channel {
 
@@ -47,7 +48,8 @@ public class ConfigChannel implements Channel {
      */
     @Nullable
     private String determineFormat() {
-        final ConfigurationNode format = this.node.getNode("format");
+        final ConfigurationNode format = this.getConfiguration(ChannelConfiguration.FORMAT, node -> node);
+        Preconditions.checkState(format != null, "No format specified for " + this.getName());
         if (!format.getNode("file").isVirtual()) {
             return this.getFileFormat(format);
         }
@@ -55,6 +57,32 @@ public class ConfigChannel implements Channel {
             return this.getTextFormat(format);
         }
         return null;
+    }
+
+    /**
+     * Gets a configuration value from the given {@link ChannelConfiguration}.
+     * <p>This gets all parent nodes, then the node corresponding to {@code configuration}, which is then checked to see
+     * if it is virtual. If it is virtual, null is returned. If not, {@code function} is applied to the node. If
+     * {@code function} returns null for the channel, it is applied to the master node. If it still returns null, null
+     * is returned. If either the channel or master value is not null, that value is returned.
+     *
+     * @param configuration ChannelConfiguration that the value is desired of
+     * @param function      Function to apply on the node represented by {@code configuration}, on channel and possibly master
+     * @param <T>           Type that {@code function} returns, which this method returns
+     * @return Desired value, from channel or master, or null
+     */
+    @Nullable
+    private <T> T getConfiguration(@NotNull final ChannelConfiguration configuration, @NotNull final Function<ConfigurationNode, T> function) {
+        Preconditions.checkNotNull(configuration, "configuration was null");
+        Preconditions.checkNotNull(function, "function was null");
+        return this.localOrMaster(node -> {
+            ConfigurationNode child = node;
+            for (final String parent : configuration.getParents()) {
+                child = child.getNode(parent);
+            }
+            child = child.getNode(configuration.getKey());
+            return child.isVirtual() ? null : function.apply(child);
+        });
     }
 
     /**
@@ -85,6 +113,13 @@ public class ConfigChannel implements Channel {
         return formatNode.getNode("text").getString();
     }
 
+    @Nullable
+    private <T> T localOrMaster(@NotNull final Function<ConfigurationNode, T> function) {
+        Preconditions.checkNotNull(function, "function was null");
+        final T local = function.apply(this.node);
+        return local == null ? function.apply(this.chatterbox.getAPI().getChannelAPI().getMaster()) : local;
+    }
+
     @Override
     public void addMember(@NotNull final CPlayer cp) {
         Preconditions.checkNotNull(cp, "cp was null");
@@ -97,7 +132,8 @@ public class ConfigChannel implements Channel {
     @Override
     public String getFormat() {
         final String format = this.determineFormat();
-        return format == null ? "" : format;
+        Preconditions.checkState(format != null, "No format specified for " + this.getName());
+        return format;
     }
 
     /**
@@ -113,24 +149,38 @@ public class ConfigChannel implements Channel {
     @NotNull
     @Override
     public String getName() {
-        return this.node.getNode("name").getString();
+        // May not use master
+        final String name = this.node.getNode(ChannelConfiguration.NAME.getKey()).getString();
+        Preconditions.checkState(name != null, "No name specified for channel");
+        return name;
     }
 
     @Nullable
     @Override
     public Radius getRadius() {
-        return this.node.getNode("radius").getValue(input -> {
+        return this.getConfiguration(ChannelConfiguration.RADIUS, node -> node.getValue(input -> {
             if (!(input instanceof ConfigurationNode)) return null;
-            final ConfigurationNode node = (ConfigurationNode) input;
-            if (!node.getNode("enabled").getBoolean()) return null;
-            return new Radius(node.getNode("horizontal").getDouble(), node.getNode("vertical").getDouble());
-        });
+            final ConfigurationNode internal = (ConfigurationNode) input;
+            if (!internal.getNode(ChannelConfiguration.RADIUS_ENABLED.getKey()).getBoolean()) return null;
+            return new Radius(
+                internal.getNode(ChannelConfiguration.RADIUS_HORIZONTAL).getDouble(),
+                internal.getNode(ChannelConfiguration.RADIUS_VERTICAL).getDouble()
+            );
+        }));
     }
 
     @NotNull
     @Override
     public String getTag() {
-        return this.node.getNode("tag").getString();
+        // May not use master
+        return this.node.getNode(ChannelConfiguration.TAG.getKey()).getString();
+    }
+
+    @Override
+    public boolean isPermanent() {
+        final Boolean permanent = this.getConfiguration(ChannelConfiguration.PERMANENT, ConfigurationNode::getBoolean);
+        Preconditions.checkState(permanent != null, "No permanent setting was specified for " + this.getName());
+        return permanent;
     }
 
     @Override

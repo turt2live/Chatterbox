@@ -61,6 +61,14 @@ public interface Channel {
     String getTag();
 
     /**
+     * Gets whether the channel is permanent or not. A permanent channel is one that is always joined by every player.
+     * It cannot be left.
+     *
+     * @return true if permanent channel, false if not
+     */
+    boolean isPermanent();
+
+    /**
      * Removes a member from this channel.
      *
      * @param cp Member to remove

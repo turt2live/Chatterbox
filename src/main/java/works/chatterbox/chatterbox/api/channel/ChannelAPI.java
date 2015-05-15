@@ -29,6 +29,7 @@ public class ChannelAPI {
                 return new ConfigChannel(ChannelAPI.this.chatterbox, key);
             }
         });
+    private ConfigurationNode master;
 
     public ChannelAPI(@NotNull final Chatterbox chatterbox) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");
@@ -102,5 +103,18 @@ public class ChannelAPI {
     @NotNull
     public Channel getDefaultChannel() {
         return Preconditions.checkNotNull(this.getDefaultChannelOrNull(), "No channels specified.");
+    }
+
+    /**
+     * Gets the master channel configuration node. It should contain all defaults for options not specified per-channel.
+     *
+     * @return ConfigurationNode
+     */
+    @NotNull
+    public ConfigurationNode getMaster() {
+        if (this.master == null) {
+            this.master = this.chatterbox.getConfiguration().getNode("master");
+        }
+        return this.master;
     }
 }
