@@ -13,6 +13,7 @@ import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelRecipient
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.TagStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.color.ColorStage;
+import works.chatterbox.chatterbox.pipeline.stages.impl.radius.RadiusStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.RythmStage;
 
 import java.io.File;
@@ -33,6 +34,7 @@ public class Chatterbox extends JavaPlugin {
             // Routing
             new TagStage(this), // Processes any @-tags for channel destination
             new ChannelRecipientsStage(), // Set the recipients of the message
+            new RadiusStage(), // Removes all recipients not in the channel radius, if enabled
             // Formatting
             new ChannelStage(), // Sets the base format
             new RythmStage(this), // Processes the Rythm syntax
