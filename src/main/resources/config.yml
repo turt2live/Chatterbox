@@ -40,66 +40,60 @@ titles:
 ### MASTER ###
 ##############
 
-# Master options. If options are not specified in a channel but are specified here, these values will be used.
+# Master options. These act as default values for channels. If an option is not specified in a channel, the value from
+# here will be used. Note that the "name" and "tag" options cannot be set here; each channel MUST provide its own
+# values for those options.
 master:
   # Variables MUST be entirely lowercase.
+  # The format for messages in this channel.
   format:
-    text: "<{json:name}{player-name}{/json:name}> {message}"
+    text: "{json:display-name}{player-name}{/json:display-name}: {message}"
     json:
-      name:
-      - "{player-group}"
+      display-name:
+      - "Display name:"
+      - "{player-display-name}"
+  # If a channel is permanent, it will always be joined by every player, and it can never be left. This is useful for
+  # channels that are intended to be global.
+  permanent: false
+  # These are the radius options
+  radius:
+    # If this is set to false, the horizontal and vertical options will be ignored, but the defaults are listed.
+    enabled: false
+    # The horizontal radius in which to broadcast the message
+    horizontal: 0.0
+    # The vertical radius in which to broadcast the message
+    vertical: 0.0
+  # Maximum options
+  maximum:
+    # The maximum amount of members allowed to join this channel. 0 means unlimited.
+    members: 0
+  # World options
+  worlds:
+    # Should the message be broadcast to all worlds?
+    all: true
+    # Should the message be broadcast to the world the player is in?
+    self: true
+    individual:
+      # Should the message be broadcast to the given world name?
+      # world: true
 
 ################
 ### CHANNELS ###
 ################
 
 # The first listed channel will become the default channel.
-# NOTE: If you only want one, main channel for all chat on your server, simply create one, all-worlds, no-radius
-# channel. It will become the default if listed first, thereby forcing everyone to use it.
+# NOTE: If you only want one, main channel for all chat on your server, simply create one, all-worlds, no-radius,
+# permanent channel. It will become the default if listed first, thereby forcing everyone to use it.
 channels:
-  # This channel contains the default values for all configurations available for channels. If you do not include a
-  # configuration value in a channel, the default will be filled in. You may change this channel, but the underlying
-  # default values will not change with it.
-    # This is the name of the channel
+  # This is the default, permanent channel. Again, any values not specified here are copied from the master values
+  # above.
+    # This is the name of the channel. It may be used in commands to reference this channel. This MAY contain spaces.
   - name: default
+    # This is the tag for the channel. It may be used in commands and @-tags to reference this channel. This MAY NOT
+    # contains spaces.
     tag: d
-    # The format for messages in this channel.
-    format:
-      text: "{json:display-name}{player-name}{/json:display-name}: {message}"
-      json:
-        display-name:
-        - "Display name:"
-        - "{player-display-name}"
-    # These are the settings for broadcasting to other channels. Note that having a radius will override this. If there
-    # is a radius, all players will be set to receive the message, then only those still in the radius will receive the
-    # message.
-    others:
-      # Should the message be broadcasted to all other channels? Useful for global channels.
-      all: false
-      individual:
-        # Should the message be broadcast to the given channel name?
-        #name: true
-    # These are the radius options
-    radius:
-      # If this is set to false, the horizontal and vertical options will be ignored, but the defaults are listed.
-      enabled: false
-      # The horizontal radius in which to broadcast the message
-      horizontal: 0.0
-      # The vertical radius in which to broadcast the message
-      vertical: 0.0
-    # Maximum options
-    maximum:
-      # The maximum amount of members allowed to join this channel. 0 means unlimited.
-      members: 0
-    # World options
-    worlds:
-      # Should the message be broadcast to all worlds?
-      all: true
-      # Should the message be broadcast to the world the player is in?
-      self: true
-      individual:
-        # Should the message be broadcast to the given world name?
-        # world: true
+    # Make this channel permanent so that everyone must be in it.
+    permanent: true
   # A local channel. Notice that several options are not included, as the defaults match the desired functionality.
   - name: local
     tag: l
