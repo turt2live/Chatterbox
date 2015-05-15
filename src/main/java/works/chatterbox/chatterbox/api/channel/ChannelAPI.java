@@ -29,11 +29,12 @@ public class ChannelAPI {
                 return new ConfigChannel(ChannelAPI.this.chatterbox, key);
             }
         });
-    private ConfigurationNode master;
+    private final ConfigurationNode master;
 
     public ChannelAPI(@NotNull final Chatterbox chatterbox) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");
         this.chatterbox = chatterbox;
+        this.master = this.chatterbox.getConfiguration().getNode("master");
     }
 
     @Nullable
@@ -112,9 +113,6 @@ public class ChannelAPI {
      */
     @NotNull
     public ConfigurationNode getMaster() {
-        if (this.master == null) {
-            this.master = this.chatterbox.getConfiguration().getNode("master");
-        }
         return this.master;
     }
 }
