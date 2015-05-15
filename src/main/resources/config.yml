@@ -81,7 +81,9 @@ master:
 ### CHANNELS ###
 ################
 
-# The first listed channel will become the default channel.
+# The first listed channel will become the default channel. The default channel will be joined if no other channels
+# are joined by a player. Permanent channels will be joined first, then the default channel will be joined if the player
+# is still not joined in any channel.
 # NOTE: If you only want one, main channel for all chat on your server, simply create one, all-worlds, no-radius,
 # permanent channel. It will become the default if listed first, thereby forcing everyone to use it.
 channels:

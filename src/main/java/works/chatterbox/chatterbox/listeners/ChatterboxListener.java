@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import works.chatterbox.chatterbox.Chatterbox;
+import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
@@ -15,6 +16,28 @@ public class ChatterboxListener implements Listener {
 
     public ChatterboxListener(final Chatterbox chatterbox) {
         this.chatterbox = chatterbox;
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void joinDefaultChannel(final PlayerJoinEvent event) {
+        // Get the CPlayer for this event
+        final CPlayer cp = this.chatterbox.getAPI().getPlayerAPI().getCPlayer(event.getPlayer());
+        // If the CPlayer is in any channels, ignore
+        if (!cp.getChannels().isEmpty()) return;
+        // Join the default channel
+        cp.joinChannel(this.chatterbox.getAPI().getChannelAPI().getDefaultChannel());
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
+    public void joinPermanentChannels(final PlayerJoinEvent event) {
+        // Get the CPlayer for this event
+        final CPlayer cp = this.chatterbox.getAPI().getPlayerAPI().getCPlayer(event.getPlayer());
+        // Get all permanent channels and join them
+        this.chatterbox.getAPI().getChannelAPI().getAllChannelNames().stream()
+            .map(this.chatterbox.getAPI().getChannelAPI()::getChannel)
+            .filter(Channel::isPermanent)
+            .forEach(cp::joinChannel);
+
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -33,13 +56,6 @@ public class ChatterboxListener implements Listener {
         if (message.isCancelled()) {
             event.setCancelled(true);
         }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onJoin(final PlayerJoinEvent event) {
-        final CPlayer cp = this.chatterbox.getAPI().getPlayerAPI().getCPlayer(event.getPlayer());
-        if (!cp.getChannels().isEmpty()) return;
-        cp.joinChannel(this.chatterbox.getAPI().getChannelAPI().getDefaultChannel());
     }
 
 }
