@@ -135,6 +135,12 @@ public class MessagePipeline {
     public void send(@NotNull final Message message) {
         Preconditions.checkNotNull(message, "message was null");
         final PipelineContext context = new PipelineContext();
-        this.stages.forEach(stage -> stage.process(message, context));
+        this.stages.forEach(stage -> {
+            try {
+                stage.process(message, context);
+            } catch (final Throwable t) {
+                new RuntimeException("An exception occurred while running the stage " + stage.getClass().getSimpleName(), t).printStackTrace();
+            }
+        });
     }
 }
