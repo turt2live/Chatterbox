@@ -13,8 +13,10 @@ import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelRecipient
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.TagStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.color.ColorStage;
+import works.chatterbox.chatterbox.pipeline.stages.impl.json.JSONStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.radius.RadiusStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.RythmStage;
+import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.SpecialStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.world.WorldStage;
 
 import java.io.File;
@@ -30,7 +32,6 @@ public class Chatterbox extends JavaPlugin {
     private ConfigurationNode configurationNode;
 
     private void addInternalPipelineStages() {
-        // TODO: ServerRecipientStage. Server should always get a copy of the message
         Arrays.asList(
             // Routing
             new TagStage(this), // Processes any @-tags for channel destination
@@ -40,7 +41,10 @@ public class Chatterbox extends JavaPlugin {
             // Formatting
             new ChannelStage(), // Sets the base format
             new RythmStage(this), // Processes the Rythm syntax
-            new ColorStage() // Applies colors
+            new SpecialStage(), // Handles methods from ChatterboxSpecialUtilities
+            new ColorStage(), // Applies colors
+            // JSON
+            new JSONStage(this) // Processes any JSON, if necessary
         ).forEach(this.api.getMessageAPI().getMessagePipeline()::addStage);
     }
 

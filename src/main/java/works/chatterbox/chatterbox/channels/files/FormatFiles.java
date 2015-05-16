@@ -54,7 +54,8 @@ public class FormatFiles {
      * @see #getFileContents(String)
      */
     @Nullable
-    public String getFileContents(final File file) {
+    public String getFileContents(@NotNull final File file) {
+        Preconditions.checkNotNull(file, "file was null");
         return this.getFileContents(file.getAbsolutePath());
     }
 

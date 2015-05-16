@@ -14,6 +14,9 @@ import java.util.Set;
  */
 public interface Channel {
 
+    @Nullable
+    String getJSONSection(@NotNull String sectionName);
+
     /**
      * Adds a member to this channel.
      *

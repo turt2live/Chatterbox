@@ -125,6 +125,13 @@ public class ConfigChannel implements Channel {
     }
 
     @Override
+    @Nullable
+    public String getJSONSection(@NotNull final String sectionName) {
+        Preconditions.checkNotNull(sectionName, "sectionName was null");
+        return this.getConfiguration(ChannelConfiguration.FORMAT_JSON, node -> node.getNode(sectionName).getString());
+    }
+
+    @Override
     public void addMember(@NotNull final CPlayer cp) {
         Preconditions.checkNotNull(cp, "cp was null");
         if (this.members.contains(cp)) return;

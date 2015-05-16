@@ -13,6 +13,10 @@ public class ChatterboxSpecialUtilities {
      */
     private final static String SIGNIFIER = "\u0001\u0002\u0003";
 
+    public static String getSignifier() {
+        return ChatterboxSpecialUtilities.SIGNIFIER;
+    }
+
     /**
      * Surrounds anything with the signifier String.
      *
@@ -35,6 +39,12 @@ public class ChatterboxSpecialUtilities {
         return this.surround("Cancel JSON");
     }
 
+    @NotNull
+    public String endJSON(@NotNull final String name) {
+        Preconditions.checkNotNull(name, "name was null");
+        return this.surround("End JSON " + name.toLowerCase());
+    }
+
     /**
      * Gets the String that indicates that multiple newlines in a row (regex (\r?\n){2,}) should be replaced by one
      * newline.
@@ -54,6 +64,12 @@ public class ChatterboxSpecialUtilities {
     @NotNull
     public String removeMultipleSpaces() {
         return this.surround("Remove multiple spaces");
+    }
+
+    @NotNull
+    public String startJSON(@NotNull final String name) {
+        Preconditions.checkNotNull(name, "name was null");
+        return this.surround("Start JSON " + name.toLowerCase());
     }
 
     /**
