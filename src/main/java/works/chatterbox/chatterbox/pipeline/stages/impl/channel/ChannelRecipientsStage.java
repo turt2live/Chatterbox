@@ -11,6 +11,7 @@ public class ChannelRecipientsStage implements Stage {
 
     @Override
     public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
+        if (message.isCancelled()) return;
         // Clear the original participants
         message.getRecipients().clear();
         message.getChannel().getMembers().stream() // Get all the members in the channel

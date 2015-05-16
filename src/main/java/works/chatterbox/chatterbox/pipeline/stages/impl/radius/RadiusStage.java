@@ -15,6 +15,7 @@ public class RadiusStage implements Stage {
 
     @Override
     public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
+        if (message.isCancelled()) return;
         final Player p = message.getSender().getPlayer();
         if (p == null) return;
         final Radius radius = message.getChannel().getRadius();

@@ -57,6 +57,7 @@ public class RythmStage implements Stage {
      */
     @Override
     public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
+        if (message.isCancelled()) return;
         final Map<String, Object> vars = new HashMap<>(context.getCustomVariables());
         vars.putAll(this.getVariablesFor(message));
         vars.putAll(this.vars);

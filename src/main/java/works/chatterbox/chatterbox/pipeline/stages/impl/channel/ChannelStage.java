@@ -15,6 +15,7 @@ public class ChannelStage implements Stage {
      */
     @Override
     public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
+        if (message.isCancelled()) return;
         // Set the format of the message to the channel format
         message.setFormat(message.getChannel().getFormat());
     }

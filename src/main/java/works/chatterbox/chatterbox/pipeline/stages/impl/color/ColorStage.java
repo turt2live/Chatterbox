@@ -32,6 +32,7 @@ public class ColorStage implements Stage {
      */
     @Override
     public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
+        if (message.isCancelled()) return;
         // Always color the format, since it has been defined by the config
         message.setFormat(ChatColor.translateAlternateColorCodes('&', message.getFormat()));
         // Get the player represented by the CPlayer
