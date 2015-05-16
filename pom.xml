@@ -30,10 +30,19 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>com.google.guava:guava</exclude>
+                                </excludes>
+                            </artifactSet>
                             <relocations>
                                 <relocation>
-                                    <pattern>com</pattern>
-                                    <shadedPattern>works.chatterbox.chatterbox.shaded.com</shadedPattern>
+                                    <pattern>com.alibaba</pattern>
+                                    <shadedPattern>works.chatterbox.chatterbox.shaded.com.alibaba</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.stevesof.pat</pattern>
+                                    <shadedPattern>works.chatterbox.chatterbox.shaded.com.stevesoft.pat</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.yaml</pattern>
@@ -50,20 +59,20 @@
                                     <shadedPattern>works.chatterbox.chatterbox.shaded.org.rythmengine</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org.eclipse</pattern>
-                                    <shadedPattern>works.chatterbox.chatterbox.shaded.org.eclipse</shadedPattern>
+                                    <pattern>org.eclipse.jdt.core</pattern>
+                                    <shadedPattern>works.chatterbox.chatterbox.shaded.org.eclipse.jdt.core</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org.apache</pattern>
-                                    <shadedPattern>works.chatterbox.chatterbox.shaded.org.apache</shadedPattern>
+                                    <pattern>org.apache.commons.lang3</pattern>
+                                    <shadedPattern>works.chatterbox.chatterbox.shaded.org.apache.commons.lang3</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.mvel</pattern>
                                     <shadedPattern>works.chatterbox.chatterbox.shaded.org.mvel</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>ninja</pattern>
-                                    <shadedPattern>works.chatterbox.chatterbox.shaded.ninja</shadedPattern>
+                                    <pattern>ninja.leaping</pattern>
+                                    <shadedPattern>works.chatterbox.chatterbox.shaded.ninja.leaping</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
