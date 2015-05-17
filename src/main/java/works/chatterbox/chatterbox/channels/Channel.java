@@ -14,9 +14,6 @@ import java.util.Set;
  */
 public interface Channel {
 
-    @Nullable
-    String getJSONSection(@NotNull String sectionName);
-
     /**
      * Adds a member to this channel.
      *
@@ -31,6 +28,9 @@ public interface Channel {
      */
     @NotNull
     String getFormat();
+
+    @Nullable
+    String getJSONSection(@NotNull final String sectionName);
 
     /**
      * Gets all the members of this channel.
@@ -55,6 +55,9 @@ public interface Channel {
      */
     @Nullable
     Radius getRadius();
+
+    @Nullable
+    String getRecipientSection(@NotNull final String sectionName);
 
     /**
      * Gets this channel's tag.

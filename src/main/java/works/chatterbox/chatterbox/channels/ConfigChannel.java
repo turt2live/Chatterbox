@@ -125,13 +125,6 @@ public class ConfigChannel implements Channel {
     }
 
     @Override
-    @Nullable
-    public String getJSONSection(@NotNull final String sectionName) {
-        Preconditions.checkNotNull(sectionName, "sectionName was null");
-        return this.getConfiguration(ChannelConfiguration.FORMAT_JSON, node -> node.getNode(sectionName).getString());
-    }
-
-    @Override
     public void addMember(@NotNull final CPlayer cp) {
         Preconditions.checkNotNull(cp, "cp was null");
         if (this.members.contains(cp)) return;
@@ -145,6 +138,15 @@ public class ConfigChannel implements Channel {
         final String format = this.determineFormat();
         Preconditions.checkState(format != null, "No format specified for " + this.getName());
         return format;
+    }
+
+    @Override
+    @Nullable
+    public String getJSONSection(@NotNull final String sectionName) {
+        Preconditions.checkNotNull(sectionName, "sectionName was null");
+        final String section = this.getConfiguration(ChannelConfiguration.FORMAT_JSON, node -> node.getNode(sectionName).getString());
+        if (section == null) return null;
+        return section.replace('\n', ' ').replace("%n", "\n");
     }
 
     /**
@@ -180,11 +182,22 @@ public class ConfigChannel implements Channel {
         }));
     }
 
+    @Nullable
+    @Override
+    public String getRecipientSection(@NotNull final String sectionName) {
+        Preconditions.checkNotNull(sectionName, "sectionName was null");
+        final String section = this.getConfiguration(ChannelConfiguration.FORMAT_RECIPIENT, node -> node.getNode(sectionName).getString());
+        if (section == null) return null;
+        return section.replace('\n', ' ').replace("%n", "\n");
+    }
+
     @NotNull
     @Override
     public String getTag() {
         // May not use master
-        return this.node.getNode(ChannelConfiguration.TAG.getKey()).getString();
+        final String tag = this.node.getNode(ChannelConfiguration.TAG.getKey()).getString();
+        Preconditions.checkState(tag != null, "No tag specified for channel");
+        return tag;
     }
 
     @NotNull

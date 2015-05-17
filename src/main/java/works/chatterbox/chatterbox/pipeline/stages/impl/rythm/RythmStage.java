@@ -10,7 +10,6 @@ import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.pipeline.PipelineContext;
 import works.chatterbox.chatterbox.pipeline.stages.Stage;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class RythmStage implements Stage {
@@ -58,7 +57,7 @@ public class RythmStage implements Stage {
     @Override
     public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
         if (message.isCancelled()) return;
-        final Map<String, Object> vars = new HashMap<>(context.getCustomVariables());
+        final Map<String, Object> vars = Maps.newHashMap(context.getCustomVariables());
         vars.putAll(this.getVariablesFor(message));
         vars.putAll(this.vars);
         message.setFormat(

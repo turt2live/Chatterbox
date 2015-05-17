@@ -105,6 +105,12 @@ channels:
       vertical: 18.0
     worlds:
       all: false
+  - name: Recipient
+    tag: r
+    format:
+      text: '@(player.getName()) -> @(chatterbox.recipient("name")): @(message)'
+      recipient:
+        name: @(recipient.getName())
   # This channel uses the Rythm engine (all channels do) to determine the chat format
   - name: Rythm format
     tag: rf
@@ -124,7 +130,6 @@ channels:
                      &9Name: &7@channel.getName()
                  }
                  &9Members: &7@channel.getMembers().len()
-                 @(chatterbox.removeMultipleNewlines())
         # @chatterbox.cancelJSON() outputs a special string that completely disables the current JSON segment. If the
         # player's real name is the same as his display name, this whole JSON segment should not be included in the
         # final result.
@@ -135,7 +140,6 @@ channels:
                      } else {
                          &9Real name: &7@player.getName()
                      }
-                     @(chatterbox.removeMultipleNewlines())
   - name: Rythm in a file
     tag: rif
     format:

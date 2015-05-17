@@ -133,8 +133,18 @@ public class MessagePipeline {
      * @param message Message to send through pipeline
      */
     public void send(@NotNull final Message message) {
+        this.send(message, new PipelineContext());
+    }
+
+    /**
+     * Sends a message through this pipeline with the given context, possibly modifying it in each stage.
+     *
+     * @param message Message to send through pipeline
+     * @param context Context to use for pipeline
+     */
+    public void send(@NotNull final Message message, @NotNull final PipelineContext context) {
         Preconditions.checkNotNull(message, "message was null");
-        final PipelineContext context = new PipelineContext();
+        Preconditions.checkNotNull(context, "context was null");
         this.stages.forEach(stage -> {
             try {
                 stage.process(message, context);

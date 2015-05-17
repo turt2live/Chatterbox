@@ -1,6 +1,7 @@
 package works.chatterbox.chatterbox.pipeline.stages.impl.json;
 
 import com.google.common.base.Preconditions;
+import ninja.leaping.configurate.ConfigurationNode;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,6 +12,7 @@ import works.chatterbox.chatterbox.pipeline.PipelineContext;
 import works.chatterbox.chatterbox.pipeline.stages.Stage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.ChatterboxSpecialUtilities;
 import works.chatterbox.chatterbox.shaded.mkremins.fanciful.FancyMessage;
+import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -92,23 +94,47 @@ public class JSONStage implements Stage {
         return isJSON ? fm : null;
     }
 
-    @Override
-    public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
-        if (message.isCancelled() || message instanceof JSONSectionMessage) return;
+    private boolean recipient(final Message message, final PipelineContext context) {
+        final ConfigurationNode recipientMessages = context.getProperties().getNode("recipientMessages");
+        if (recipientMessages.isVirtual()) return false;
+        for (final Player p : message.getRecipients()) {
+            final String format = recipientMessages.getNode(p.getUniqueId()).getString();
+            p.sendMessage(format);
+        }
+        this.sendToConsole(message.getSender(), message.getFormat());
+        message.setCancelled(true);
+        return true;
+    }
+
+    private void sendToConsole(final CPlayer cplayer, final String message) {
+        final Player p = cplayer.getPlayer();
+        if (p != null) {
+            p.getServer().getConsoleSender().sendMessage(message);
+        }
+    }
+
+    private boolean single(final Message message, final boolean toConsole) {
         final FancyMessage fm = this.handleJSON(message);
         if (fm == null) {
             // It's not JSON, so use the server
-            return;
+            return false;
         }
         // Don't use the server
         message.setCancelled(true);
         // TODO: Add separate stages for this
         // Send JSON to everyone
         message.getRecipients().forEach(fm::send);
-        final Player p = message.getSender().getPlayer();
-        if (p != null) {
-            // Send it to the console, if we can
-            p.getServer().getConsoleSender().sendMessage(fm.toOldMessageFormat());
+        if (toConsole) {
+            // Send it to console, if we can
+            this.sendToConsole(message.getSender(), fm.toOldMessageFormat());
         }
+        return true;
+    }
+
+    @Override
+    public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
+        if (message.isCancelled() || message instanceof JSONSectionMessage) return;
+        if (this.recipient(message, context)) return;
+        this.single(message, true);
     }
 }

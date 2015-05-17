@@ -45,6 +45,12 @@ public class ChatterboxSpecialUtilities {
         return this.surround("End JSON " + name.toLowerCase());
     }
 
+    @NotNull
+    public String recipient(@NotNull final String name) {
+        Preconditions.checkNotNull(name, "name was null");
+        return this.surround("Recipient " + name);
+    }
+
     /**
      * Gets the String that indicates that multiple newlines in a row (regex (\r?\n){2,}) should be replaced by one
      * newline.

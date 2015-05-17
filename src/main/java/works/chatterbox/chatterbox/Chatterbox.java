@@ -15,6 +15,7 @@ import works.chatterbox.chatterbox.pipeline.stages.impl.channel.TagStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.color.ColorStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.json.JSONStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.radius.RadiusStage;
+import works.chatterbox.chatterbox.pipeline.stages.impl.recipient.RecipientStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.RythmStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.SpecialStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.world.WorldStage;
@@ -43,6 +44,7 @@ public class Chatterbox extends JavaPlugin {
             new RythmStage(this), // Processes the Rythm syntax
             new SpecialStage(), // Handles methods from ChatterboxSpecialUtilities
             new ColorStage(), // Applies colors
+            new RecipientStage(this), // Handles recipient sections
             // JSON
             new JSONStage(this) // Processes any JSON, if necessary
         ).forEach(this.api.getMessageAPI().getMessagePipeline()::addStage);

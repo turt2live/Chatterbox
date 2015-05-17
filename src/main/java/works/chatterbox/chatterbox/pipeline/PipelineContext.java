@@ -1,12 +1,15 @@
 package works.chatterbox.chatterbox.pipeline;
 
 import com.google.common.collect.Maps;
+import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.SimpleConfigurationNode;
 
 import java.util.Map;
 
 public class PipelineContext {
 
     private final Map<String, Object> customVariables = Maps.newHashMap();
+    private final ConfigurationNode properties = SimpleConfigurationNode.root();
 
     /**
      * Gets a modifiable map of custom variables for the message passing through the pipeline. These variables only last
@@ -20,5 +23,9 @@ public class PipelineContext {
      */
     public Map<String, Object> getCustomVariables() {
         return this.customVariables;
+    }
+
+    public ConfigurationNode getProperties() {
+        return this.properties;
     }
 }

@@ -11,6 +11,7 @@ public enum ChannelConfiguration {
     FORMAT_TEXT("text", FORMAT.getKey()),
     FORMAT_FILE("file", FORMAT.getKey()),
     FORMAT_JSON("json", FORMAT.getKey()),
+    FORMAT_RECIPIENT("recipient", FORMAT.getKey()),
     PERMANENT("permanent"),
     RADIUS("radius"),
     RADIUS_ENABLED("enabled", RADIUS.getKey()),
