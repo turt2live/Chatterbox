@@ -17,7 +17,7 @@ import works.chatterbox.chatterbox.wrappers.CPlayer;
 )
 public class LeaveCommand extends ChannelTabCommand {
 
-    protected LeaveCommand(final Chatterbox instance, final String name) {
+    public LeaveCommand(final Chatterbox instance, final String name) {
         super(instance, name, true, new Short[0]);
     }
 

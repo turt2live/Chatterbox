@@ -11,7 +11,7 @@ import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 public class JoinCommand extends ChannelTabCommand {
 
-    protected JoinCommand(final Chatterbox instance, final String name) {
+    public JoinCommand(final Chatterbox instance, final String name) {
         super(instance, name, true, new Short[0]);
     }
 
