@@ -8,8 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.channels.Channel;
+import works.chatterbox.chatterbox.commands.ChannelTabCommand;
 import works.chatterbox.chatterbox.commands.ReflectCommand;
-import works.chatterbox.chatterbox.commands.TabCommand;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.util.Collection;
@@ -21,12 +21,12 @@ import java.util.List;
     aliases = {"ch"},
     usage = "/<command> [channel]"
 )
-public class ChannelCommand extends TabCommand<Chatterbox> {
+public class ChannelCommand extends ChannelTabCommand {
 
     private final Joiner spaceJoiner = Joiner.on(' ');
 
     public ChannelCommand(final Chatterbox instance, final String name) {
-        super(instance, name, true, new Short[]{CompletionType.LIST.getShort()});
+        super(instance, name, true, new Short[0]);
     }
 
     @Override
@@ -46,14 +46,13 @@ public class ChannelCommand extends TabCommand<Chatterbox> {
         final String channelName = this.spaceJoiner.join(eargs);
         final Channel channel = this.plugin.getAPI().getChannelAPI().getChannel(channelName);
         if (channel == null) {
-            // TODO: Localization
-            cs.sendMessage(ChatColor.RED + "No such channel.");
+            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getString("NO_SUCH_CHANNEL"));
             return true;
         }
         final CPlayer cp = this.plugin.getAPI().getPlayerAPI().getCPlayer(p);
         cp.joinChannel(channel);
         cp.setMainChannel(channel);
-        cs.sendMessage(ChatColor.BLUE + "Joined channel " + ChatColor.GRAY + channel.getName() + ChatColor.BLUE + ".");
+        cs.sendMessage(ChatColor.BLUE + this.plugin.getLanguage().getFormattedString("JOINED_CHANNEL", ChatColor.GRAY + channel.getName() + ChatColor.BLUE));
         return true;
     }
 }
