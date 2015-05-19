@@ -5,7 +5,7 @@
 # Language options
 language:
   # The language file to use for in-game messages
-  file: "lang/en_us.yml"
+  file: "lang/en_US.properties"
 
 ###############
 ### FORMATS ###

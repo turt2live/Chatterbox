@@ -1,5 +1,6 @@
 package works.chatterbox.chatterbox;
 
+import com.google.common.base.Preconditions;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.bukkit.plugin.PluginManager;
@@ -9,6 +10,7 @@ import works.chatterbox.chatterbox.api.ChatterboxAPI;
 import works.chatterbox.chatterbox.commands.ReflectiveCommandRegistrar;
 import works.chatterbox.chatterbox.hooks.HookManager;
 import works.chatterbox.chatterbox.listeners.ChatterboxListener;
+import works.chatterbox.chatterbox.localization.Language;
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelRecipientsStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.TagStage;
@@ -22,6 +24,8 @@ import works.chatterbox.chatterbox.pipeline.stages.impl.world.WorldStage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
 
 // TODO: https://gist.github.com/jkcclemens/9b6c7a54f71cf0628f7b
@@ -29,6 +33,7 @@ import java.util.Arrays;
 public class Chatterbox extends JavaPlugin {
 
     private final HookManager hm = new HookManager(this);
+    private Language language;
     private ChatterboxAPI api;
     private ConfigurationNode configurationNode;
 
@@ -77,6 +82,25 @@ public class Chatterbox extends JavaPlugin {
         pm.registerEvents(new ChatterboxListener(this), this);
     }
 
+    private void saveLanguageFiles() {
+        final URL url = this.getClass().getResource("lang/");
+        final File lang;
+        try {
+            lang = new File(url.toURI());
+        } catch (final URISyntaxException ex) {
+            ex.printStackTrace();
+            return;
+        }
+        Preconditions.checkState(lang.isDirectory(), "lang resource was not a directory");
+        Arrays.stream(lang.list())
+            .forEach(file -> {
+                final File path = new File(lang, file);
+                if (!path.exists()) {
+                    this.saveResource(path.toString(), false);
+                }
+            });
+    }
+
     public ChatterboxAPI getAPI() {
         return this.api;
     }
@@ -87,6 +111,10 @@ public class Chatterbox extends JavaPlugin {
             this.loadConfiguration();
         }
         return this.configurationNode;
+    }
+
+    public Language getLanguage() {
+        return this.language;
     }
 
     @Override
@@ -100,6 +128,14 @@ public class Chatterbox extends JavaPlugin {
         this.saveDefaultConfig(); // save the default config before loading it
         if (!this.loadConfiguration()) {
             this.getLogger().severe("Could not load configuration. Disabling plugin.");
+            this.getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        this.saveLanguageFiles();
+        try {
+            this.language = new Language(this.getTextResource(this.getConfiguration().getNode("language").getNode("file").getString()));
+        } catch (final IOException ex) {
+            this.getLogger().severe("Could not load language file. Disabling plugin.");
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
