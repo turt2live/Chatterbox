@@ -28,7 +28,9 @@ public class JSONStage implements Stage {
     }
 
     @Nullable
-    private String getTooltip(final Message message, final String sectionName) {
+    private String getTooltip(@NotNull final Message message, @NotNull final String sectionName) {
+        Preconditions.checkNotNull(message, "message was null");
+        Preconditions.checkNotNull(sectionName, "sectionName was null");
         // Get the section for this section name
         String section = message.getChannel().getJSONSection(sectionName);
         // Assert that we have some JSON
@@ -94,7 +96,9 @@ public class JSONStage implements Stage {
         return isJSON ? fm : null;
     }
 
-    private boolean recipient(final Message message, final PipelineContext context) {
+    private boolean recipient(@NotNull final Message message, @NotNull final PipelineContext context) {
+        Preconditions.checkNotNull(message, "message was null");
+        Preconditions.checkNotNull(context, "context was null");
         final ConfigurationNode recipientMessages = context.getProperties().getNode("recipientMessages");
         if (recipientMessages.isVirtual()) return false;
         for (final Player p : message.getRecipients()) {
@@ -106,14 +110,17 @@ public class JSONStage implements Stage {
         return true;
     }
 
-    private void sendToConsole(final CPlayer cplayer, final String message) {
+    private void sendToConsole(@NotNull final CPlayer cplayer, @NotNull final String message) {
+        Preconditions.checkNotNull(cplayer, "cplayer was null");
+        Preconditions.checkNotNull(message, "message was null");
         final Player p = cplayer.getPlayer();
         if (p != null) {
             p.getServer().getConsoleSender().sendMessage(message);
         }
     }
 
-    private boolean single(final Message message, final boolean toConsole) {
+    private boolean single(@NotNull final Message message, final boolean toConsole) {
+        Preconditions.checkNotNull(message, "message was null");
         final FancyMessage fm = this.handleJSON(message);
         if (fm == null) {
             // It's not JSON, so use the server
@@ -132,6 +139,8 @@ public class JSONStage implements Stage {
 
     @Override
     public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
+        Preconditions.checkNotNull(message, "message was null");
+        Preconditions.checkNotNull(context, "context was null");
         if (message.isCancelled() || message instanceof JSONSectionMessage) return;
         if (this.recipient(message, context)) return;
         this.single(message, true);
