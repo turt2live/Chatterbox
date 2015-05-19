@@ -13,8 +13,8 @@ import works.chatterbox.chatterbox.commands.ReflectCommand;
 )
 public class ChatterboxCommand extends ChannelTabCommand {
 
-    public ChatterboxCommand(final Chatterbox instance, final String name, final boolean checkPermissions, final Short[] cts) {
-        super(instance, name, checkPermissions, cts);
+    public ChatterboxCommand(final Chatterbox instance, final String name) {
+        super(instance, name, true, new Short[0]);
     }
 
     @Override
