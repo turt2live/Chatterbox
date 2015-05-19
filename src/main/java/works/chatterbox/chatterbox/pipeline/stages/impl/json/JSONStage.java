@@ -121,7 +121,6 @@ public class JSONStage implements Stage {
         }
         // Don't use the server
         message.setCancelled(true);
-        // TODO: Add separate stages for this
         // Send JSON to everyone
         message.getRecipients().forEach(fm::send);
         if (toConsole) {
