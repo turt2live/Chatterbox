@@ -125,16 +125,16 @@ channels:
         # Here, Rythm's len() is used, to get the length of the members, regardless of if they're contained in an array
         # or a collection.
         channel: |
-                 &9&lChannel
+                 &9&lChannel%n
                  @if (!s().eq(channel.getName(), channel.getTag())) {
-                     &9Name: &7@channel.getName()
+                     &9Name: &7@channel.getName()%n
                  }
                  &9Members: &7@channel.getMembers().len()
         # @chatterbox.cancelJSON() outputs a special string that completely disables the current JSON segment. If the
         # player's real name is the same as his display name, this whole JSON segment should not be included in the
         # final result.
         player-info: |
-                     &9&lPlayer
+                     &9&lPlayer%n
                      @if (s().eq(player.getDisplayName(), player.getName())) {
                          @chatterbox.cancelJSON()
                      } else {
