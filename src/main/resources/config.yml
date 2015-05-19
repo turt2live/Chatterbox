@@ -47,7 +47,7 @@ master:
   # Variables MUST be entirely lowercase.
   # The format for messages in this channel.
   format:
-    text: "@(chatterbox.startJSON("display-name"))@(playerName)@(chatterbox.endJSON("display-name")): @(message)"
+    text: '@(chatterbox.startJSON("display-name"))@(playerName)@(chatterbox.endJSON("display-name")): @(message)'
     json:
       display-name: |
                     Display name:
@@ -148,6 +148,6 @@ channels:
       # as spaces to mimic the behavior seen in this file.
       file: rif.txt
       json:
-        channel:
-        - "&9&lChannel"
-        - "@channel.getName()"
+        channel: |
+                 &9&lChannel
+                 @channel.getName()
