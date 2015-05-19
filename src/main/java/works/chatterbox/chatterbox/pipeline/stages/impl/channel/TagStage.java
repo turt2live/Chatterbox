@@ -35,12 +35,12 @@ public class TagStage implements Stage {
         final String tag = m.group(1);
         final Channel channel = this.chatterbox.getAPI().getChannelAPI().getChannelByTag(tag);
         if (channel == null) {
-            message.getSender().ifOnline(player -> player.sendMessage(ChatColor.RED + this.chatterbox.getLanguage().getString("NO_SUCH_CHANNEL")));
+            message.getSender().ifOnline(player -> player.sendMessage(ChatColor.RED + this.chatterbox.getLanguage().getAString("NO_SUCH_CHANNEL")));
             message.setCancelled(true);
             return;
         }
         if (!message.getSender().getChannels().contains(channel)) {
-            message.getSender().ifOnline(player -> player.sendMessage(ChatColor.RED + this.chatterbox.getLanguage().getString("NOT_IN_CHANNEL")));
+            message.getSender().ifOnline(player -> player.sendMessage(ChatColor.RED + this.chatterbox.getLanguage().getAString("NOT_IN_CHANNEL")));
             message.setCancelled(true);
             return;
         }

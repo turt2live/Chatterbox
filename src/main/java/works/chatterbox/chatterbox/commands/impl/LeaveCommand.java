@@ -31,12 +31,12 @@ public class LeaveCommand extends ChannelTabCommand {
         final String channelName = eargs[0];
         final Channel channel = this.plugin.getAPI().getChannelAPI().getChannel(channelName);
         if (channel == null) {
-            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getString("NO_SUCH_CHANNEL"));
+            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getAString("NO_SUCH_CHANNEL"));
             return true;
         }
         final CPlayer cp = this.plugin.getAPI().getPlayerAPI().getCPlayer(player);
         if (!cp.getChannels().contains(channel)) {
-            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getString("NOT_IN_CHANNEL"));
+            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getAString("NOT_IN_CHANNEL"));
             return true;
         }
         cp.leaveChannel(channel);

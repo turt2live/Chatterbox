@@ -21,7 +21,7 @@ public class ChatterboxCommand extends ChannelTabCommand {
     public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
         this.plugin.onDisable();
         this.plugin.load(true);
-        cs.sendMessage(ChatColor.BLUE + this.plugin.getLanguage().getString("RELOADED"));
+        cs.sendMessage(ChatColor.BLUE + this.plugin.getLanguage().getAString("RELOADED"));
         return true;
     }
 }

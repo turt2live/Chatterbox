@@ -21,15 +21,21 @@ public class Language extends PropertyResourceBundle {
     }
 
     @Nullable
-    public String getFormattedString(@NotNull final String key, @NotNull final Object... objects) {
+    public String getAString(@NotNull final String key) {
         Preconditions.checkNotNull(key, "key was null");
-        Preconditions.checkNotNull(objects, "objects was null");
-        final String string;
         try {
-            string = this.getString(key);
+            return this.getString(key);
         } catch (final MissingResourceException ex) {
             return null;
         }
+    }
+
+    @Nullable
+    public String getFormattedString(@NotNull final String key, @NotNull final Object... objects) {
+        Preconditions.checkNotNull(key, "key was null");
+        Preconditions.checkNotNull(objects, "objects was null");
+        final String string = this.getAString(key);
+        if (string == null) return null;
         return String.format(string, objects);
     }
 }
