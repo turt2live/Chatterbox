@@ -130,14 +130,7 @@ public class Chatterbox extends JavaPlugin {
         return this.language;
     }
 
-    @Override
-    public void onDisable() {
-        this.hm.unloadHooks();
-    }
-
-    @Override
-    public void onEnable() {
-        this.api = new ChatterboxAPI(this); // api must be initialized before anything else
+    public void load(final boolean isReload) {
         this.saveDefaultConfig(); // save the default config before loading it
         if (!this.loadConfiguration()) {
             this.getLogger().severe("Could not load configuration. Disabling plugin.");
@@ -153,9 +146,23 @@ public class Chatterbox extends JavaPlugin {
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        this.registerCommands();
+        this.api = new ChatterboxAPI(this);
+        if (!isReload) {
+            this.registerCommands();
+        }
         this.addInternalPipelineStages();
         this.registerListeners();
         this.loadHooks();
+    }
+
+    @Override
+    public void onDisable() {
+        this.hm.unloadHooks();
+    }
+
+    @Override
+    public void onEnable() {
+        // I should probably find a better way to do this
+        this.load(false);
     }
 }

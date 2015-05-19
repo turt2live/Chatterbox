@@ -8,3 +8,4 @@ reflectcommands:
 - commands.impl.ChannelCommand
 - commands.impl.JoinCommand
 - commands.impl.LeaveCommand
+- commands.impl.ChatterboxCommand
