@@ -146,7 +146,7 @@ public class ConfigChannel implements Channel {
         Preconditions.checkNotNull(sectionName, "sectionName was null");
         final String section = this.getConfiguration(ChannelConfiguration.FORMAT_JSON, node -> node.getNode(sectionName).getString());
         if (section == null) return null;
-        return section.replace('\n', ' ').replace("%n", "\n");
+        return section;
     }
 
     /**
@@ -188,7 +188,7 @@ public class ConfigChannel implements Channel {
         Preconditions.checkNotNull(sectionName, "sectionName was null");
         final String section = this.getConfiguration(ChannelConfiguration.FORMAT_RECIPIENT, node -> node.getNode(sectionName).getString());
         if (section == null) return null;
-        return section.replace('\n', ' ').replace("%n", "\n");
+        return section;
     }
 
     @NotNull

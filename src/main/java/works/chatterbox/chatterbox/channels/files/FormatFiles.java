@@ -20,11 +20,11 @@ public class FormatFiles {
         .build(new CacheLoader<String, String>() {
             @Override
             public String load(@NotNull final String key) throws Exception {
-                return Joiner.on(' ').join(
+                return Joiner.on('\n').join(
                     Files.readAllLines(
                         new File(key).toPath()
                     )
-                ).replace("%n", "\n");
+                );
             }
         });
 

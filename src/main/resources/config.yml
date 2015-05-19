@@ -49,7 +49,7 @@ master:
   format:
     text: '@(chatterbox.startJSON("display-name"))@(playerName)@(chatterbox.endJSON("display-name")): @(message)'
     json:
-      display-name: |
+      display-name: >
                     Display name:
                     @(playerDisplayName)
   # If a channel is permanent, it will always be joined by every player, and it can never be left. This is useful for
@@ -124,7 +124,7 @@ channels:
         # channel.getName().equals(channel.getTag()) is equivalent, but using s() is null-safe
         # Here, Rythm's len() is used, to get the length of the members, regardless of if they're contained in an array
         # or a collection.
-        channel: |
+        channel: >
                  &9&lChannel%n
                  @if (!s().eq(channel.getName(), channel.getTag())) {
                      &9Name: &7@channel.getName()%n
@@ -133,7 +133,7 @@ channels:
         # @chatterbox.cancelJSON() outputs a special string that completely disables the current JSON segment. If the
         # player's real name is the same as his display name, this whole JSON segment should not be included in the
         # final result.
-        player-info: |
+        player-info: >
                      &9&lPlayer%n
                      @if (s().eq(player.getDisplayName(), player.getName())) {
                          @chatterbox.cancelJSON()
@@ -148,6 +148,6 @@ channels:
       # as spaces to mimic the behavior seen in this file.
       file: rif.txt
       json:
-        channel: |
+        channel: >
                  &9&lChannel
                  @channel.getName()
