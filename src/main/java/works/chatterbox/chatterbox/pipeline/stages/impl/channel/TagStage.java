@@ -1,5 +1,6 @@
 package works.chatterbox.chatterbox.pipeline.stages.impl.channel;
 
+import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.channels.Channel;
@@ -33,8 +34,16 @@ public class TagStage implements Stage {
         if (!m.find()) return;
         final String tag = m.group(1);
         final Channel channel = this.chatterbox.getAPI().getChannelAPI().getChannelByTag(tag);
-        // TODO: Should this cancel the message and send an error or just ignore the @-tag?
-        if (channel == null || !message.getSender().getChannels().contains(channel)) return;
+        if (channel == null) {
+            message.getSender().ifOnline(player -> player.sendMessage(ChatColor.RED + this.chatterbox.getLanguage().getString("NO_SUCH_CHANNEL")));
+            message.setCancelled(true);
+            return;
+        }
+        if (!message.getSender().getChannels().contains(channel)) {
+            message.getSender().ifOnline(player -> player.sendMessage(ChatColor.RED + this.chatterbox.getLanguage().getString("NOT_IN_CHANNEL")));
+            message.setCancelled(true);
+            return;
+        }
         message.setMessage(m.replaceFirst("").trim());
         message.setChannel(channel);
     }
