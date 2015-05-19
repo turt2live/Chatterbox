@@ -13,6 +13,7 @@ import works.chatterbox.chatterbox.channels.Channel;
 
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class UUIDCPlayer implements CPlayer {
 
@@ -72,6 +73,14 @@ public class UUIDCPlayer implements CPlayer {
     @Override
     public Player getPlayer() {
         return this.chatterbox.getServer().getPlayer(this.getUUID());
+    }
+
+    @Override
+    public void ifOnline(@NotNull final Consumer<Player> function) {
+        Preconditions.checkNotNull(function, "function was null");
+        final Player player = this.getPlayer();
+        if (player == null) return;
+        function.accept(player);
     }
 
     @Override

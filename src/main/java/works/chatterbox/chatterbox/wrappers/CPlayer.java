@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.channels.Channel;
 
 import java.util.Set;
+import java.util.function.Consumer;
 
 public interface CPlayer {
 
@@ -49,6 +50,8 @@ public interface CPlayer {
      */
     @Nullable
     Player getPlayer();
+
+    void ifOnline(@NotNull final Consumer<Player> function);
 
     /**
      * Checks if this player is online.
