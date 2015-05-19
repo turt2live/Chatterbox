@@ -47,11 +47,11 @@ master:
   # Variables MUST be entirely lowercase.
   # The format for messages in this channel.
   format:
-    text: "{json:display-name}@(playerName){/json:display-name}: @(message)"
+    text: "@(chatterbox.startJSON("display-name"))@(playerName)@(chatterbox.endJSON("display-name")): @(message)"
     json:
-      display-name:
-      - "Display name:"
-      - "@(playerDisplayName)"
+      display-name: |
+                    Display name:
+                    @(playerDisplayName)
   # If a channel is permanent, it will always be joined by every player, and it can never be left. This is useful for
   # channels that are intended to be global.
   permanent: false
@@ -110,7 +110,7 @@ channels:
     format:
       text: '@(player.getName()) -> @(chatterbox.recipient("name")): @(message)'
       recipient:
-        name: @(recipient.getName())
+        name: '@(recipient.getName())'
   # This channel uses the Rythm engine (all channels do) to determine the chat format
   - name: Rythm format
     tag: rf
