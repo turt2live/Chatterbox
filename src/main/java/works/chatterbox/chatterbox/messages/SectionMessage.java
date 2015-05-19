@@ -1,14 +1,10 @@
 package works.chatterbox.chatterbox.messages;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.channels.Channel;
-import works.chatterbox.chatterbox.channels.radius.Radius;
-import works.chatterbox.chatterbox.channels.worlds.WorldRecipients;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.util.Set;
@@ -29,7 +25,7 @@ public abstract class SectionMessage implements Message {
     @NotNull
     @Override
     public Channel getChannel() {
-        return new SectionChannel();
+        return this.base.getChannel();
     }
 
     @Override
@@ -80,72 +76,6 @@ public abstract class SectionMessage implements Message {
     @Override
     public void setCancelled(final boolean cancelled) {
         this.cancelled = cancelled;
-    }
-
-    public class SectionChannel implements Channel {
-
-        @Override
-        public void addMember(@NotNull final CPlayer cp) {
-
-        }
-
-        @NotNull
-        @Override
-        public String getFormat() {
-            return SectionMessage.this.getFormat();
-        }
-
-        @Nullable
-        @Override
-        public String getJSONSection(@NotNull final String sectionName) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public Set<CPlayer> getMembers() {
-            return Sets.newHashSet();
-        }
-
-        @NotNull
-        @Override
-        public String getName() {
-            return "json";
-        }
-
-        @Nullable
-        @Override
-        public Radius getRadius() {
-            return null;
-        }
-
-        @Nullable
-        @Override
-        public String getRecipientSection(@NotNull final String sectionName) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public String getTag() {
-            return "json";
-        }
-
-        @NotNull
-        @Override
-        public WorldRecipients getWorldRecipients() {
-            return new WorldRecipients(Maps.newHashMap(), false, false);
-        }
-
-        @Override
-        public boolean isPermanent() {
-            return false;
-        }
-
-        @Override
-        public void removeMember(@NotNull final CPlayer cp) {
-
-        }
     }
 
 }
