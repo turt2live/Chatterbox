@@ -41,7 +41,7 @@
                                     <shadedPattern>works.chatterbox.chatterbox.shaded.com.alibaba</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>com.stevesof.pat</pattern>
+                                    <pattern>com.stevesoft.pat</pattern>
                                     <shadedPattern>works.chatterbox.chatterbox.shaded.com.stevesoft.pat</shadedPattern>
                                 </relocation>
                                 <relocation>
@@ -59,8 +59,8 @@
                                     <shadedPattern>works.chatterbox.chatterbox.shaded.org.rythmengine</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org.eclipse.jdt.core</pattern>
-                                    <shadedPattern>works.chatterbox.chatterbox.shaded.org.eclipse.jdt.core</shadedPattern>
+                                    <pattern>org.eclipse.jdt.internal</pattern>
+                                    <shadedPattern>works.chatterbox.chatterbox.shaded.org.eclipse.jdt.internal</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.apache.commons.lang3</pattern>
