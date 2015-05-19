@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public class RecipientStage implements Stage {
 
     private final Chatterbox chatterbox;
-    private final Pattern recipient = Pattern.compile(ChatterboxSpecialUtilities.getSignifier() + "Recipient (.+?)" + ChatterboxSpecialUtilities.getSignifier());
+    private final Pattern recipient = Pattern.compile(ChatterboxSpecialUtilities.getSignifier() + "\\[Recipient section: (.+?)]" + ChatterboxSpecialUtilities.getSignifier());
 
     public RecipientStage(@NotNull final Chatterbox chatterbox) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");

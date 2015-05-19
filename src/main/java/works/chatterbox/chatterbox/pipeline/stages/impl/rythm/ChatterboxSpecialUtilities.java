@@ -48,7 +48,7 @@ public class ChatterboxSpecialUtilities {
     @NotNull
     public String recipient(@NotNull final String name) {
         Preconditions.checkNotNull(name, "name was null");
-        return this.surround("Recipient " + name);
+        return this.surround("[Recipient section: " + name + "]");
     }
 
     /**
