@@ -6,3 +6,5 @@ description:  Simple, elegant, powerful. Minecraft chat as it was supposed to be
 
 reflectcommands:
 - commands.impl.ChannelCommand
+- commands.impl.JoinCommand
+- commands.impl.LeaveCommand
