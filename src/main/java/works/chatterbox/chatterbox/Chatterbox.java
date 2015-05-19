@@ -23,10 +23,15 @@ import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.SpecialStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.world.WorldStage;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.net.URL;
+import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 // TODO: https://gist.github.com/jkcclemens/9b6c7a54f71cf0628f7b
 
@@ -83,22 +88,30 @@ public class Chatterbox extends JavaPlugin {
     }
 
     private void saveLanguageFiles() {
-        final URL url = this.getClass().getResource("lang/");
-        final File lang;
+        final File langFile = new File(this.getDataFolder(), "lang");
+        if (!langFile.exists()) {
+            Preconditions.checkState(langFile.mkdir(), "Could not create lang directory");
+        }
+        final JarFile jar;
         try {
-            lang = new File(url.toURI());
-        } catch (final URISyntaxException ex) {
+            jar = new JarFile(new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()));
+        } catch (final IOException | URISyntaxException ex) {
             ex.printStackTrace();
             return;
         }
-        Preconditions.checkState(lang.isDirectory(), "lang resource was not a directory");
-        Arrays.stream(lang.list())
-            .forEach(file -> {
-                final File path = new File(lang, file);
-                if (!path.exists()) {
-                    this.saveResource(path.toString(), false);
+        final Enumeration<JarEntry> e = jar.entries();
+        while (e.hasMoreElements()) {
+            final JarEntry entry = e.nextElement();
+            if (!entry.getName().startsWith("lang/")) continue;
+            final File location = new File(this.getDataFolder(), entry.getName());
+            if (!location.exists()) {
+                try (final InputStream is = jar.getInputStream(entry)) {
+                    Files.copy(is, location.toPath());
+                } catch (final IOException ex) {
+                    ex.printStackTrace();
                 }
-            });
+            }
+        }
     }
 
     public ChatterboxAPI getAPI() {
@@ -133,7 +146,8 @@ public class Chatterbox extends JavaPlugin {
         }
         this.saveLanguageFiles();
         try {
-            this.language = new Language(this.getTextResource(this.getConfiguration().getNode("language").getNode("file").getString()));
+            final String langLocation = this.getConfiguration().getNode("language").getNode("file").getString();
+            this.language = new Language(new FileInputStream(new File(this.getDataFolder(), langLocation)));
         } catch (final IOException ex) {
             this.getLogger().severe("Could not load language file. Disabling plugin.");
             this.getServer().getPluginManager().disablePlugin(this);
