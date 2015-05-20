@@ -12,8 +12,6 @@ import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
-// TODO: Check memberships from file
-
 public class ChatterboxListener implements Listener {
 
     private final Chatterbox chatterbox;
@@ -51,15 +49,21 @@ public class ChatterboxListener implements Listener {
         final CPlayer cp = this.chatterbox.getAPI().getPlayerAPI().getCPlayer(p);
         // Get all saved memberships
         final ConfigurationNode memberships = this.chatterbox.getAPI().getChannelAPI().getMemberships();
-        this.chatterbox.getAPI().getChannelAPI().getAllChannelNames().stream()
+        for (final String channelName : this.chatterbox.getAPI().getChannelAPI().getAllChannelNames()) {
+            final ConfigurationNode channelNode = memberships.getNode(channelName).getNode(p.getUniqueId().toString());
             // Filter out channels with memberships without the player
-            .filter(name -> !memberships.getNode(name).getNode(p.getUniqueId().toString()).isVirtual())
+            if (channelNode.isVirtual()) continue;
             // Map the names to channels
-            .map(this.chatterbox.getAPI().getChannelAPI()::getChannelByName)
+            final Channel channel = this.chatterbox.getAPI().getChannelAPI().getChannelByName(channelName);
             // Remove any nulls
-            .filter(channel -> channel != null)
+            if (channel == null) continue;
             // Join each channel
-            .forEach(cp::joinChannel);
+            cp.joinChannel(channel);
+            if (channelNode.getLong() < 0L) {
+                // If the lastSeenTime is negative, it was the main channel
+                cp.setMainChannel(channel);
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

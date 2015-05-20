@@ -30,6 +30,8 @@ public class MembershipTask implements Runnable {
     public void run() {
         final Collection<Channel> loadedChannels = this.chatterbox.getAPI().getChannelAPI().getAllLoadedChannels();
         final ConfigurationNode memberships = this.chatterbox.getAPI().getChannelAPI().getMemberships();
+        // Get a single time to use as the last seen time during this run
+        final long useAsLastSeen = System.currentTimeMillis();
         // Loop through all LOADED channels
         for (final Channel channel : loadedChannels) {
             // Get the membership node
@@ -43,8 +45,6 @@ public class MembershipTask implements Runnable {
             }
             // Make a set of UUIDs (in String form) to remove
             final Set<String> remove = Sets.newHashSet();
-            // Get a single time to use as the last seen time during this run
-            final long useAsLastSeen = System.currentTimeMillis();
             // Convert the map to String/Long
             final Map<String, Long> childrenMap = node.getChildrenMap().entrySet().stream()
                 .collect(Collectors.toMap(
@@ -62,7 +62,7 @@ public class MembershipTask implements Runnable {
             // Loop over it
             for (final Entry<String, Long> entry : childrenMap.entrySet()) {
                 final String uuid = entry.getKey();
-                final long lastSeen = entry.getValue();
+                final long lastSeen = Math.abs(entry.getValue());
                 final ConfigurationNode childNode = node.getNode(uuid);
                 // If not in the channel and has been absent for 10 days, add to the remove set
                 if (!uuids.containsKey(uuid) && (lastSeen == 0L || System.currentTimeMillis() - lastSeen > TimeUnit.DAYS.toMillis(10L))) {
@@ -72,9 +72,10 @@ public class MembershipTask implements Runnable {
                     continue;
                 }
                 // If still in the channel, update the last seen
-                if (uuids.containsKey(uuid)) {
+                final CPlayer cp = uuids.get(uuid);
+                if (cp != null) {
                     // If uuids contains the key, this will be useAsLastSeen
-                    childNode.setValue(lastSeen);
+                    childNode.setValue(cp.getMainChannel().getName().equals(channel.getName()) ? -lastSeen : lastSeen);
                 }
             }
             // Remove any member to remove
