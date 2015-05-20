@@ -7,6 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.messages.Message;
@@ -64,6 +65,12 @@ public class ChatterboxListener implements Listener {
                 cp.setMainChannel(channel);
             }
         }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void leaveOnQuit(final PlayerQuitEvent event) {
+        final CPlayer cp = this.chatterbox.getAPI().getPlayerAPI().getCPlayer(event.getPlayer());
+        cp.getChannels().forEach(cp::leaveChannel);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
