@@ -1,5 +1,7 @@
 package works.chatterbox.chatterbox.listeners;
 
+import ninja.leaping.configurate.ConfigurationNode;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -9,6 +11,8 @@ import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
+
+// TODO: Check memberships from file
 
 public class ChatterboxListener implements Listener {
 
@@ -35,7 +39,26 @@ public class ChatterboxListener implements Listener {
         // Get all permanent channels and join them
         this.chatterbox.getAPI().getChannelAPI().getAllChannelNames().stream()
             .map(this.chatterbox.getAPI().getChannelAPI()::getChannelByName)
+            .filter(channel -> channel != null)
             .filter(Channel::isPermanent)
+            .forEach(cp::joinChannel);
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void joinPreviousChannels(final PlayerJoinEvent event) {
+        // Get the Player and CPlayer
+        final Player p = event.getPlayer();
+        final CPlayer cp = this.chatterbox.getAPI().getPlayerAPI().getCPlayer(p);
+        // Get all saved memberships
+        final ConfigurationNode memberships = this.chatterbox.getAPI().getChannelAPI().getMemberships();
+        this.chatterbox.getAPI().getChannelAPI().getAllChannelNames().stream()
+            // Filter out channels with memberships without the player
+            .filter(name -> !memberships.getNode(name).getNode(p.getUniqueId().toString()).isVirtual())
+            // Map the names to channels
+            .map(this.chatterbox.getAPI().getChannelAPI()::getChannelByName)
+            // Remove any nulls
+            .filter(channel -> channel != null)
+            // Join each channel
             .forEach(cp::joinChannel);
     }
 

@@ -4,13 +4,18 @@ import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.io.Files;
 import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.channels.ConfigChannel;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +35,7 @@ public class ChannelAPI {
             }
         });
     private final ConfigurationNode master;
+    private ConfigurationNode memberships;
 
     public ChannelAPI(@NotNull final Chatterbox chatterbox) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");
@@ -154,5 +160,39 @@ public class ChannelAPI {
     @NotNull
     public ConfigurationNode getMaster() {
         return this.master;
+    }
+
+    @NotNull
+    public ConfigurationNode getMemberships() {
+        if (this.memberships == null) {
+            final YAMLConfigurationLoader loader = YAMLConfigurationLoader.builder().setFile(new File(this.chatterbox.getDataFolder(), "memberships.yml")).build();
+            try {
+                this.memberships = loader.load();
+            } catch (final IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        return this.memberships;
+    }
+
+    public void saveMemberships() {
+        if (this.memberships == null) return;
+        final File source = new File(this.chatterbox.getDataFolder(), "memberships.yml");
+        if (!source.exists()) {
+            try {
+                Preconditions.checkState(source.createNewFile(), "Could not save memberships file");
+            } catch (final IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        final YAMLConfigurationLoader loader = YAMLConfigurationLoader.builder()
+            .setFile(source)
+            .setSink(Files.asCharSink(source, StandardCharsets.UTF_8))
+            .build();
+        try {
+            loader.save(this.memberships);
+        } catch (final IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

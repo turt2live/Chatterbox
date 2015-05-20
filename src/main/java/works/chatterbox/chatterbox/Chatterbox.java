@@ -7,6 +7,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.api.ChatterboxAPI;
+import works.chatterbox.chatterbox.channels.tasks.MembershipTask;
 import works.chatterbox.chatterbox.commands.ReflectiveCommandRegistrar;
 import works.chatterbox.chatterbox.hooks.HookManager;
 import works.chatterbox.chatterbox.listeners.ChatterboxListener;
@@ -42,6 +43,7 @@ public class Chatterbox extends JavaPlugin {
     private Language language;
     private ChatterboxAPI api;
     private ConfigurationNode configurationNode;
+    private MembershipTask membershipTask;
 
     private void addInternalPipelineStages() {
         Arrays.asList(
@@ -155,11 +157,19 @@ public class Chatterbox extends JavaPlugin {
         this.addInternalPipelineStages();
         this.registerListeners();
         this.loadHooks();
+        this.getServer().getScheduler().runTaskTimer(this, this.membershipTask = new MembershipTask(this), 36000L, 36000L);
     }
 
     @Override
     public void onDisable() {
+        // Unload all loaded hooks
         this.hm.unloadHooks();
+        // Shut down the RythmEngine
+        this.getAPI().getRythmAPI().getRythmEngine().shutdown();
+        // Cancel all of our tasks
+        this.getServer().getScheduler().cancelTasks(this);
+        // Save all memberships
+        this.membershipTask.run();
     }
 
     @Override
