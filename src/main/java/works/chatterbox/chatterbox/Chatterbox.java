@@ -34,7 +34,7 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-// TODO: https://gist.github.com/jkcclemens/9b6c7a54f71cf0628f7b
+// TODO: https://gist.github.com/jkcclemens/9b6c7a54f71cf0628f7b (as hook?)
 
 public class Chatterbox extends JavaPlugin {
 
