@@ -12,6 +12,7 @@ import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
+import works.chatterbox.chatterbox.wrappers.UUIDCPlayer;
 
 public class ChatterboxListener implements Listener {
 
@@ -70,6 +71,9 @@ public class ChatterboxListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void leaveOnQuit(final PlayerQuitEvent event) {
         final CPlayer cp = this.chatterbox.getAPI().getPlayerAPI().getCPlayer(event.getPlayer());
+        if (cp instanceof UUIDCPlayer) {
+            this.chatterbox.getAPI().getChannelAPI().updateMembershipsWithoutSave((UUIDCPlayer) cp);
+        }
         cp.getChannels().forEach(cp::leaveChannel);
     }
 

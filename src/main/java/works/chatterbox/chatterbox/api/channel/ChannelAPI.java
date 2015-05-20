@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.channels.ConfigChannel;
+import works.chatterbox.chatterbox.wrappers.UUIDCPlayer;
 
 import java.io.File;
 import java.io.IOException;
@@ -193,6 +194,26 @@ public class ChannelAPI {
             loader.save(this.memberships);
         } catch (final IOException ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * This updates the memberships for a player without saving to the disk. This is useful when a player quits, to save
+     * all memberships.
+     *
+     * @param cp UUIDCPlayer to save memberships for
+     */
+    public void updateMembershipsWithoutSave(@NotNull final UUIDCPlayer cp) {
+        Preconditions.checkNotNull(cp, "cp was null");
+        final ConfigurationNode memberships = this.getMemberships();
+        // Get a single time to use as the last seen time during this run
+        final long useAsLastSeen = System.currentTimeMillis();
+        // Loop through all LOADED channels (no one is in a channel that has not been loaded)
+        for (final Channel channel : cp.getChannels()) {
+            // Get the membership node
+            final ConfigurationNode node = memberships.getNode(channel.getName());
+            // Set the current time
+            node.getNode(cp.getUUID().toString()).setValue(cp.getMainChannel().getName().equals(channel.getName()) ? -useAsLastSeen : useAsLastSeen);
         }
     }
 }

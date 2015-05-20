@@ -32,7 +32,7 @@ public class MembershipTask implements Runnable {
         final ConfigurationNode memberships = this.chatterbox.getAPI().getChannelAPI().getMemberships();
         // Get a single time to use as the last seen time during this run
         final long useAsLastSeen = System.currentTimeMillis();
-        // Loop through all LOADED channels
+        // Loop through all LOADED channels (no one is in a channel that has not been loaded)
         for (final Channel channel : loadedChannels) {
             // Get the membership node
             final ConfigurationNode node = memberships.getNode(channel.getName());
@@ -53,10 +53,10 @@ public class MembershipTask implements Runnable {
                 ));
             // Get a similar map of all the current members, with the useAsLastSeen timestamp as the long
             final Map<String, Long> currentMembers = uuids.keySet().stream()
-                    .collect(Collectors.toMap(
-                        uuid -> uuid,
-                        uuid -> useAsLastSeen
-                    ));
+                .collect(Collectors.toMap(
+                    uuid -> uuid,
+                    uuid -> useAsLastSeen
+                ));
             // Add all current members to the children map
             childrenMap.putAll(currentMembers);
             // Loop over it
