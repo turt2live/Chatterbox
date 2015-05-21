@@ -1,7 +1,6 @@
 package works.chatterbox.chatterbox.messages;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -86,7 +85,7 @@ public abstract class SectionMessage implements Message {
 
         @Override
         public void addMember(@NotNull final CPlayer cp) {
-
+            SectionMessage.this.base.getChannel().addMember(cp);
         }
 
         @NotNull
@@ -98,19 +97,19 @@ public abstract class SectionMessage implements Message {
         @Nullable
         @Override
         public String getJSONSection(@NotNull final String sectionName) {
-            return null;
+            return SectionMessage.this.base.getChannel().getJSONSection(sectionName);
         }
 
         @NotNull
         @Override
         public Set<CPlayer> getMembers() {
-            return Sets.newHashSet();
+            return SectionMessage.this.base.getChannel().getMembers();
         }
 
         @NotNull
         @Override
         public String getName() {
-            return "json";
+            return return SectionMessage.this.base.getChannel().getName();
         }
 
         @Nullable
@@ -122,29 +121,29 @@ public abstract class SectionMessage implements Message {
         @Nullable
         @Override
         public String getRecipientSection(@NotNull final String sectionName) {
-            return null;
+            return SectionMessage.this.base.getChannel().getRecipientSection(sectionName);
         }
 
         @NotNull
         @Override
         public String getTag() {
-            return "json";
+            return SectionMessage.this.base.getChannel().getTag();
         }
 
         @NotNull
         @Override
         public WorldRecipients getWorldRecipients() {
-            return new WorldRecipients(Maps.newHashMap(), false, false);
+            return SectionMessage.this.base.getChannel().getWorldRecipients();
         }
 
         @Override
         public boolean isPermanent() {
-            return false;
+            return SectionMessage.this.base.getChannel().isPermanent();
         }
 
         @Override
         public void removeMember(@NotNull final CPlayer cp) {
-
+            SectionMessage.this.base.getChannel().removeMember(cp);
         }
     }
 
