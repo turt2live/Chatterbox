@@ -115,7 +115,7 @@ public abstract class SectionMessage implements Message {
         @Nullable
         @Override
         public Radius getRadius() {
-            return null;
+            return SectionMessage.this.base.getChannel().getRadius();
         }
 
         @Nullable
