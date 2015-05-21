@@ -109,7 +109,7 @@ public abstract class SectionMessage implements Message {
         @NotNull
         @Override
         public String getName() {
-            return return SectionMessage.this.base.getChannel().getName();
+            return SectionMessage.this.base.getChannel().getName();
         }
 
         @Nullable
