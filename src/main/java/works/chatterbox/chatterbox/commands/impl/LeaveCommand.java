@@ -10,6 +10,8 @@ import works.chatterbox.chatterbox.commands.ChannelTabCommand;
 import works.chatterbox.chatterbox.commands.ReflectCommand;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
+import java.util.Iterator;
+
 @ReflectCommand(
     name = "leave",
     description = "Leaves a channel.",
@@ -47,10 +49,8 @@ public class LeaveCommand extends ChannelTabCommand {
         cp.leaveChannel(channel);
         cs.sendMessage(ChatColor.BLUE + this.plugin.getLanguage().getFormattedString("LEFT_CHANNEL", ChatColor.GRAY + channel.getName() + ChatColor.BLUE));
         if (wasMainChannel) {
-            Channel newMain = cp.getChannels().iterator().next();
-            if (newMain == null) {
-                newMain = this.plugin.getAPI().getChannelAPI().getDefaultChannel();
-            }
+            final Iterator<Channel> channels = cp.getChannels().iterator();
+            final Channel newMain = channels.hasNext() ? channels.next() : this.plugin.getAPI().getChannelAPI().getDefaultChannel();
             cp.setMainChannel(newMain);
             cs.sendMessage(ChatColor.BLUE + this.plugin.getLanguage().getFormattedString("NEW_MAIN_CHANNEL", ChatColor.GRAY + newMain.getName() + ChatColor.BLUE));
         }
