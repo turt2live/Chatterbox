@@ -12,7 +12,7 @@ language:
 ###############
 
 # These formats have a limited variable scope. These are not passed through the message pipeline; they are only parsed
-# by Rythm.
+# by Rythm. This also means that special methods like startJSON are not available.
 # The sender variable is guaranteed to be a CommandSender, but nothing more.
 # The message variable is guaranteed to be a String.
 # Those are the only two variables available.
