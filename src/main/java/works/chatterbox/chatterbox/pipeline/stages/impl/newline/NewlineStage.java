@@ -10,6 +10,6 @@ public class NewlineStage implements Stage {
     @Override
     public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
         if (message.isCancelled()) return;
-        message.setFormat(message.getFormat().replace("\n", " ").replace("%n", "\n"));
+        message.setFormat(message.getFormat().replace("\n", "").replace("%n", "\n"));
     }
 }
