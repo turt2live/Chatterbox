@@ -13,6 +13,8 @@ import works.chatterbox.chatterbox.pipeline.PipelineContext;
 import works.chatterbox.chatterbox.pipeline.stages.Stage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.ChatterboxSpecialUtilities;
 import works.chatterbox.chatterbox.shaded.mkremins.fanciful.FancyMessage;
+import works.chatterbox.chatterbox.shaded.mkremins.fanciful.MessagePart;
+import works.chatterbox.chatterbox.shaded.mkremins.fanciful.TextualComponent;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.util.Arrays;
@@ -121,7 +123,32 @@ public class JSONStage implements Stage {
             this.getLastColors(format.substring(0, end.end())).forEach(cc -> this.addToFancyMessage(fm, cc));
         }
         // Return the JSON if we need to, otherwise null
-        return isJSON ? fm : null;
+        if (isJSON) {
+            // Process old colors into JSON colors, fixing #3
+            this.oldColorsToNew(fm);
+            return fm;
+        }
+        return null;
+    }
+
+    private void oldColorsToNew(@NotNull final FancyMessage message) {
+        Preconditions.checkNotNull(message, "message was null");
+        ChatColor lastColor = ChatColor.WHITE;
+        for (final MessagePart part : message) {
+            final List<ChatColor> colors = this.getLastColors(part.text.getReadableString());
+            if (colors.isEmpty()) {
+                colors.add(lastColor);
+            }
+            final String stripped = ChatColor.stripColor(part.text.getReadableString());
+            part.text = TextualComponent.rawText(stripped);
+            for (final ChatColor color : colors) {
+                if (color.isColor()) {
+                    lastColor = part.color = color;
+                } else if (color.isFormat()) {
+                    part.styles.add(color);
+                }
+            }
+        }
     }
 
     private boolean recipient(@NotNull final Message message, @NotNull final PipelineContext context) {
