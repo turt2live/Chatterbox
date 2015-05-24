@@ -50,7 +50,7 @@ master:
     text: '@(chatterbox.startJSON("display-name"))@(playerName)@(chatterbox.endJSON("display-name")): @(message)'
     json:
       display-name: |
-                    Display name:
+                    Display name:%n
                     @(playerDisplayName)
   # If a channel is permanent, it will always be joined by every player, and it can never be left. This is useful for
   # channels that are intended to be global.
@@ -149,5 +149,5 @@ channels:
       file: rif.txt
       json:
         channel: |
-                 &9&lChannel
+                 &9&lChannel%n
                  @channel.getName()
