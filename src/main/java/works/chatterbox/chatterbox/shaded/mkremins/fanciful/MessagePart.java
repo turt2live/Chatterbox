@@ -33,7 +33,7 @@ public final class MessagePart implements JsonRepresentedObject, ConfigurationSe
         this.text = text;
     }
 
-    MessagePart() {
+    public MessagePart() {
         this.text = null;
     }
 

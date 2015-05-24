@@ -1,6 +1,7 @@
 package works.chatterbox.chatterbox.pipeline.stages.impl.json;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -18,6 +19,7 @@ import works.chatterbox.chatterbox.shaded.mkremins.fanciful.TextualComponent;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 
 public class JSONStage implements Stage {
 
+    private final static Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf('§') + "[0-9A-FK-OR]");
     private final Chatterbox chatterbox;
     private final Pattern startJSON = Pattern.compile(ChatterboxSpecialUtilities.getSignifier() + "Start JSON (.+?)" + ChatterboxSpecialUtilities.getSignifier());
     private final Pattern endJSON = Pattern.compile(ChatterboxSpecialUtilities.getSignifier() + "End JSON (.+?)" + ChatterboxSpecialUtilities.getSignifier());
@@ -39,6 +42,23 @@ public class JSONStage implements Stage {
         } else if (chatColor != ChatColor.RESET) {
             message.style(chatColor);
         }
+    }
+
+    private ChatColor colorPart(final MessagePart part, ChatColor lastColor) {
+        final List<ChatColor> colors = this.getLastColors(part.text.getReadableString());
+        if (colors.isEmpty()) {
+            colors.add(lastColor);
+        }
+        final String stripped = ChatColor.stripColor(part.text.getReadableString());
+        part.text = TextualComponent.rawText(stripped);
+        for (final ChatColor color : colors) {
+            if (color.isColor()) {
+                lastColor = part.color = color;
+            } else if (color.isFormat()) {
+                part.styles.add(color);
+            }
+        }
+        return lastColor;
     }
 
     private List<ChatColor> getLastColors(@NotNull final String segment) {
@@ -131,24 +151,39 @@ public class JSONStage implements Stage {
         return null;
     }
 
+    private MessagePart makeNewPart(final String contents) {
+        final MessagePart part = new MessagePart();
+        part.text = TextualComponent.rawText(contents);
+        return part;
+    }
+
     private void oldColorsToNew(@NotNull final FancyMessage message) {
         Preconditions.checkNotNull(message, "message was null");
-        ChatColor lastColor = ChatColor.WHITE;
+        final List<MessagePart> newParts = Lists.newArrayList();
         for (final MessagePart part : message) {
-            final List<ChatColor> colors = this.getLastColors(part.text.getReadableString());
-            if (colors.isEmpty()) {
-                colors.add(lastColor);
+            final String readable = part.text.getReadableString();
+            final Matcher matcher = JSONStage.STRIP_COLOR_PATTERN.matcher(readable);
+            int lastStart = 0;
+            while (matcher.find()) {
+                // substring from last end of colors to this start of colors
+                final MessagePart newPart = this.makeNewPart(readable.substring(lastStart, matcher.start()));
+                newParts.add(newPart);
+                lastStart = matcher.start();
             }
-            final String stripped = ChatColor.stripColor(part.text.getReadableString());
-            part.text = TextualComponent.rawText(stripped);
-            for (final ChatColor color : colors) {
-                if (color.isColor()) {
-                    lastColor = part.color = color;
-                } else if (color.isFormat()) {
-                    part.styles.add(color);
-                }
+            // substring from last start of colors to end
+            newParts.add(this.makeNewPart(readable.substring(lastStart, readable.length())));
+        }
+        ChatColor lastColor = ChatColor.WHITE;
+        final Iterator<MessagePart> partIterator = newParts.iterator();
+        while (partIterator.hasNext()) {
+            final MessagePart part = partIterator.next();
+            lastColor = this.colorPart(part, lastColor);
+            if (part.text.getReadableString().isEmpty()) {
+                partIterator.remove();
             }
         }
+        message.getMessageParts().clear();
+        message.getMessageParts().addAll(newParts);
     }
 
     private boolean recipient(@NotNull final Message message, @NotNull final PipelineContext context) {

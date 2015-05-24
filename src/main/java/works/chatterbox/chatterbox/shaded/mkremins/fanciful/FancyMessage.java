@@ -415,6 +415,10 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
         return formattedTooltip(ArrayWrapper.toArray(lines, FancyMessage.class));
     }
 
+    public List<MessagePart> getMessageParts() {
+        return this.messageParts;
+    }
+
     /**
      * Set the behavior of the current editing component to instruct the client to append the chat input box content with the specified string when the currently edited part of the {@code FancyMessage} is SHIFT-CLICKED.
      * The client will not immediately send the command to the server to be executed unless the client player submits the command/chat message, usually with the enter key.
