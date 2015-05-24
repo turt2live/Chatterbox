@@ -36,7 +36,9 @@ public class JSONStage implements Stage {
         this.chatterbox = chatterbox;
     }
 
-    private void addToFancyMessage(final FancyMessage message, final ChatColor chatColor) {
+    private void addToFancyMessage(@NotNull final FancyMessage message, @NotNull final ChatColor chatColor) {
+        Preconditions.checkNotNull(message, "message was null");
+        Preconditions.checkNotNull(chatColor, "chatColor was null");
         if (chatColor.isColor()) {
             message.color(chatColor);
         } else if (chatColor != ChatColor.RESET) {
@@ -44,7 +46,10 @@ public class JSONStage implements Stage {
         }
     }
 
-    private ChatColor colorPart(final MessagePart part, ChatColor lastColor) {
+    @NotNull
+    private ChatColor colorPart(@NotNull final MessagePart part, @NotNull ChatColor lastColor) {
+        Preconditions.checkNotNull(part, "part was null");
+        Preconditions.checkNotNull(lastColor, "lastColor was null");
         final List<ChatColor> colors = this.getLastColors(part.text.getReadableString());
         if (colors.isEmpty()) {
             colors.add(lastColor);
@@ -61,6 +66,7 @@ public class JSONStage implements Stage {
         return lastColor;
     }
 
+    @NotNull
     private List<ChatColor> getLastColors(@NotNull final String segment) {
         Preconditions.checkNotNull(segment, "segment was null");
         return Arrays.stream(ChatColor.getLastColors(segment).split("§"))
@@ -151,7 +157,10 @@ public class JSONStage implements Stage {
         return null;
     }
 
-    private MessagePart makeNewPart(final String contents, final MessagePart oldPart) {
+    @NotNull
+    private MessagePart makeNewPart(@NotNull final String contents, @NotNull final MessagePart oldPart) {
+        Preconditions.checkNotNull(contents, "contents was null");
+        Preconditions.checkNotNull(oldPart, "oldPart was null");
         final MessagePart part;
         try {
             part = oldPart.clone();
