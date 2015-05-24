@@ -107,7 +107,7 @@
         <dependency>
             <groupId>ninja.leaping.configurate</groupId>
             <artifactId>configurate-yaml</artifactId>
-            <version>1.1.1</version>
+            <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
