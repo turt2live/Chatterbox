@@ -22,10 +22,10 @@ public final class MessagePart implements JsonRepresentedObject, ConfigurationSe
     static final BiMap<ChatColor, String> stylesToNames;
     public ChatColor color = ChatColor.WHITE;
     public ArrayList<ChatColor> styles = new ArrayList<>();
+    public TextualComponent text = null;
     String clickActionName = null, clickActionData = null,
         hoverActionName = null;
     JsonRepresentedObject hoverActionData = null;
-    public TextualComponent text = null;
     String insertionData = null;
     ArrayList<JsonRepresentedObject> translationReplacements = new ArrayList<>();
 

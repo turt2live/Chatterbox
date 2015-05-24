@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import works.chatterbox.chatterbox.Chatterbox;
-import works.chatterbox.chatterbox.commands.TabCommand;
 
 import java.util.Arrays;
 import java.util.Collection;
