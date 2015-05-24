@@ -11,7 +11,7 @@ import java.util.Map;
 
 public abstract class FormatCommand extends BaseCommand<Chatterbox> {
 
-    private final Joiner spaceJoiner = Joiner.on(' ');
+    private final static Joiner spaceJoiner = Joiner.on(' ');
     private final String nodeName;
 
     public FormatCommand(final Chatterbox instance, final String name, final boolean checkPermissions, final String nodeName) {
@@ -27,7 +27,7 @@ public abstract class FormatCommand extends BaseCommand<Chatterbox> {
         }
         final Map<String, Object> variables = Maps.newHashMap();
         variables.put("sender", cs);
-        variables.put("message", this.spaceJoiner.join(args));
+        variables.put("message", FormatCommand.spaceJoiner.join(args));
         final String rendered = this.plugin.getAPI().getRythmAPI().render(
             this.plugin.getConfiguration().getNode("formats").getNode(this.nodeName).getString("@(message)"),
             variables
