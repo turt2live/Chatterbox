@@ -50,9 +50,12 @@ public class ChannelCommand extends ChannelTabCommand {
             return true;
         }
         final CPlayer cp = this.plugin.getAPI().getPlayerAPI().getCPlayer(p);
-        cp.joinChannel(channel);
+        final boolean wasInChannel = cp.getChannels().contains(channel);
+        if (!wasInChannel) {
+            cp.joinChannel(channel);
+        }
         cp.setMainChannel(channel);
-        cs.sendMessage(ChatColor.BLUE + this.plugin.getLanguage().getFormattedString("JOINED_CHANNEL", ChatColor.GRAY + channel.getName() + ChatColor.BLUE));
+        cs.sendMessage(ChatColor.BLUE + this.plugin.getLanguage().getFormattedString(wasInChannel ? "NEW_MAIN_CHANNEL" : "JOINED_CHANNEL", ChatColor.GRAY + channel.getName() + ChatColor.BLUE));
         return true;
     }
 }
