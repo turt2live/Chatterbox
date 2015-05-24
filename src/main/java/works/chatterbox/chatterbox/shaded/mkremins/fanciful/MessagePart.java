@@ -17,15 +17,15 @@ import java.util.logging.Level;
 /**
  * Internal class: Represents a component of a JSON-serializable {@link FancyMessage}.
  */
-final class MessagePart implements JsonRepresentedObject, ConfigurationSerializable, Cloneable {
+public final class MessagePart implements JsonRepresentedObject, ConfigurationSerializable, Cloneable {
 
     static final BiMap<ChatColor, String> stylesToNames;
-    ChatColor color = ChatColor.WHITE;
-    ArrayList<ChatColor> styles = new ArrayList<>();
+    public ChatColor color = ChatColor.WHITE;
+    public ArrayList<ChatColor> styles = new ArrayList<>();
     String clickActionName = null, clickActionData = null,
         hoverActionName = null;
     JsonRepresentedObject hoverActionData = null;
-    TextualComponent text = null;
+    public TextualComponent text = null;
     String insertionData = null;
     ArrayList<JsonRepresentedObject> translationReplacements = new ArrayList<>();
 
