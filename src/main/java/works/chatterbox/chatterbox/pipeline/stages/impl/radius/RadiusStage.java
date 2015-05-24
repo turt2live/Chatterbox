@@ -8,7 +8,7 @@ import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.pipeline.PipelineContext;
 import works.chatterbox.chatterbox.pipeline.stages.Stage;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RadiusStage implements Stage {
@@ -20,10 +20,10 @@ public class RadiusStage implements Stage {
         if (p == null) return;
         final Radius radius = message.getChannel().getRadius();
         if (radius == null) return;
-        final List<Player> players = p.getNearbyEntities(radius.getHorizontal(), radius.getVertical(), radius.getHorizontal()).stream()
+        final Set<Player> players = p.getNearbyEntities(radius.getHorizontal(), radius.getVertical(), radius.getHorizontal()).stream()
             .filter(entity -> entity.getType() == EntityType.PLAYER)
             .map(entity -> (Player) entity)
-            .collect(Collectors.toList());
+            .collect(Collectors.toSet());
         message.getRecipients().retainAll(players);
     }
 }
