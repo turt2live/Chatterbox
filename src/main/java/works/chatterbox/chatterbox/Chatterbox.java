@@ -1,6 +1,7 @@
 package works.chatterbox.chatterbox;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.bukkit.plugin.PluginManager;
@@ -23,6 +24,7 @@ import works.chatterbox.chatterbox.pipeline.stages.impl.recipient.RecipientStage
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.RythmStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.SpecialStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.world.WorldStage;
+import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -151,7 +153,12 @@ public class Chatterbox extends JavaPlugin {
             return;
         }
         this.api = new ChatterboxAPI(this);
-        if (!isReload) {
+        if (isReload) {
+            // Rejoin all previous channels
+            Sets.newHashSet(this.getServer().getOnlinePlayers()).stream()
+                .map(this.api.getPlayerAPI()::getCPlayer)
+                .forEach(CPlayer::joinPreviousChannels);
+        } else {
             this.registerCommands();
         }
         this.addInternalPipelineStages();

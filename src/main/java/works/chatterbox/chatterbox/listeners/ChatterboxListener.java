@@ -1,7 +1,5 @@
 package works.chatterbox.chatterbox.listeners;
 
-import ninja.leaping.configurate.ConfigurationNode;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -46,26 +44,8 @@ public class ChatterboxListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void joinPreviousChannels(final PlayerJoinEvent event) {
-        // Get the Player and CPlayer
-        final Player p = event.getPlayer();
-        final CPlayer cp = this.chatterbox.getAPI().getPlayerAPI().getCPlayer(p);
-        // Get all saved memberships
-        final ConfigurationNode memberships = this.chatterbox.getAPI().getChannelAPI().getMemberships();
-        for (final String channelName : this.chatterbox.getAPI().getChannelAPI().getAllChannelNames()) {
-            final ConfigurationNode channelNode = memberships.getNode(channelName).getNode(p.getUniqueId().toString());
-            // Filter out channels with memberships without the player
-            if (channelNode.isVirtual()) continue;
-            // Map the names to channels
-            final Channel channel = this.chatterbox.getAPI().getChannelAPI().getChannelByName(channelName);
-            // Remove any nulls
-            if (channel == null) continue;
-            // Join each channel
-            cp.joinChannel(channel);
-            if (channelNode.getLong() < 0L) {
-                // If the lastSeenTime is negative, it was the main channel
-                cp.setMainChannel(channel);
-            }
-        }
+        final CPlayer cp = this.chatterbox.getAPI().getPlayerAPI().getCPlayer(event.getPlayer());
+        cp.joinPreviousChannels();
     }
 
     @EventHandler(ignoreCancelled = true)

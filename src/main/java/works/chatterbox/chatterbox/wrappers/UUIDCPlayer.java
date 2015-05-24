@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import ninja.leaping.configurate.ConfigurationNode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -97,6 +98,26 @@ public class UUIDCPlayer implements CPlayer {
         }
         this.joinedChannels.add(channel);
         channel.addMember(this);
+    }
+
+    @Override
+    public void joinPreviousChannels() {
+        final ConfigurationNode memberships = this.chatterbox.getAPI().getChannelAPI().getMemberships();
+        for (final String channelName : this.chatterbox.getAPI().getChannelAPI().getAllChannelNames()) {
+            final ConfigurationNode channelNode = memberships.getNode(channelName).getNode(this.getUUID().toString());
+            // Filter out channels with memberships without the player
+            if (channelNode.isVirtual()) continue;
+            // Map the names to channels
+            final Channel channel = this.chatterbox.getAPI().getChannelAPI().getChannelByName(channelName);
+            // Remove any nulls
+            if (channel == null) continue;
+            // Join each channel
+            this.joinChannel(channel);
+            if (channelNode.getLong() < 0L) {
+                // If the lastSeenTime is negative, it was the main channel
+                this.setMainChannel(channel);
+            }
+        }
     }
 
     @Override

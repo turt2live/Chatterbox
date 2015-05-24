@@ -68,6 +68,11 @@ public interface CPlayer {
     void joinChannel(@NotNull final Channel channel);
 
     /**
+     * Joins channels contained in the memberships database.
+     */
+    void joinPreviousChannels();
+
+    /**
      * Removes this player from the given channel.
      *
      * @param channel Channel to leave
