@@ -7,8 +7,14 @@ import org.bukkit.entity.Player;
 import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.commands.ChannelTabCommand;
+import works.chatterbox.chatterbox.commands.ReflectCommand;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
+@ReflectCommand(
+    name = "join",
+    description = "Joins a channel, but does not set it as your main channel.",
+    usage = "/<command> [channel]"
+)
 public class JoinCommand extends ChannelTabCommand {
 
     public JoinCommand(final Chatterbox instance, final String name) {
