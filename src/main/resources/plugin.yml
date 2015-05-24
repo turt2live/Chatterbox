@@ -9,3 +9,5 @@ reflectcommands:
 - commands.impl.JoinCommand
 - commands.impl.LeaveCommand
 - commands.impl.ChatterboxCommand
+- commands.impl.formats.action.ActionCommand
+- commands.impl.formats.say.SayCommand

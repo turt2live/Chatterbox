@@ -11,9 +11,14 @@ language:
 ### FORMATS ###
 ###############
 
+# These formats have a limited variable scope. These are not passed through the message pipeline; they are only parsed
+# by Rythm.
+# The sender variable is guaranteed to be a CommandSender, but nothing more.
+# The message variable is guaranteed to be a String.
+# Those are the only two variables available.
 formats:
-  say: ""
-  action: ""
+  say: "[@(sender.getName())] @(message)"
+  action: "* @(sender.getName()) @(message)"
 
 ##############
 ### TITLES ###
