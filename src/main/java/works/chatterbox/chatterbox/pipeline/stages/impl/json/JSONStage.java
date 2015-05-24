@@ -2,6 +2,7 @@ package works.chatterbox.chatterbox.pipeline.stages.impl.json;
 
 import com.google.common.base.Preconditions;
 import ninja.leaping.configurate.ConfigurationNode;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,8 +15,11 @@ import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.ChatterboxSpecialU
 import works.chatterbox.chatterbox.shaded.mkremins.fanciful.FancyMessage;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class JSONStage implements Stage {
 
@@ -25,6 +29,23 @@ public class JSONStage implements Stage {
 
     public JSONStage(final Chatterbox chatterbox) {
         this.chatterbox = chatterbox;
+    }
+
+    private void addToFancyMessage(final FancyMessage message, final ChatColor chatColor) {
+        if (chatColor.isColor()) {
+            message.color(chatColor);
+        } else if (chatColor != ChatColor.RESET) {
+            message.style(chatColor);
+        }
+    }
+
+    private List<ChatColor> getLastColors(@NotNull final String segment) {
+        Preconditions.checkNotNull(segment, "segment was null");
+        return Arrays.stream(ChatColor.getLastColors(segment).split("§"))
+            .filter(s -> s.length() == 1)
+            .map(ChatColor::getByChar)
+            .filter(cc -> cc != null)
+            .collect(Collectors.toList());
     }
 
     @Nullable
@@ -68,13 +89,18 @@ public class JSONStage implements Stage {
                     format.substring(start.end(), end.start()) +
                     format.substring(end.end(), format.length())
             );
+            final String before = format.substring(lastCloseEnd, start.start());
             // Add content to the FancyMessage
             if (lastCloseEnd == 0) {
-                fm.text(format.substring(lastCloseEnd, start.start()));
+                fm.text(before);
             } else {
-                fm.then(format.substring(lastCloseEnd, start.start()));
+                fm.then(before);
             }
+            // Add any necessary colors
+            this.getLastColors(format.substring(0, lastCloseEnd)).forEach(cc -> this.addToFancyMessage(fm, cc));
             fm.then(format.substring(start.end(), end.start()));
+            // Add any necessary colors
+            this.getLastColors(format.substring(0, start.start())).forEach(cc -> this.addToFancyMessage(fm, cc));
             // Get the tooltip
             final String tooltip = this.getTooltip(message, sectionName);
             // If it isn't null, apply it
@@ -91,6 +117,8 @@ public class JSONStage implements Stage {
         // Add on any bits at the end
         if (end.end() != format.length()) {
             fm.then(format.substring(end.end(), format.length()));
+            // Add any necessary colors
+            this.getLastColors(format.substring(0, end.end())).forEach(cc -> this.addToFancyMessage(fm, cc));
         }
         // Return the JSON if we need to, otherwise null
         return isJSON ? fm : null;
