@@ -24,6 +24,7 @@ public class RadiusStage implements Stage {
             .filter(entity -> entity.getType() == EntityType.PLAYER)
             .map(entity -> (Player) entity)
             .collect(Collectors.toSet());
+        players.add(p);
         message.getRecipients().retainAll(players);
     }
 }
