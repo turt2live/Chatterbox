@@ -171,19 +171,13 @@ public class ConfigChannel implements Channel {
     @Nullable
     @Override
     public Radius getRadius() {
-        return this.getConfiguration(ChannelConfiguration.RADIUS, node -> node.getValue(input -> {
-            if (!(input instanceof Map)) return null;
-            @SuppressWarnings("unchecked")
-            final Map<String, Object> internal = (Map<String, Object>) input;
-            // TODO: Better way to handle this
-            if (!Boolean.parseBoolean(internal.get(ChannelConfiguration.RADIUS_ENABLED.getKey()).toString())) {
-                return null;
-            }
+        return this.getConfiguration(ChannelConfiguration.RADIUS, node -> {
+            if (!node.getNode(ChannelConfiguration.RADIUS_ENABLED.getKey()).getBoolean()) return null;
             return new Radius(
-                Double.parseDouble(internal.get(ChannelConfiguration.RADIUS_HORIZONTAL.getKey()).toString()),
-                Double.parseDouble(internal.get(ChannelConfiguration.RADIUS_VERTICAL.getKey()).toString())
+                node.getNode(ChannelConfiguration.RADIUS_HORIZONTAL.getKey()).getDouble(),
+                node.getNode(ChannelConfiguration.RADIUS_VERTICAL.getKey()).getDouble()
             );
-        }));
+        });
     }
 
     @Nullable
