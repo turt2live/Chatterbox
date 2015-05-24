@@ -151,8 +151,13 @@ public class JSONStage implements Stage {
         return null;
     }
 
-    private MessagePart makeNewPart(final String contents) {
-        final MessagePart part = new MessagePart();
+    private MessagePart makeNewPart(final String contents, final MessagePart oldPart) {
+        final MessagePart part;
+        try {
+            part = oldPart.clone();
+        } catch (final CloneNotSupportedException ex) {
+            throw new RuntimeException(ex);
+        }
         part.text = TextualComponent.rawText(contents);
         return part;
     }
@@ -166,12 +171,12 @@ public class JSONStage implements Stage {
             int lastStart = 0;
             while (matcher.find()) {
                 // substring from last end of colors to this start of colors
-                final MessagePart newPart = this.makeNewPart(readable.substring(lastStart, matcher.start()));
+                final MessagePart newPart = this.makeNewPart(readable.substring(lastStart, matcher.start()), part);
                 newParts.add(newPart);
                 lastStart = matcher.start();
             }
             // substring from last start of colors to end
-            newParts.add(this.makeNewPart(readable.substring(lastStart, readable.length())));
+            newParts.add(this.makeNewPart(readable.substring(lastStart, readable.length()), part));
         }
         ChatColor lastColor = ChatColor.WHITE;
         final Iterator<MessagePart> partIterator = newParts.iterator();
