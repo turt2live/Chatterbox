@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.channels.Channel;
+import works.chatterbox.chatterbox.titles.Titles;
 
 import java.util.Set;
 import java.util.UUID;
@@ -74,6 +75,12 @@ public class UUIDCPlayer implements CPlayer {
     @Override
     public Player getPlayer() {
         return this.chatterbox.getServer().getPlayer(this.getUUID());
+    }
+
+    @NotNull
+    @Override
+    public Titles getTitles() {
+        return this.chatterbox.getAPI().getTitleAPI().getTitles(this.getUUID());
     }
 
     @Override

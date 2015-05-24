@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.channels.Channel;
+import works.chatterbox.chatterbox.titles.Titles;
 
 import java.util.Set;
 import java.util.function.Consumer;
@@ -50,6 +51,14 @@ public interface CPlayer {
      */
     @Nullable
     Player getPlayer();
+
+    /**
+     * Gets any titles associated with this player.
+     *
+     * @return Titles
+     */
+    @NotNull
+    Titles getTitles();
 
     void ifOnline(@NotNull final Consumer<Player> function);
 

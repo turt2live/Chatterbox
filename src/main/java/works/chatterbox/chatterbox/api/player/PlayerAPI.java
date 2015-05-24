@@ -4,6 +4,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalListener;
+import com.google.common.cache.RemovalNotification;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.Chatterbox;
@@ -21,6 +23,15 @@ public class PlayerAPI {
 
     private final LoadingCache<UUID, CPlayer> players = CacheBuilder.newBuilder()
         .softValues()
+        .removalListener(new RemovalListener<UUID, CPlayer>() {
+            @Override
+            public void onRemoval(@NotNull final RemovalNotification<UUID, CPlayer> notification) {
+                final UUID uuid = notification.getKey();
+                if (uuid == null) return;
+                // Invalidate the titles being kept with this player
+                PlayerAPI.this.chatterbox.getAPI().getTitleAPI().invalidate(uuid);
+            }
+        })
         .build(new CacheLoader<UUID, CPlayer>() {
             @Override
             @NotNull

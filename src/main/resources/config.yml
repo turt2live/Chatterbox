@@ -28,10 +28,11 @@ formats:
 titles:
   # Titles to apply to individuals
   individuals:
-    jkcclemens:
+    # UUIDs should only be lowercase
+    42ae86b2-ad8c-4ecf-ad49-423b896ef65b:
       prefix: "[Developer]"
       suffix: ""
-  # Titles to apply to permission groups
+  # Titles to apply to permission groups, if the Vault hook is installed
   groups:
     Admin:
       prefix: "[Admin]"

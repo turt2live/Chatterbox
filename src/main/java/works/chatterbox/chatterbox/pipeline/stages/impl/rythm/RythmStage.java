@@ -42,6 +42,7 @@ public class RythmStage implements Stage {
         Preconditions.checkNotNull(message, "message was null");
         final Map<String, Object> vars = Maps.newHashMap();
         vars.put("message", message.getMessage());
+        vars.put("cplayer", message.getSender());
         vars.put("player", message.getSender().getPlayer());
         vars.put("channel", message.getChannel());
         this.addAncientVariables(vars, message);
