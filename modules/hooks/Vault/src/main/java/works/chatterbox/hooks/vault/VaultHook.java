@@ -14,6 +14,7 @@ public class VaultHook extends ChatterboxHook {
     @Override
     public void deinit() {
         this.vaultMagic = null;
+        this.getLogger().info("Unloaded.");
     }
 
     @Override
@@ -24,6 +25,7 @@ public class VaultHook extends ChatterboxHook {
         final PluginManager pm = this.getChatterbox().getServer().getPluginManager();
         pm.registerEvents(new PlayerListener(this), this.getChatterbox());
         pm.registerEvents(new ServerListener(this), this.getChatterbox());
+        this.getLogger().info("Loaded.");
     }
 
     @Nullable
