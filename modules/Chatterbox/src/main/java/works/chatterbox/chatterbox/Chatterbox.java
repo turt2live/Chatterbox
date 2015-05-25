@@ -96,20 +96,25 @@ public class Chatterbox extends JavaPlugin {
 
     private void loadHooks() {
         this.getServer().getScheduler().runTask(this, () -> {
-            // Load hooks on the disk first
-            this.hm.loadHooks();
-            // Then try to load the internal Vault hook
+            // Load internal Vault hook
             this.loadVaultHook();
+            // Then load hooks on disk
+            this.hm.loadHooks();
         });
     }
 
     private void loadVaultHook() {
+        final ConfigurationNode vaultNode = this.getConfiguration().getNode("dependencies").getNode("vault");
+        // If we weren't instructed to install the hook, don't
+        if (!vaultNode.getNode("install").getBoolean(true)) return;
         // Don't load if another Vault hook is already loaded
         if (this.hm.getHooks().stream().anyMatch(h -> h.getDescriptor().getName().equals("Vault"))) return;
         final File vaultJar = new File(this.hm.getHooksDirectory(), "Vault.jar");
-        // If a Vault.jar already exists, don't load (would have already been attempted)
-        if (vaultJar.exists()) return;
+        // If a Vault.jar already exists and we were told not to overwrite, don't
+        if (!vaultNode.getNode("overwrite").getBoolean(true) && vaultJar.exists()) return;
         try {
+            // Delete the old jar if it exists
+            Files.deleteIfExists(vaultJar.toPath());
             // Copy the internal jar
             Files.copy(this.getResource("Vault.jar"), vaultJar.toPath());
             // Load it

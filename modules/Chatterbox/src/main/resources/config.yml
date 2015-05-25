@@ -157,3 +157,14 @@ channels:
         channel: |
                  &9&lChannel%n
                  @channel.getName()
+
+################
+### ADVANCED ###
+################
+
+# Don't touch these if you don't know what you're doing.
+
+dependencies:
+  vault:
+    install: true
+    overwrite: true
