@@ -189,12 +189,11 @@ public class Chatterbox extends JavaPlugin {
             return;
         }
         this.api = new ChatterboxAPI(this);
-        if (isReload) {
-            // Rejoin all previous channels
-            Sets.newHashSet(this.getServer().getOnlinePlayers()).stream()
-                .map(this.api.getPlayerAPI()::getCPlayer)
-                .forEach(CPlayer::joinPreviousChannels);
-        } else {
+        // Rejoin all previous channels
+        Sets.newHashSet(this.getServer().getOnlinePlayers()).stream()
+            .map(this.api.getPlayerAPI()::getCPlayer)
+            .forEach(CPlayer::joinPreviousChannels);
+        if (!isReload) {
             this.registerCommands();
         }
         this.addInternalPipelineStages();
