@@ -6,9 +6,11 @@ import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.api.ChatterboxAPI;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 public abstract class ChatterboxHook {
 
+    private final Logger logger = new HookLogger(this);
     private Chatterbox chatterbox;
     private File dataFolder;
     private HookDescriptor descriptor;
@@ -58,6 +60,16 @@ public abstract class ChatterboxHook {
     @NotNull
     public HookDescriptor getDescriptor() {
         return this.descriptor;
+    }
+
+    /**
+     * Gets the logger for this hook.
+     *
+     * @return Logger
+     */
+    @NotNull
+    public Logger getLogger() {
+        return this.logger;
     }
 
     /**
