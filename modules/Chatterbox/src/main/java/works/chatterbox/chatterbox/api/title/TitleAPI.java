@@ -46,7 +46,7 @@ public class TitleAPI {
         Preconditions.checkNotNull(uuid, "uuid was null");
         Preconditions.checkNotNull(titles, "titles was null");
         final ConfigurationNode node = this.chatterbox.getConfiguration().getNode("titles").getNode("individuals").getNode(uuid.toString().toLowerCase());
-        this.addTitles(10, titles, node);
+        this.addTitles(100, titles, node);
         final ConfigurationNode asterisk = this.chatterbox.getConfiguration().getNode("titles").getNode("*");
         this.addTitles(0, titles, asterisk);
         return titles;

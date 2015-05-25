@@ -1,0 +1,4 @@
+name: Vault
+main: works.chatterbox.hooks.vault.VaultHook
+author: jkcclemens
+version: ${pluginversion}

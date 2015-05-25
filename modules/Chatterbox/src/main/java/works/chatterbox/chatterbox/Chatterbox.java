@@ -7,6 +7,7 @@ import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.api.ChatterboxAPI;
 import works.chatterbox.chatterbox.channels.tasks.MembershipTask;
 import works.chatterbox.chatterbox.commands.ReflectiveCommandRegistrar;
@@ -23,6 +24,7 @@ import works.chatterbox.chatterbox.pipeline.stages.impl.radius.RadiusStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.recipient.RecipientStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.RythmStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.SpecialStage;
+import works.chatterbox.chatterbox.pipeline.stages.impl.sanitize.SanitizeStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.world.WorldStage;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
@@ -59,11 +61,24 @@ public class Chatterbox extends JavaPlugin {
             new RythmStage(this), // Processes the Rythm syntax
             new SpecialStage(), // Handles methods from ChatterboxSpecialUtilities
             new ColorStage(), // Applies colors
+            // Recipients
             new RecipientStage(this), // Handles recipient sections
             // JSON
             new JSONStage(this), // Processes any JSON, if necessary
-            new NewlineStage() // Converts %n to \n
+            // Sanitization
+            new NewlineStage(), // Converts %n to \n
+            new SanitizeStage() // Sanitize message
         ).forEach(this.api.getMessageAPI().getMessagePipeline()::addStage);
+    }
+
+    @Nullable
+    private JarFile getJarFile() {
+        try {
+            return new JarFile(new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()));
+        } catch (final IOException | URISyntaxException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     private boolean loadConfiguration() {
@@ -80,7 +95,28 @@ public class Chatterbox extends JavaPlugin {
     }
 
     private void loadHooks() {
-        this.getServer().getScheduler().runTask(this, this.hm::loadHooks);
+        this.getServer().getScheduler().runTask(this, () -> {
+            // Load hooks on the disk first
+            this.hm.loadHooks();
+            // Then try to load the internal Vault hook
+            this.loadVaultHook();
+        });
+    }
+
+    private void loadVaultHook() {
+        // Don't load if another Vault hook is already loaded
+        if (this.hm.getHooks().stream().anyMatch(h -> h.getDescriptor().getName().equals("Vault"))) return;
+        final File vaultJar = new File(this.hm.getHooksDirectory(), "Vault.jar");
+        // If a Vault.jar already exists, don't load (would have already been attempted)
+        if (vaultJar.exists()) return;
+        try {
+            // Copy the internal jar
+            Files.copy(this.getResource("Vault.jar"), vaultJar.toPath());
+            // Load it
+            this.hm.loadHook(vaultJar);
+        } catch (final IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void registerCommands() {
@@ -98,13 +134,8 @@ public class Chatterbox extends JavaPlugin {
         if (!langFile.exists()) {
             Preconditions.checkState(langFile.mkdir(), "Could not create lang directory");
         }
-        final JarFile jar;
-        try {
-            jar = new JarFile(new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()));
-        } catch (final IOException | URISyntaxException ex) {
-            ex.printStackTrace();
-            return;
-        }
+        final JarFile jar = this.getJarFile();
+        if (jar == null) return;
         final Enumeration<JarEntry> e = jar.entries();
         while (e.hasMoreElements()) {
             final JarEntry entry = e.nextElement();
