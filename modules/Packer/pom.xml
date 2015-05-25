@@ -28,9 +28,15 @@
                         <configuration>
                             <target>
                                 <copy tofile="${basedir}/target/Chatterbox.jar">
-                                    <fileset dir="${basedir}/../Chatterbox/target">
-                                        <include name="Chatterbox*.jar"/>
-                                    </fileset>
+                                    <first>
+                                        <sort>
+                                            <reverse/>
+                                            <name/>
+                                            <fileset dir="${basedir}/../Chatterbox/target">
+                                                <include name="Chatterbox*.jar"/>
+                                            </fileset>
+                                        </sort>
+                                    </first>
                                 </copy>
                                 <unzip src="${basedir}/target/Chatterbox.jar" dest="${basedir}/target/expanded"/>
                                 <copy tofile="${basedir}/target/expanded/Vault.jar">

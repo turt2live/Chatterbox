@@ -17,7 +17,7 @@ public abstract class ChatterboxHook {
     private boolean enabled = false;
 
     /**
-     * This is called if the hook is ever disabled.
+     * This is called when the hook is unloaded.
      */
     public void deinit() {
     }

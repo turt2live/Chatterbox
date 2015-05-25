@@ -48,7 +48,7 @@ public abstract class BaseCommand<T extends Plugin> implements CommandExecutor {
 
     /**
      * The body of the command to be run. Depending on the constructor
-     * ({@link #BaseCommand(T extends Plugin, String, boolean)}), permissions will have already
+     * ({@link #BaseCommand(Plugin, String, boolean)}), permissions will have already
      * been checked. The command name matching the name of this command is already checked. All unhandled exceptions
      * will be caught and displayed to the user in a friendly format.
      *
@@ -261,8 +261,7 @@ public abstract class BaseCommand<T extends Plugin> implements CommandExecutor {
      * specified, and runs the
      * {@link #runCommand(CommandSender, Command, String, String[])} method. If
      * any exception is unhandled in that method, it will be handled and displayed to the user in a friendly format.
-     * <p/>
-     * Due to the nature of this class, this method cannot be overridden.
+     * <p>Due to the nature of this class, this method cannot be overridden.
      *
      * @param cs    The CommandSender using the command
      * @param cmd   The Command being used

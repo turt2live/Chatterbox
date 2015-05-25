@@ -40,12 +40,10 @@ import static works.chatterbox.chatterbox.shaded.mkremins.fanciful.TextualCompon
 /**
  * Represents a formattable message. Such messages can use elements such as colors, formatting codes, hover and click data, and other features provided by the vanilla Minecraft <a href="http://minecraft.gamepedia.com/Tellraw#Raw_JSON_Text">JSON message formatter</a>.
  * This class allows plugins to emulate the functionality of the vanilla Minecraft <a href="http://minecraft.gamepedia.com/Commands#tellraw">tellraw command</a>.
- * <p>
- * This class follows the builder pattern, allowing for method chaining.
+ * <p>This class follows the builder pattern, allowing for method chaining.
  * It is set up such that invocations of property-setting methods will affect the current editing component,
- * and a call to {@link #then()} or {@link #then(Object)} will append a new editing component to the end of the message,
+ * and a call to {@link #then()} or {@link #then(String)} will append a new editing component to the end of the message,
  * optionally initializing it with text. Further property-setting method calls will affect that editing component.
- * </p>
  */
 public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<MessagePart>, ConfigurationSerializable {
 
@@ -262,7 +260,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     /**
      * Set the behavior of the current editing component to display information about an achievement when the client hovers over the text.
-     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.</p>
+     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.
      *
      * @param name The name of the achievement to display, excluding the "achievement." prefix.
      * @return This builder instance.
@@ -274,7 +272,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     /**
      * Set the behavior of the current editing component to display information about an achievement when the client hovers over the text.
-     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.</p>
+     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.
      *
      * @param which The achievement to display.
      * @return This builder instance.
@@ -348,7 +346,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     /**
      * Set the behavior of the current editing component to display formatted text when the client hovers over the text.
-     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.</p>
+     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.
      *
      * @param text The formatted text which will be displayed to the client upon hovering.
      * @return This builder instance.
@@ -367,7 +365,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     /**
      * Set the behavior of the current editing component to display the specified lines of formatted text when the client hovers over the text.
-     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.</p>
+     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.
      *
      * @param lines The lines of formatted text which will be displayed to the client upon hovering.
      * @return This builder instance.
@@ -406,7 +404,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     /**
      * Set the behavior of the current editing component to display the specified lines of formatted text when the client hovers over the text.
-     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.</p>
+     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.
      *
      * @param lines The lines of text which will be displayed to the client upon hovering. The iteration order of this object will be the order in which the lines of the tooltip are created.
      * @return This builder instance.
@@ -434,7 +432,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     /**
      * Set the behavior of the current editing component to display information about an item when the client hovers over the text.
-     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.</p>
+     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.
      *
      * @param itemJSON A string representing the JSON-serialized NBT data tag of an {@link ItemStack}.
      * @return This builder instance.
@@ -446,7 +444,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     /**
      * Set the behavior of the current editing component to display information about an item when the client hovers over the text.
-     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.</p>
+     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.
      *
      * @param itemStack The stack for which to display information.
      * @return This builder instance.
@@ -539,7 +537,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     /**
      * Set the behavior of the current editing component to display information about a parameterless statistic when the client hovers over the text.
-     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.</p>
+     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.
      *
      * @param which The statistic to display.
      * @return This builder instance.
@@ -567,7 +565,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     /**
      * Set the behavior of the current editing component to display information about a statistic parameter with a material when the client hovers over the text.
-     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.</p>
+     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.
      *
      * @param which The statistic to display.
      * @param item  The sole material parameter to the statistic.
@@ -599,7 +597,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     /**
      * Set the behavior of the current editing component to display information about a statistic parameter with an entity type when the client hovers over the text.
-     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.</p>
+     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.
      *
      * @param which  The statistic to display.
      * @param entity The sole entity type parameter to the statistic.
@@ -753,17 +751,14 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
     /**
      * Convert this message to a human-readable string with limited formatting.
      * This method is used to send this message to clients without JSON formatting support.
-     * <p>
-     * Serialization of this message by using this message will include (in this order for each message part):
+     * <p>Serialization of this message by using this message will include (in this order for each message part):
      * <ol>
      * <li>The color of each message part.</li>
      * <li>The applicable stylizations for each message part.</li>
      * <li>The core text of the message part.</li>
      * </ol>
      * The primary omissions are tooltips and clickable actions. Consequently, this method should be used only as a last resort.
-     * </p>
-     * <p>
-     * Color and formatting can be removed from the returned string by using {@link ChatColor#stripColor(String)}.</p>
+     * <p>Color and formatting can be removed from the returned string by using {@link ChatColor#stripColor(String)}.
      *
      * @return A human-readable string representing limited formatting in addition to the core text of this message.
      */
@@ -781,7 +776,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     /**
      * Set the behavior of the current editing component to display raw text when the client hovers over the text.
-     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.</p>
+     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.
      *
      * @param text The text, which supports newlines, which will be displayed to the client upon hovering.
      * @return This builder instance.
@@ -793,7 +788,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     /**
      * Set the behavior of the current editing component to display raw text when the client hovers over the text.
-     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.</p>
+     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.
      *
      * @param lines The lines of text which will be displayed to the client upon hovering. The iteration order of this object will be the order in which the lines of the tooltip are created.
      * @return This builder instance.
@@ -805,7 +800,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     /**
      * Set the behavior of the current editing component to display raw text when the client hovers over the text.
-     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.</p>
+     * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.
      *
      * @param lines The lines of text which will be displayed to the client upon hovering.
      * @return This builder instance.
