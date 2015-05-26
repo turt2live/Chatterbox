@@ -16,3 +16,9 @@ To get a working jar for a server, use
 
 ## Help
 See the wiki.
+
+## Translate
+Know another language? Feel free to [help us out](https://webtranslateit.com/en/projects/11623-Chatterbox) with
+translating Chatterbox to your language!
+
+![Translation progress](https://webtranslateit.com/api/projects/n02-HubG16hJFHcIcXtdKA/charts.png)
