@@ -10,16 +10,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 
 public class Language extends PropertyResourceBundle {
-
-    public Language(final InputStream stream) throws IOException {
-        super(stream);
-    }
 
     public Language(final Reader reader) throws IOException {
         super(reader);

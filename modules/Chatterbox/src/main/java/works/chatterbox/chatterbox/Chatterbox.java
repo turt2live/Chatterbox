@@ -37,7 +37,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -185,7 +187,7 @@ public class Chatterbox extends JavaPlugin {
         this.saveLanguageFiles();
         try {
             final String langLocation = this.getConfiguration().getNode("language").getNode("file").getString();
-            this.language = new Language(new FileInputStream(new File(this.getDataFolder(), langLocation)));
+            this.language = new Language(new InputStreamReader(new FileInputStream(new File(this.getDataFolder(), langLocation)), StandardCharsets.UTF_8));
         } catch (final IOException ex) {
             this.getLogger().severe("Could not load language file. Disabling plugin.");
             this.getServer().getPluginManager().disablePlugin(this);
