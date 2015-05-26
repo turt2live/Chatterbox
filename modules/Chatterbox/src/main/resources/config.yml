@@ -133,7 +133,7 @@ channels:
         channel: |
                  &9&lChannel%n
                  @if (!s().eq(channel.getName(), channel.getTag())) {
-                     &9Name: &7@channel.getName()%n
+                 &9Name: &7@channel.getName()%n
                  }
                  &9Members: &7@channel.getMembers().len()
         # @chatterbox.cancelJSON() outputs a special string that completely disables the current JSON segment. If the
@@ -144,7 +144,7 @@ channels:
                      @if (s().eq(player.getDisplayName(), player.getName())) {
                          @chatterbox.cancelJSON()
                      } else {
-                         &9Real name: &7@player.getName()
+                     &9Real name: &7@player.getName()
                      }
   - name: Rythm in a file
     tag: rif
