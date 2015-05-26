@@ -10,10 +10,10 @@ import java.util.logging.Logger;
 
 public abstract class ChatterboxHook {
 
-    private final Logger logger = new HookLogger(this);
     private Chatterbox chatterbox;
     private File dataFolder;
     private HookDescriptor descriptor;
+    private Logger logger;
     private boolean enabled = false;
 
     /**
@@ -93,6 +93,7 @@ public abstract class ChatterboxHook {
         this.chatterbox = chatterbox;
         this.dataFolder = dataFolder;
         this.descriptor = descriptor;
+        this.logger = new HookLogger(this);
     }
 
     /**
