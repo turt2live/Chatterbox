@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package works.chatterbox.chatterbox.pipeline.stages.impl.newline;
+package works.chatterbox.chatterbox.pipeline.stages.impl.literal;
 
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.messages.Message;
@@ -13,7 +13,7 @@ import works.chatterbox.chatterbox.pipeline.stages.Stage;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class NewlineStage implements Stage {
+public class LiteralStage implements Stage {
 
     @Override
     public void process(@NotNull final Message message, @NotNull final PipelineContext context) {

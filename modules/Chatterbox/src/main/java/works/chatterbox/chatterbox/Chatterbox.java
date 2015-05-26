@@ -24,7 +24,7 @@ import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.TagStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.color.ColorStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.json.JSONStage;
-import works.chatterbox.chatterbox.pipeline.stages.impl.newline.NewlineStage;
+import works.chatterbox.chatterbox.pipeline.stages.impl.literal.LiteralStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.radius.RadiusStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.recipient.RecipientStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.RythmStage;
@@ -73,7 +73,7 @@ public class Chatterbox extends JavaPlugin {
             // JSON
             new JSONStage(this), // Processes any JSON, if necessary
             // Sanitization
-            new NewlineStage(), // Converts %n to \n
+            new LiteralStage(), // Handles literals
             new SanitizeStage() // Sanitize message
         ).forEach(this.api.getMessageAPI().getMessagePipeline()::addStage);
     }
