@@ -122,8 +122,6 @@ public class Chatterbox extends JavaPlugin {
             Files.deleteIfExists(vaultJar.toPath());
             // Copy the internal jar
             Files.copy(this.getResource("Vault.jar"), vaultJar.toPath());
-            // Load it
-            this.hm.loadHook(vaultJar);
         } catch (final IOException ex) {
             ex.printStackTrace();
         }
