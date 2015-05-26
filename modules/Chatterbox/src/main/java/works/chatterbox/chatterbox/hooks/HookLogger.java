@@ -25,7 +25,7 @@ public class HookLogger extends Logger {
 
     public void log(@NotNull final LogRecord logRecord) {
         Preconditions.checkNotNull(logRecord, "logRecord was null");
-        logRecord.setMessage(this.hookName + logRecord.getMessage());
+        logRecord.setMessage("[Chatterbox hook: " + this.hookName + "] " + logRecord.getMessage());
         super.log(logRecord);
     }
 }
