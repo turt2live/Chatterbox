@@ -41,10 +41,10 @@ import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Stream;
 
 // TODO: https://gist.github.com/jkcclemens/9b6c7a54f71cf0628f7b (as hook?)
 
@@ -57,7 +57,7 @@ public class Chatterbox extends JavaPlugin {
     private MembershipTask membershipTask;
 
     private void addInternalPipelineStages() {
-        Arrays.asList(
+        Stream.of(
             // Routing
             new TagStage(this), // Processes any @-tags for channel destination
             new ChannelRecipientsStage(), // Set the recipients of the message
