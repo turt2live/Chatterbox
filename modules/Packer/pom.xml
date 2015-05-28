@@ -27,25 +27,15 @@
                         </goals>
                         <configuration>
                             <target>
-                                <copy tofile="${basedir}/target/Chatterbox.jar">
-                                    <first>
-                                        <sort>
-                                            <reverse/>
-                                            <name/>
-                                            <fileset dir="${basedir}/../Chatterbox/target">
-                                                <include name="Chatterbox*.jar"/>
-                                            </fileset>
-                                        </sort>
-                                    </first>
-                                </copy>
-                                <unzip src="${basedir}/target/Chatterbox.jar" dest="${basedir}/target/expanded"/>
+                                <copy file="${basedir}/../Chatterbox/target/Chatterbox-${chatterbox-version}.jar" tofile="${basedir}/target/Chatterbox-${chatterbox-version}.jar"/>
+                                <unzip src="${basedir}/target/Chatterbox-${chatterbox-version}.jar" dest="${basedir}/target/expanded"/>
                                 <copy tofile="${basedir}/target/expanded/Vault.jar">
                                     <fileset dir="${basedir}/../hooks/Vault/target">
                                         <include name="Vault*.jar"/>
                                     </fileset>
                                 </copy>
                                 <jar basedir="${basedir}/target/expanded"
-                                     destfile="${basedir}/../../target/Chatterbox.jar"
+                                     destfile="${basedir}/../../target/Chatterbox-${chatterbox-version}.jar"
                                      level="9"/>
                             </target>
                         </configuration>
