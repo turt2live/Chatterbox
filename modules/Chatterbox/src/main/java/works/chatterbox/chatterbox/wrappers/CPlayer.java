@@ -78,8 +78,9 @@ public interface CPlayer {
      * Adds this player to the given channel.
      *
      * @param channel Channel to join
+     * @return If the channel was joined
      */
-    void joinChannel(@NotNull final Channel channel);
+    boolean joinChannel(@NotNull final Channel channel);
 
     /**
      * Joins channels contained in the memberships database.
@@ -90,7 +91,8 @@ public interface CPlayer {
      * Removes this player from the given channel.
      *
      * @param channel Channel to leave
+     * @return If the channel was left
      */
-    void leaveChannel(@NotNull final Channel channel);
+    boolean leaveChannel(@NotNull final Channel channel);
 
 }

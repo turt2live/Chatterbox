@@ -102,14 +102,15 @@ public class UUIDCPlayer implements CPlayer {
     }
 
     @Override
-    public void joinChannel(@NotNull final Channel channel) {
+    public boolean joinChannel(@NotNull final Channel channel) {
         Preconditions.checkNotNull(channel, "channel was null");
-        if (this.joinedChannels.contains(channel)) return;
+        if (this.joinedChannels.contains(channel)) return false;
+        if (!channel.addMember(this)) return false;
         if (this.joinedChannels.isEmpty()) {
             this.setMainChannel(channel);
         }
         this.joinedChannels.add(channel);
-        channel.addMember(this);
+        return true;
     }
 
     @Override
@@ -133,11 +134,12 @@ public class UUIDCPlayer implements CPlayer {
     }
 
     @Override
-    public void leaveChannel(@NotNull final Channel channel) {
+    public boolean leaveChannel(@NotNull final Channel channel) {
         Preconditions.checkNotNull(channel, "channel was null");
-        if (!this.joinedChannels.contains(channel)) return;
+        if (!this.joinedChannels.contains(channel)) return false;
+        if (!channel.removeMember(this)) return false;
         this.joinedChannels.remove(channel);
-        channel.removeMember(this);
+        return true;
     }
 
     /**

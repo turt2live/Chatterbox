@@ -23,8 +23,9 @@ public interface Channel {
      * Adds a member to this channel.
      *
      * @param cp Member to add
+     * @return If the member was added
      */
-    void addMember(@NotNull final CPlayer cp);
+    boolean addMember(@NotNull final CPlayer cp);
 
     /**
      * Gets the format String for this channel, in valid Rythm syntax.
@@ -92,7 +93,8 @@ public interface Channel {
      * Removes a member from this channel.
      *
      * @param cp Member to remove
+     * @return If the member was removed
      */
-    void removeMember(@NotNull final CPlayer cp);
+    boolean removeMember(@NotNull final CPlayer cp);
 
 }

@@ -44,7 +44,10 @@ public class JoinCommand extends ChannelTabCommand {
             cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getAString("ALREADY_IN_CHANNEL"));
             return true;
         }
-        cp.joinChannel(channel);
+        if (!cp.joinChannel(channel)) {
+            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getAString("COULD_NOT_JOIN_CHANNEL"));
+            return true;
+        }
         cs.sendMessage(ChatColor.BLUE + this.plugin.getLanguage().getFormattedString("JOINED_CHANNEL", ChatColor.GRAY + channel.getName() + ChatColor.BLUE));
         return true;
     }

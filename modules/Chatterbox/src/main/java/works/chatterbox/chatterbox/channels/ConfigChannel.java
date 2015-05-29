@@ -16,6 +16,8 @@ import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.channels.files.FormatFiles;
 import works.chatterbox.chatterbox.channels.radius.Radius;
 import works.chatterbox.chatterbox.channels.worlds.WorldRecipients;
+import works.chatterbox.chatterbox.events.channels.ChannelJoinEvent;
+import works.chatterbox.chatterbox.events.channels.ChannelLeaveEvent;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.io.File;
@@ -130,11 +132,15 @@ public class ConfigChannel implements Channel {
     }
 
     @Override
-    public void addMember(@NotNull final CPlayer cp) {
+    public boolean addMember(@NotNull final CPlayer cp) {
         Preconditions.checkNotNull(cp, "cp was null");
-        if (this.members.contains(cp)) return;
+        if (this.members.contains(cp)) return false;
+        final ChannelJoinEvent channelJoinEvent = new ChannelJoinEvent(this, cp);
+        this.chatterbox.getServer().getPluginManager().callEvent(channelJoinEvent);
+        if (channelJoinEvent.isCancelled()) return false;
         this.members.add(cp);
         cp.joinChannel(this);
+        return true;
     }
 
     @NotNull
@@ -230,11 +236,15 @@ public class ConfigChannel implements Channel {
     }
 
     @Override
-    public void removeMember(@NotNull final CPlayer cp) {
+    public boolean removeMember(@NotNull final CPlayer cp) {
         Preconditions.checkNotNull(cp, "cp was null");
-        if (!this.members.contains(cp)) return;
+        if (!this.members.contains(cp)) return false;
+        final ChannelLeaveEvent channelLeaveEvent = new ChannelLeaveEvent(this, cp);
+        this.chatterbox.getServer().getPluginManager().callEvent(channelLeaveEvent);
+        if (channelLeaveEvent.isCancelled()) return false;
         this.members.remove(cp);
         cp.leaveChannel(this);
+        return true;
     }
 
     /**

@@ -51,7 +51,10 @@ public class LeaveCommand extends ChannelTabCommand {
             return true;
         }
         final boolean wasMainChannel = channel.equals(cp.getMainChannel());
-        cp.leaveChannel(channel);
+        if (!cp.leaveChannel(channel)) {
+            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getFormattedString("COULD_NOT_LEAVE_CHANNEL"));
+            return true;
+        }
         cs.sendMessage(ChatColor.BLUE + this.plugin.getLanguage().getFormattedString("LEFT_CHANNEL", ChatColor.GRAY + channel.getName() + ChatColor.BLUE));
         if (wasMainChannel) {
             final Iterator<Channel> channels = cp.getChannels().iterator();

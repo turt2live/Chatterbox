@@ -89,7 +89,7 @@ public abstract class SectionMessage implements Message {
     public class SectionChannel implements Channel {
 
         @Override
-        public void addMember(@NotNull final CPlayer cp) {
+        public boolean addMember(@NotNull final CPlayer cp) {
             SectionMessage.this.base.getChannel().addMember(cp);
         }
 
@@ -147,7 +147,7 @@ public abstract class SectionMessage implements Message {
         }
 
         @Override
-        public void removeMember(@NotNull final CPlayer cp) {
+        public boolean removeMember(@NotNull final CPlayer cp) {
             SectionMessage.this.base.getChannel().removeMember(cp);
         }
     }

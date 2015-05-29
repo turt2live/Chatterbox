@@ -13,6 +13,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.channels.Channel;
+import works.chatterbox.chatterbox.events.channels.messages.ChannelMessageEvent;
+import works.chatterbox.chatterbox.events.channels.messages.ChannelPostMessageEvent;
+import works.chatterbox.chatterbox.events.channels.messages.ChannelPreMessageEvent;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 import works.chatterbox.chatterbox.wrappers.UUIDCPlayer;
@@ -66,6 +69,13 @@ public class ChatterboxListener implements Listener {
     public void onChat(final AsyncPlayerChatEvent event) {
         // Make a Message from this event
         final Message message = this.chatterbox.getAPI().getMessageAPI().makeMessage(event);
+        // Run a ChannelPreMessageEvent
+        final ChannelMessageEvent preMessageEvent = new ChannelPreMessageEvent(message.getChannel(), message.getSender(), message);
+        preMessageEvent.setCancelled(event.isCancelled());
+        this.chatterbox.getServer().getPluginManager().callEvent(preMessageEvent);
+        if (preMessageEvent.isCancelled()) {
+            event.setCancelled(true);
+        }
         // Pass it through the pipeline
         this.chatterbox.getAPI().getMessageAPI().getMessagePipeline().send(message);
         // Set the new format
@@ -76,6 +86,13 @@ public class ChatterboxListener implements Listener {
         event.getRecipients().clear();
         event.getRecipients().addAll(message.getRecipients());
         if (message.isCancelled()) {
+            event.setCancelled(true);
+        }
+        // Run a ChannelPostMessageEvent
+        final ChannelMessageEvent postMessageEvent = new ChannelPostMessageEvent(message.getChannel(), message.getSender(), message);
+        postMessageEvent.setCancelled(event.isCancelled());
+        this.chatterbox.getServer().getPluginManager().callEvent(postMessageEvent);
+        if (postMessageEvent.isCancelled()) {
             event.setCancelled(true);
         }
     }
