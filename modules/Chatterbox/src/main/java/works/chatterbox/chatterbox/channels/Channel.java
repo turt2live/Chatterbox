@@ -35,6 +35,13 @@ public interface Channel {
     @NotNull
     String getFormat();
 
+    /**
+     * Gets a JSON section with the given name.
+     * <p>This may return null if there is no such section.
+     *
+     * @param sectionName Name of the JSON section
+     * @return String value of the section or null
+     */
     @Nullable
     String getJSONSection(@NotNull final String sectionName);
 
@@ -62,6 +69,13 @@ public interface Channel {
     @Nullable
     Radius getRadius();
 
+    /**
+     * Gets a recipient section with the given name.
+     * <p>This may return null if there is no such section.
+     *
+     * @param sectionName Name of the recipient section
+     * @return String value of the section or null
+     */
     @Nullable
     String getRecipientSection(@NotNull final String sectionName);
 
