@@ -56,6 +56,22 @@ public class ChannelAPI {
     }
 
     /**
+     * Adds a channel to the registry. Use this to register a custom channel.
+     * <p>This will return false if a channel with the same name is already registered.
+     *
+     * @param name    Channel name
+     * @param channel Channel associated with that name
+     * @return true if registered, false if not
+     */
+    public boolean addChannel(@NotNull final String name, @NotNull final Channel channel) {
+        Preconditions.checkNotNull(name, "name was null");
+        Preconditions.checkNotNull(channel, "channel was null");
+        if (this.channels.asMap().containsKey(name)) return false;
+        this.channels.put(name, channel);
+        return true;
+    }
+
+    /**
      * Gets all channel names defined in the currently loaded config.yml.
      *
      * @return Collection of channel names
@@ -179,6 +195,26 @@ public class ChannelAPI {
             }
         }
         return this.memberships;
+    }
+
+    /**
+     * Removes the given channel from the registry.
+     *
+     * @param channel Channel to remove
+     */
+    public void removeChannel(@NotNull final Channel channel) {
+        Preconditions.checkNotNull(channel, "channel was null");
+        this.removeChannel(channel.getName());
+    }
+
+    /**
+     * Removes the given channel from the registry.
+     *
+     * @param name Name of the channel to remove
+     */
+    public void removeChannel(@NotNull final String name) {
+        Preconditions.checkNotNull(name, "name was null");
+        this.channels.invalidate(name);
     }
 
     public void saveMemberships() {
