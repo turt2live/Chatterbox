@@ -54,6 +54,14 @@
                         <sources>modules/Chatterbox/target/Chatterbox-${chatterbox-version}-sources.jar</sources>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.10.3</version>
+                    <configuration>
+                        <show>protected</show>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
