@@ -14,12 +14,13 @@ import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import works.chatterbox.chatterbox.Chatterbox;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class TabCommand<T extends Plugin> extends CACommand<T> implements TabCompleter {
+public abstract class TabCommand<T extends Chatterbox> extends CACommand<T> implements TabCompleter {
 
     private final List<Short> completionTypes = new ArrayList<>();
     private CompletionType alwaysUse = null;

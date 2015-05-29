@@ -7,9 +7,9 @@ package works.chatterbox.chatterbox.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
+import works.chatterbox.chatterbox.Chatterbox;
 
-public abstract class CACommand<T extends Plugin> extends BaseCommand<T> {
+public abstract class CACommand<T extends Chatterbox> extends BaseCommand<T> {
 
     public CACommand(final T instance, final String name, final boolean checkPermissions) {
         super(instance, name, checkPermissions);

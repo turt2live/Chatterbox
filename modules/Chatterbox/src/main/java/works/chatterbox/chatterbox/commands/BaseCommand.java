@@ -13,7 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
+import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.shaded.mkremins.fanciful.FancyMessage;
 
 import java.io.BufferedReader;
@@ -29,7 +29,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class BaseCommand<T extends Plugin> implements CommandExecutor {
+public abstract class BaseCommand<T extends Chatterbox> implements CommandExecutor {
 
     protected final T plugin;
     private final String name;
@@ -53,7 +53,7 @@ public abstract class BaseCommand<T extends Plugin> implements CommandExecutor {
 
     /**
      * The body of the command to be run. Depending on the constructor
-     * ({@link #BaseCommand(Plugin, String, boolean)}), permissions will have already
+     * ({@link #BaseCommand(Chatterbox, String, boolean)}), permissions will have already
      * been checked. The command name matching the name of this command is already checked. All unhandled exceptions
      * will be caught and displayed to the user in a friendly format.
      *
@@ -97,37 +97,31 @@ public abstract class BaseCommand<T extends Plugin> implements CommandExecutor {
      * @param paste Content to paste
      */
     private void scheduleErrorHastebin(final CommandSender cs, final String paste) {
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, new Runnable() {
-            @Override
-            public void run() {
-                String tempURL;
-                try {
-                    tempURL = BaseCommand.this.hastebin(paste);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    tempURL = null;
-                }
-                final String url = tempURL;
-                BaseCommand.this.plugin.getServer().getScheduler().runTask(BaseCommand.this.plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        if (url != null) {
-                            BaseCommand.this.plugin.getLogger().warning("Error paste: " + url);
-                            new FancyMessage("Click ")
-                                .color(ChatColor.RED)
-                                .then("here")
-                                .color(ChatColor.GRAY)
-                                .tooltip("Click here to find out more.")
-                                .link(url)
-                                .then(" to find out more.")
-                                .color(ChatColor.RED)
-                                .send(cs);
-                        } else {
-                            new FancyMessage("An error occurred while trying to paste the stack trace.").color(ChatColor.RED).send(cs);
-                        }
-                    }
-                });
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            String tempURL;
+            try {
+                tempURL = BaseCommand.this.hastebin(paste);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                tempURL = null;
             }
+            final String url = tempURL;
+            BaseCommand.this.plugin.getServer().getScheduler().runTask(BaseCommand.this.plugin, () -> {
+                if (url != null) {
+                    BaseCommand.this.plugin.getLogger().warning("Error paste: " + url);
+                    new FancyMessage("Click ")
+                        .color(ChatColor.RED)
+                        .then("here")
+                        .color(ChatColor.GRAY)
+                        .tooltip("Click here to find out more.")
+                        .link(url)
+                        .then(" to find out more.")
+                        .color(ChatColor.RED)
+                        .send(cs);
+                } else {
+                    new FancyMessage("An error occurred while trying to paste the stack trace.").color(ChatColor.RED).send(cs);
+                }
+            });
         });
     }
 
@@ -170,11 +164,17 @@ public abstract class BaseCommand<T extends Plugin> implements CommandExecutor {
     }
 
     public void dispNoPerms(final CommandSender cs, final String... permissionsNeeded) {
+        final String noPermission = this.plugin.getLanguage().getAString("NO_PERMISSION");
+        final String missingPermissions = this.plugin.getLanguage().getAString("MISSING_PERMISSIONS");
+        this.dispNoPerms(cs, noPermission, missingPermissions, permissionsNeeded);
+    }
+
+    public void dispNoPerms(final CommandSender cs, final String message, final String missingPermissions, final String... permissionsNeeded) {
         final List<FancyMessage> tooltip = new ArrayList<>();
-        tooltip.add(new FancyMessage("Missing permissions").color(ChatColor.RED).style(ChatColor.BOLD, ChatColor.UNDERLINE));
+        tooltip.add(new FancyMessage(missingPermissions).color(ChatColor.RED).style(ChatColor.BOLD, ChatColor.UNDERLINE));
         for (final String missingPermission : permissionsNeeded)
             tooltip.add(new FancyMessage(missingPermission).color(ChatColor.GRAY));
-        new FancyMessage("You don't have permission for that!")
+        new FancyMessage(message)
             .color(ChatColor.RED)
             .formattedTooltip(tooltip)
             .send(cs);
@@ -315,31 +315,25 @@ public abstract class BaseCommand<T extends Plugin> implements CommandExecutor {
      * @param urlTooltip    Tooltip for the URL (can be null for none)
      */
     protected void scheduleHastebin(final CommandSender cs, final String paste, final String messageBefore, final String urlMessage, final String messageAfter, final String urlTooltip) {
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, new Runnable() {
-            @Override
-            public void run() {
-                String tempURL;
-                try {
-                    tempURL = BaseCommand.this.hastebin(paste);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    tempURL = null;
-                }
-                final String url = tempURL;
-                BaseCommand.this.plugin.getServer().getScheduler().runTask(BaseCommand.this.plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        if (url != null) {
-                            BaseCommand.this.plugin.getLogger().info("Paste: " + url);
-                            final FancyMessage fm = new FancyMessage(messageBefore).then(urlMessage);
-                            if (urlTooltip != null) fm.tooltip(urlTooltip);
-                            fm.link(url).then(messageAfter).send(cs);
-                        } else {
-                            new FancyMessage("An error occurred while trying to paste.").color(ChatColor.RED).send(cs);
-                        }
-                    }
-                });
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
+            String tempURL;
+            try {
+                tempURL = BaseCommand.this.hastebin(paste);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                tempURL = null;
             }
+            final String url = tempURL;
+            BaseCommand.this.plugin.getServer().getScheduler().runTask(BaseCommand.this.plugin, () -> {
+                if (url != null) {
+                    BaseCommand.this.plugin.getLogger().info("Paste: " + url);
+                    final FancyMessage fm = new FancyMessage(messageBefore).then(urlMessage);
+                    if (urlTooltip != null) fm.tooltip(urlTooltip);
+                    fm.link(url).then(messageAfter).send(cs);
+                } else {
+                    new FancyMessage("An error occurred while trying to paste.").color(ChatColor.RED).send(cs);
+                }
+            });
         });
     }
 

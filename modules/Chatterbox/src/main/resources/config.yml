@@ -42,6 +42,16 @@ titles:
     prefix: ""
     suffix: ""
 
+###############
+### OPTIONS ###
+###############
+
+options:
+  permissions:
+    channels:
+      # Check chatterbox.channel.@(channel.getTag()) when attempting to join a channel?
+      per-channel: true
+
 ##############
 ### MASTER ###
 ##############
