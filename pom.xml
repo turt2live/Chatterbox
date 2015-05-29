@@ -60,6 +60,7 @@
                     <version>2.10.3</version>
                     <configuration>
                         <show>protected</show>
+                        <stylesheetfile>src/javadoc.css</stylesheetfile>
                     </configuration>
                 </plugin>
             </plugins>
