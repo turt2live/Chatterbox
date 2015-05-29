@@ -6,15 +6,13 @@
 package works.chatterbox.chatterbox.events.channels;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.events.ChatterboxEvent;
 
-public abstract class ChannelEvent extends ChatterboxEvent implements Cancellable {
+public abstract class ChannelEvent extends ChatterboxEvent {
 
-    private final Channel channel;
-    private boolean cancelled;
+    protected Channel channel;
 
     public ChannelEvent(@NotNull final Channel channel) {
         Preconditions.checkNotNull(channel, "channel was null");
@@ -26,13 +24,4 @@ public abstract class ChannelEvent extends ChatterboxEvent implements Cancellabl
         return this.channel;
     }
 
-    @Override
-    public boolean isCancelled() {
-        return this.cancelled;
-    }
-
-    @Override
-    public void setCancelled(final boolean cancelled) {
-        this.cancelled = cancelled;
-    }
 }

@@ -8,11 +8,11 @@ package works.chatterbox.chatterbox.events.channels.messages;
 import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.channels.Channel;
-import works.chatterbox.chatterbox.events.channels.ChannelEvent;
+import works.chatterbox.chatterbox.events.CancellableChannelEvent;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
-public abstract class ChannelMessageEvent extends ChannelEvent {
+public abstract class ChannelMessageEvent extends CancellableChannelEvent {
 
     private final CPlayer cplayer;
     private final Message message;

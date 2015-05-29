@@ -8,9 +8,10 @@ package works.chatterbox.chatterbox.events.channels;
 import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.channels.Channel;
+import works.chatterbox.chatterbox.events.CancellableChannelEvent;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
-public class ChannelLeaveEvent extends ChannelEvent {
+public class ChannelLeaveEvent extends CancellableChannelEvent {
 
     private final CPlayer cplayer;
 

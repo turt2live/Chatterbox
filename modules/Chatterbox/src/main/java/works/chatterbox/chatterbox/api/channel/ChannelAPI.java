@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.channels.ConfigChannel;
+import works.chatterbox.chatterbox.events.channels.ChannelCreateEvent;
 import works.chatterbox.chatterbox.wrappers.UUIDCPlayer;
 
 import java.io.File;
@@ -37,7 +38,10 @@ public class ChannelAPI {
         .build(new CacheLoader<String, Channel>() {
             @Override
             public Channel load(@NotNull final String key) throws Exception {
-                return new ConfigChannel(ChannelAPI.this.chatterbox, key);
+                final Channel def = new ConfigChannel(ChannelAPI.this.chatterbox, key);
+                final ChannelCreateEvent createEvent = new ChannelCreateEvent(def);
+                ChannelAPI.this.chatterbox.getServer().getPluginManager().callEvent(createEvent);
+                return createEvent.getChannel();
             }
         });
     private final ConfigurationNode master;
