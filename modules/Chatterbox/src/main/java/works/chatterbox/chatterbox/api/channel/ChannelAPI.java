@@ -102,7 +102,7 @@ public class ChannelAPI {
     }
 
     /**
-     * Gets all channels that been loaded.
+     * Gets all channels that have been loaded.
      *
      * @return Collection of channels
      */
