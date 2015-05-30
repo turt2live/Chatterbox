@@ -45,7 +45,7 @@ public class MembershipTask implements Runnable {
             final Map<String, CPlayer> uuids = Maps.newHashMap();
             // Fill in the mapping
             for (final CPlayer member : channel.getMembers()) {
-                if (!(member instanceof UUIDCPlayer)) return;
+                if (!(member instanceof UUIDCPlayer)) continue;
                 uuids.put(((UUIDCPlayer) member).getUUID().toString(), member);
             }
             // Make a set of UUIDs (in String form) to remove
