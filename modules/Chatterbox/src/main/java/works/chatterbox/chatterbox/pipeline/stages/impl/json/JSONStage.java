@@ -66,6 +66,8 @@ public class JSONStage implements Stage {
                 lastColor = part.color = color;
             } else if (color.isFormat()) {
                 part.styles.add(color);
+            } else {
+                lastColor = ChatColor.RESET;
             }
         }
         return lastColor;
