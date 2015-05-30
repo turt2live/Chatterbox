@@ -51,6 +51,15 @@ options:
     channels:
       # Check chatterbox.channel.@(channel.getTag()) when attempting to join a channel?
       per-channel: true
+  channels:
+    membership:
+      # The amount of time to wait before clearing out old memberships from channels. When a player joins a channel, the
+      # membership is saved, so the player will be in all the same channels when leaving/joining or after a restart. If
+      # the player is inactive for long enough, that membership status will be cleared to save memory and prevent
+      # clutter.
+      remove_after:
+        amount: 10
+        unit: DAYS
 
 ##############
 ### MASTER ###

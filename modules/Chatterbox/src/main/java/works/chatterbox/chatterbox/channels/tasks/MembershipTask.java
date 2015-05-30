@@ -31,6 +31,21 @@ public class MembershipTask implements Runnable {
         this.chatterbox = chatterbox;
     }
 
+    private long getInactiveMilliseconds() {
+        final long def = TimeUnit.DAYS.toMillis(10L);
+        final ConfigurationNode removeAfter = this.chatterbox.getConfiguration().getNode("options").getNode("channels").getNode("membership").getNode("remove_after");
+        final ConfigurationNode amountNode = removeAfter.getNode("amount");
+        final ConfigurationNode unitNode = removeAfter.getNode("unit");
+        if (amountNode.isVirtual() || unitNode.isVirtual()) return def;
+        final TimeUnit unit;
+        try {
+            unit = TimeUnit.valueOf(unitNode.getString("DAYS").toUpperCase());
+        } catch (final IllegalArgumentException ex) {
+            return def;
+        }
+        return unit.toMillis(amountNode.getLong());
+    }
+
     @Override
     public void run() {
         final Collection<Channel> loadedChannels = this.chatterbox.getAPI().getChannelAPI().getAllLoadedChannels();
@@ -69,8 +84,8 @@ public class MembershipTask implements Runnable {
                 final String uuid = entry.getKey();
                 final long lastSeen = Math.abs(entry.getValue());
                 final ConfigurationNode childNode = node.getNode(uuid);
-                // If not in the channel and has been absent for 10 days, add to the remove set
-                if (!uuids.containsKey(uuid) && (lastSeen == 0L || System.currentTimeMillis() - lastSeen > TimeUnit.DAYS.toMillis(10L))) {
+                // If not in the channel and has been absent for the configured time, add to the remove set
+                if (!uuids.containsKey(uuid) && (lastSeen == 0L || System.currentTimeMillis() - lastSeen > this.getInactiveMilliseconds())) {
                     remove.add(uuid);
                     // Remove from the file
                     childNode.setValue(null);
