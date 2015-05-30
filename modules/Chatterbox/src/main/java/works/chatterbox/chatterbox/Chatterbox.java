@@ -68,13 +68,13 @@ public class Chatterbox extends JavaPlugin {
             new RythmStage(this), // Processes the Rythm syntax
             new SpecialStage(), // Handles methods from ChatterboxSpecialUtilities
             new ColorStage(), // Applies colors
+            // Sanitization
+            new LiteralStage(), // Handles literals
+            new SanitizeStage(), // Sanitize message
             // Recipients
             new RecipientStage(this), // Handles recipient sections
             // JSON
-            new JSONStage(this), // Processes any JSON, if necessary
-            // Sanitization
-            new LiteralStage(), // Handles literals
-            new SanitizeStage() // Sanitize message
+            new JSONStage(this) // Processes any JSON, if necessary
         ).forEach(this.api.getMessageAPI().getMessagePipeline()::addStage);
     }
 
