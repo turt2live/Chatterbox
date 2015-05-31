@@ -30,6 +30,7 @@ import works.chatterbox.chatterbox.pipeline.stages.impl.recipient.RecipientStage
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.RythmStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.SpecialStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.sanitize.SanitizeStage;
+import works.chatterbox.chatterbox.pipeline.stages.impl.validation.ValidationStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.world.WorldStage;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
@@ -45,8 +46,6 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Stream;
-
-// TODO: https://gist.github.com/jkcclemens/9b6c7a54f71cf0628f7b (as hook?)
 
 public class Chatterbox extends JavaPlugin {
 
@@ -71,6 +70,8 @@ public class Chatterbox extends JavaPlugin {
             // Sanitization
             new LiteralStage(), // Handles literals
             new SanitizeStage(), // Sanitize message
+            // Validation
+            new ValidationStage(),
             // Recipients
             new RecipientStage(this), // Handles recipient sections
             // JSON
