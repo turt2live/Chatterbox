@@ -54,6 +54,13 @@ public class ChannelCommand extends ChannelTabCommand {
             cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getAString("NO_SUCH_CHANNEL"));
             return true;
         }
+        if (this.plugin.getConfiguration().getNode("options").getNode("permissions").getNode("channels").getNode("per-channel").getBoolean(true)) {
+            final String permissionNeeded = "chatterbox.channel." + channel.getTag();
+            if (!cs.hasPermission(permissionNeeded)) {
+                this.dispNoPerms(cs, new String[]{permissionNeeded});
+                return true;
+            }
+        }
         final CPlayer cp = this.plugin.getAPI().getPlayerAPI().getCPlayer(p);
         final boolean wasInChannel = cp.getChannels().contains(channel);
         if (!wasInChannel && !cp.joinChannel(channel)) {
