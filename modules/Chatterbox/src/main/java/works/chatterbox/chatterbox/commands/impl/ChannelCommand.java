@@ -24,7 +24,13 @@ import java.util.List;
     name = "channel",
     description = "Switches to (and joins, if necessary) a new channel.",
     aliases = {"ch"},
-    usage = "/<command> [channel]"
+    usage = "/<command> [channel]",
+    keys = {
+        "chatterbox channel",
+        "chatterbox ch",
+        "chat channel",
+        "chat ch"
+    }
 )
 public class ChannelCommand extends ChannelTabCommand {
 

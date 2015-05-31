@@ -9,6 +9,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -50,6 +52,7 @@ import java.util.stream.Stream;
 public class Chatterbox extends JavaPlugin {
 
     private final HookManager hm = new HookManager(this);
+    private ReflectiveCommandRegistrar<Chatterbox> rcr;
     private Language language;
     private ChatterboxAPI api;
     private ConfigurationNode configurationNode;
@@ -131,7 +134,7 @@ public class Chatterbox extends JavaPlugin {
     }
 
     private void registerCommands() {
-        final ReflectiveCommandRegistrar<Chatterbox> rcr = new ReflectiveCommandRegistrar<>(this);
+        this.rcr = new ReflectiveCommandRegistrar<>(this);
         rcr.registerCommands();
     }
 
@@ -178,6 +181,11 @@ public class Chatterbox extends JavaPlugin {
         return this.language;
     }
 
+    @Nullable
+    public ReflectiveCommandRegistrar<Chatterbox> getReflectiveCommandRegistrar() {
+        return this.rcr;
+    }
+
     public void load(final boolean isReload) {
         this.saveDefaultConfig(); // save the default config before loading it
         if (!this.loadConfiguration()) {
@@ -206,6 +214,20 @@ public class Chatterbox extends JavaPlugin {
         this.registerListeners();
         this.loadHooks();
         this.getServer().getScheduler().runTaskTimer(this, this.membershipTask = new MembershipTask(this), 36000L, 36000L);
+    }
+
+    @Override
+    public boolean onCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+        if (args.length < 1) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        final ReflectiveCommandRegistrar<Chatterbox> rcr = this.getReflectiveCommandRegistrar();
+        if (rcr == null) {
+            return true;
+        }
+        rcr.getCommandHandler().runCommand(cs, label, args);
+        return true;
     }
 
     @Override

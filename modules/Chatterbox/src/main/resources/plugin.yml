@@ -10,6 +10,12 @@ reflectcommands:
 - commands.impl.ChannelCommand
 - commands.impl.JoinCommand
 - commands.impl.LeaveCommand
-- commands.impl.ChatterboxCommand
+- commands.impl.ReloadCommand
 - commands.impl.formats.action.ActionCommand
 - commands.impl.formats.say.SayCommand
+
+commands:
+  chatterbox:
+    description: Base command
+    aliases: [chat]
+    usage: /<command>

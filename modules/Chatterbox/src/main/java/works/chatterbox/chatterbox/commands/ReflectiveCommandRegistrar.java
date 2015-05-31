@@ -7,7 +7,6 @@ package works.chatterbox.chatterbox.commands;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,6 +14,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import works.chatterbox.chatterbox.Chatterbox;
+import works.chatterbox.chatterbox.commands.CommandHandler.CommandCoupling;
 
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
@@ -22,16 +23,18 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
-public class ReflectiveCommandRegistrar<T extends Plugin> {
+public class ReflectiveCommandRegistrar<T extends Chatterbox> {
 
     @NotNull
     private final T plugin;
+    private final CommandHandler commandHandler;
     private CommandMap cm;
     private FileConfiguration pluginYml;
 
     public ReflectiveCommandRegistrar(@NotNull final T plugin) {
         Preconditions.checkNotNull(plugin, "plugin was null");
         this.plugin = plugin;
+        this.commandHandler = new CommandHandler(this.plugin);
         this.pluginYml = YamlConfiguration.loadConfiguration(new InputStreamReader(this.plugin.getResource("plugin.yml")));
     }
 
@@ -56,8 +59,7 @@ public class ReflectiveCommandRegistrar<T extends Plugin> {
         final Class<?> clazz = Class.forName(classPath + "." + className);
         if (!BaseCommand.class.isAssignableFrom(clazz)) return null;
         if (!clazz.isAnnotationPresent(ReflectCommand.class)) return null;
-        //noinspection unchecked
-        return (Class<BaseCommand>) clazz;
+        return clazz.asSubclass(BaseCommand.class);
     }
 
     @Nullable
@@ -92,13 +94,17 @@ public class ReflectiveCommandRegistrar<T extends Plugin> {
         return this.getReflectCommand(baseCommand.getClass());
     }
 
+    public CommandHandler getCommandHandler() {
+        return this.commandHandler;
+    }
+
     /**
      * Registers a command in the server's CommandMap.
      *
      * @param ce CommandExecutor to be registered
      * @param rc ReflectCommand the command was annotated with
      */
-    public void registerCommand(@NotNull final CommandExecutor ce, @NotNull final ReflectCommand rc) {
+    public void registerCommand(@NotNull final BaseCommand<? extends Plugin> ce, @NotNull final ReflectCommand rc) {
         Preconditions.checkNotNull(ce, "ce was null");
         Preconditions.checkNotNull(rc, "rc was null");
         try {
@@ -115,6 +121,7 @@ public class ReflectiveCommandRegistrar<T extends Plugin> {
                 return;
             }
             cm.register(this.plugin.getDescription().getName(), pc);
+            this.commandHandler.addCommand(new CommandCoupling(ce, pc));
         } catch (Exception e) {
             this.plugin.getLogger().warning("Could not register command \"" + rc.name() + "\" - an error occurred: " + e.getMessage() + ".");
         }
@@ -130,7 +137,8 @@ public class ReflectiveCommandRegistrar<T extends Plugin> {
                 final Constructor c = clazz.getConstructor(this.plugin.getClass(), String.class);
                 final Object o = c.newInstance(this.plugin, rc.name());
                 if (!(o instanceof BaseCommand)) continue;
-                this.registerCommand((CommandExecutor) o, rc);
+                //noinspection unchecked
+                this.registerCommand((BaseCommand<? extends Plugin>) o, rc);
             } catch (Exception e) {
                 this.plugin.getLogger().warning("Could not register command \"" + className + "\" - an error occurred (" + e.getClass().getSimpleName() + "): " + e.getMessage() + ".");
             }

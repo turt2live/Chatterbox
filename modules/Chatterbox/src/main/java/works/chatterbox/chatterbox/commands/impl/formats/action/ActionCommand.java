@@ -13,7 +13,13 @@ import works.chatterbox.chatterbox.commands.impl.formats.FormatCommand;
     name = "action",
     description = "Performs an action.",
     aliases = {"me"},
-    usage = "/<command> [message]"
+    usage = "/<command> [message]",
+    keys = {
+        "chatterbox action",
+        "chatterbox me",
+        "chat action",
+        "chat me"
+    }
 )
 public class ActionCommand extends FormatCommand {
 

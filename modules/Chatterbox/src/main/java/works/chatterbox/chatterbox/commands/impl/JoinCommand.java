@@ -18,7 +18,11 @@ import works.chatterbox.chatterbox.wrappers.CPlayer;
 @ReflectCommand(
     name = "join",
     description = "Joins a channel, but does not set it as your main channel.",
-    usage = "/<command> [channel]"
+    usage = "/<command> [channel]",
+    keys = {
+        "chatterbox join",
+        "chat join"
+    }
 )
 public class JoinCommand extends ChannelTabCommand {
 

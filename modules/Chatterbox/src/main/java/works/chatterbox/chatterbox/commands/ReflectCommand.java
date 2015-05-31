@@ -30,6 +30,8 @@ public @interface ReflectCommand {
      */
     @NotNull String description() default "";
 
+    @NotNull String[] keys() default {};
+
     /**
      * The name of this command.
      *

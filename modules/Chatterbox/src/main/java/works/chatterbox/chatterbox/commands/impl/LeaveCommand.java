@@ -20,7 +20,11 @@ import java.util.Iterator;
 @ReflectCommand(
     name = "leave",
     description = "Leaves a channel.",
-    usage = "/<command> [channel]"
+    usage = "/<command> [channel]",
+    keys = {
+        "chatterbox leave",
+        "chat leave"
+    }
 )
 public class LeaveCommand extends ChannelTabCommand {
 

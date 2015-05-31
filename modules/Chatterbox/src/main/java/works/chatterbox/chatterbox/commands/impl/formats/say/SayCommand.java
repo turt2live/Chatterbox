@@ -12,7 +12,11 @@ import works.chatterbox.chatterbox.commands.impl.formats.FormatCommand;
 @ReflectCommand(
     name = "say",
     description = "Displays a message to the entire server.",
-    usage = "/<command> [message]"
+    usage = "/<command> [message]",
+    keys = {
+        "chatterbox say",
+        "chat say"
+    }
 )
 public class SayCommand extends FormatCommand {
 
