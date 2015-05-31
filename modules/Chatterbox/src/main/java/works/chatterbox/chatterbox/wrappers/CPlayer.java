@@ -65,6 +65,12 @@ public interface CPlayer {
     @NotNull
     Titles getTitles();
 
+    /**
+     * Runs the given consumer with the Player object that this CPlayer represents, if and only if {@link #isOnline()}
+     * returns true.
+     *
+     * @param function Consumer to run
+     */
     void ifOnline(@NotNull final Consumer<Player> function);
 
     /**
