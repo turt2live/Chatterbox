@@ -56,7 +56,7 @@ public class JSONStage implements Stage {
         Preconditions.checkNotNull(part, "part was null");
         Preconditions.checkNotNull(lastColor, "lastColor was null");
         final List<ChatColor> colors = this.getLastColors(part.text.getReadableString());
-        if (colors.isEmpty() || colors.stream().allMatch(cc -> cc.isFormat())) {
+        if (colors.isEmpty() || colors.stream().allMatch(ChatColor::isFormat)) {
             colors.add(lastColor);
         }
         final String stripped = ChatColor.stripColor(part.text.getReadableString());
