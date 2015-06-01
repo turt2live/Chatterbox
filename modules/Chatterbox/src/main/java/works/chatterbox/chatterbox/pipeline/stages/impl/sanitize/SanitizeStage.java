@@ -5,6 +5,7 @@
  */
 package works.chatterbox.chatterbox.pipeline.stages.impl.sanitize;
 
+import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.messages.PlayerMessage;
@@ -14,6 +15,7 @@ import works.chatterbox.chatterbox.pipeline.stages.Stage;
 public class SanitizeStage implements Stage {
 
     private String sanitize(@NotNull final String string) {
+        Preconditions.checkNotNull(string, "string was null");
         return string.replace("%", "%%");
     }
 

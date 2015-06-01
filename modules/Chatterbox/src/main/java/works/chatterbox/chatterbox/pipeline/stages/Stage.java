@@ -15,6 +15,7 @@ public interface Stage {
      * Process the given message.
      *
      * @param message Message
+     * @param context The context for this run through the pipeline
      */
     void process(@NotNull final Message message, @NotNull final PipelineContext context);
 

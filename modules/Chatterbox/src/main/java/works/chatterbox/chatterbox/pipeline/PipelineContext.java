@@ -8,6 +8,7 @@ package works.chatterbox.chatterbox.pipeline;
 import com.google.common.collect.Maps;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.SimpleConfigurationNode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -26,10 +27,18 @@ public class PipelineContext {
      *
      * @return Map of variables
      */
+    @NotNull
     public Map<String, Object> getCustomVariables() {
         return this.customVariables;
     }
 
+    /**
+     * Gets a ConfigurationNode, specific to this context, that can be used to store information that should be made
+     * available between stages. This context is passed to every stage in one pipeline process.
+     *
+     * @return ConfigurationNode
+     */
+    @NotNull
     public ConfigurationNode getProperties() {
         return this.properties;
     }

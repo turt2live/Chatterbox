@@ -133,6 +133,20 @@ public class Chatterbox extends JavaPlugin {
         }
     }
 
+    @Override
+    public boolean onCommand(final CommandSender cs, final Command command, final String label, final String[] args) {
+        if (args.length < 1) {
+            cs.sendMessage(command.getDescription());
+            return false;
+        }
+        final ReflectiveCommandRegistrar<Chatterbox> rcr = this.getReflectiveCommandRegistrar();
+        if (rcr == null) {
+            return true;
+        }
+        rcr.getCommandHandler().runCommand(cs, label, args);
+        return true;
+    }
+
     private void registerCommands() {
         this.rcr = new ReflectiveCommandRegistrar<>(this);
         rcr.registerCommands();
@@ -214,20 +228,6 @@ public class Chatterbox extends JavaPlugin {
         this.registerListeners();
         this.loadHooks();
         this.getServer().getScheduler().runTaskTimer(this, this.membershipTask = new MembershipTask(this), 36000L, 36000L);
-    }
-
-    @Override
-    public boolean onCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
-        if (args.length < 1) {
-            cs.sendMessage(cmd.getDescription());
-            return false;
-        }
-        final ReflectiveCommandRegistrar<Chatterbox> rcr = this.getReflectiveCommandRegistrar();
-        if (rcr == null) {
-            return true;
-        }
-        rcr.getCommandHandler().runCommand(cs, label, args);
-        return true;
     }
 
     @Override

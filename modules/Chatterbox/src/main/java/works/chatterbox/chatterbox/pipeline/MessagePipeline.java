@@ -73,7 +73,7 @@ public class MessagePipeline {
         Preconditions.checkNotNull(stage, "stage was null");
         final int index = this.indexOf(clazz);
         if (index == -1) return false;
-        this.stages.add(index + 1, stage);
+        this.addStage(index + 1, stage);
         return true;
     }
 
@@ -91,7 +91,7 @@ public class MessagePipeline {
         Preconditions.checkNotNull(stage, "stage was null");
         final int index = this.indexOf(clazz);
         if (index == -1) return false;
-        this.stages.add(index, stage);
+        this.addStage(index, stage);
         return true;
     }
 

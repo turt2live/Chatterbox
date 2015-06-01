@@ -5,8 +5,10 @@
  */
 package works.chatterbox.chatterbox.pipeline.stages.impl.world;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.channels.worlds.WorldRecipients;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.pipeline.PipelineContext;
@@ -24,11 +26,17 @@ public class WorldStage implements Stage {
      * @param world World name to check
      * @return true if should be sent, false if not, null if no preference
      */
-    private Boolean individualWorldStatus(final WorldRecipients wr, final String world) {
+    @Nullable
+    private Boolean individualWorldStatus(@NotNull final WorldRecipients wr, @NotNull final String world) {
+        Preconditions.checkNotNull(wr, "wr was null");
+        Preconditions.checkNotNull(world, "world was null");
         return wr.getIndividualWorlds().get(world);
     }
 
-    private boolean shouldBeSentToWorld(final WorldRecipients wr, final String recipientWorld, final String senderWorld) {
+    private boolean shouldBeSentToWorld(@NotNull final WorldRecipients wr, @NotNull final String recipientWorld, @NotNull final String senderWorld) {
+        Preconditions.checkNotNull(wr, "wr was null");
+        Preconditions.checkNotNull(recipientWorld, "recipientWorld was null");
+        Preconditions.checkNotNull(senderWorld, "senderWorld was null");
         if (wr.isToAll()) return true;
         final Boolean individualWorldStatus = this.individualWorldStatus(wr, recipientWorld);
         final boolean sameWorld = senderWorld.equals(recipientWorld);

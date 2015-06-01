@@ -5,6 +5,7 @@
  */
 package works.chatterbox.chatterbox.pipeline.stages.impl.rythm;
 
+import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.messages.JSONSectionMessage;
 import works.chatterbox.chatterbox.messages.Message;
@@ -18,28 +19,35 @@ public class SpecialStage implements Stage {
 
     private final ChatterboxSpecialUtilities specialUtilities = new ChatterboxSpecialUtilities();
 
-    private void cancelJSON(final Message message) {
+    private void cancelJSON(@NotNull final Message message) {
+        Preconditions.checkNotNull(message, "message was null");
         if (!(message instanceof JSONSectionMessage)) return;
         if (!message.getFormat().contains(this.specialUtilities.cancelJSON())) return;
         message.setCancelled(true);
     }
 
-    private void processSpecials(final Message message) {
+    private void processSpecials(@NotNull final Message message) {
+        Preconditions.checkNotNull(message, "message was null");
         this.trim(message);
         this.removeMultipleNewlines(message);
         this.removeMultipleSpaces(message);
         this.cancelJSON(message);
     }
 
-    private void removeMultipleNewlines(final Message message) {
+    private void removeMultipleNewlines(@NotNull final Message message) {
+        Preconditions.checkNotNull(message, "message was null");
         this.replace(message, this.specialUtilities.removeMultipleNewlines(), string -> string.replaceAll("(\\r?\\n){2,}", "$1"));
     }
 
-    private void removeMultipleSpaces(final Message message) {
+    private void removeMultipleSpaces(@NotNull final Message message) {
+        Preconditions.checkNotNull(message, "message was null");
         this.replace(message, this.specialUtilities.removeMultipleSpaces(), string -> string.replaceAll("(\\s){2,}", "$1"));
     }
 
-    private void replace(final Message message, final String contains, final Function<String, String> mutator) {
+    private void replace(@NotNull final Message message, @NotNull final String contains, @NotNull final Function<String, String> mutator) {
+        Preconditions.checkNotNull(message, "message was null");
+        Preconditions.checkNotNull(contains, "contains was null");
+        Preconditions.checkNotNull(mutator, "mutator was null");
         if (message.getFormat().contains(contains)) {
             message.setFormat(
                 mutator.apply(
@@ -56,7 +64,8 @@ public class SpecialStage implements Stage {
         }
     }
 
-    private void trim(final Message message) {
+    private void trim(@NotNull final Message message) {
+        Preconditions.checkNotNull(message, "message was null");
         this.replace(message, this.specialUtilities.trim(), String::trim);
     }
 

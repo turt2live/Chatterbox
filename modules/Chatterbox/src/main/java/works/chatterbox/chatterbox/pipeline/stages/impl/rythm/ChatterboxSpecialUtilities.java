@@ -18,6 +18,9 @@ public class ChatterboxSpecialUtilities {
      */
     private final static String SIGNIFIER = "\u0001\u0002\u0003";
 
+    /**
+     * Gets the String that signifies the start of a special directive to the renderer.
+     */
     public static String getSignifier() {
         return ChatterboxSpecialUtilities.SIGNIFIER;
     }
@@ -44,12 +47,24 @@ public class ChatterboxSpecialUtilities {
         return this.surround("Cancel JSON");
     }
 
+    /**
+     * Gets the String that indicates that the JSON section with this name should end.
+     *
+     * @param name JSON section name
+     * @return String
+     */
     @NotNull
     public String endJSON(@NotNull final String name) {
         Preconditions.checkNotNull(name, "name was null");
         return this.surround("End JSON " + name.toLowerCase());
     }
 
+    /**
+     * Gets the String that indicates that a recipient section should be replaced at this point.
+     *
+     * @param name Recipient section name
+     * @return String
+     */
     @NotNull
     public String recipient(@NotNull final String name) {
         Preconditions.checkNotNull(name, "name was null");
@@ -77,6 +92,12 @@ public class ChatterboxSpecialUtilities {
         return this.surround("Remove multiple spaces");
     }
 
+    /**
+     * Gets the String that indicates that the JSON section with this name should begin.
+     *
+     * @param name JSON section name
+     * @return String
+     */
     @NotNull
     public String startJSON(@NotNull final String name) {
         Preconditions.checkNotNull(name, "name was null");
