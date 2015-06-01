@@ -105,6 +105,11 @@ public abstract class SectionMessage implements Message {
             return SectionMessage.this.base.getChannel().getJSONSection(sectionName);
         }
 
+        @Override
+        public int getMaximumMembers() {
+            return 0;
+        }
+
         @NotNull
         @Override
         public Set<CPlayer> getMembers() {

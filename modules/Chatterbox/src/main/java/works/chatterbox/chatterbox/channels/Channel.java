@@ -46,6 +46,14 @@ public interface Channel {
     String getJSONSection(@NotNull final String sectionName);
 
     /**
+     * Gets the maximum amount of members this channel is allowed to have. If this is less than or equal to 0, it
+     * denotes that unlimited members are allowed.
+     *
+     * @return Maximum member count
+     */
+    int getMaximumMembers();
+
+    /**
      * Gets all the members of this channel.
      *
      * @return Set of members

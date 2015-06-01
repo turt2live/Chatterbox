@@ -134,6 +134,8 @@ public class ConfigChannel implements Channel {
     @Override
     public boolean addMember(@NotNull final CPlayer cp) {
         Preconditions.checkNotNull(cp, "cp was null");
+        final int max = this.getMaximumMembers();
+        if (max != 0 && this.getMembers().size() + 1 > max) return false;
         if (this.members.contains(cp)) return false;
         final ChannelJoinEvent channelJoinEvent = new ChannelJoinEvent(this, cp);
         this.chatterbox.getServer().getPluginManager().callEvent(channelJoinEvent);
@@ -158,6 +160,12 @@ public class ConfigChannel implements Channel {
         final String section = this.getConfiguration(ChannelConfiguration.FORMAT_JSON, node -> node.getNode(sectionName).getString());
         if (section == null) return null;
         return section;
+    }
+
+    @Override
+    public int getMaximumMembers() {
+        final Integer max = this.getConfiguration(ChannelConfiguration.MAXIMUM_MEMBERS, node -> node.getInt(0));
+        return max == null ? 0 : max;
     }
 
     /**
