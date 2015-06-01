@@ -34,8 +34,8 @@ public class JSONStage implements Stage {
 
     private final static Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf('§') + "[0-9A-FK-OR]");
     private final Chatterbox chatterbox;
-    private final Pattern startJSON = Pattern.compile(ChatterboxSpecialUtilities.getSignifier() + "Start JSON (.+?)" + ChatterboxSpecialUtilities.getSignifier());
-    private final Pattern endJSON = Pattern.compile(ChatterboxSpecialUtilities.getSignifier() + "End JSON (.+?)" + ChatterboxSpecialUtilities.getSignifier());
+    private final Pattern startJSON = Pattern.compile(Pattern.quote(ChatterboxSpecialUtilities.getSignifier()) + "Start JSON (.+?)" + Pattern.quote(ChatterboxSpecialUtilities.getSignifier()));
+    private final Pattern endJSON = Pattern.compile(Pattern.quote(ChatterboxSpecialUtilities.getSignifier()) + "End JSON (.+?)" + Pattern.quote(ChatterboxSpecialUtilities.getSignifier()));
 
     public JSONStage(final Chatterbox chatterbox) {
         this.chatterbox = chatterbox;

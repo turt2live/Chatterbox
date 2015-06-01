@@ -16,7 +16,7 @@ public class ChatterboxSpecialUtilities {
     /**
      * A String that signifies the start of a special directive to the renderer.
      */
-    private final static String SIGNIFIER = "\u0001\u0002\u0003";
+    private final static String SIGNIFIER = "[\u0001\u0002\u0003]";
 
     /**
      * Gets the String that signifies the start of a special directive to the renderer.
