@@ -68,7 +68,7 @@ public class Chatterbox extends JavaPlugin {
             new WorldStage(), // Removes all recipients not in the correct world
             // Formatting
             new ChannelStage(), // Sets the base format
-            new ColorStripStage(), // Remove colors if necessary
+            new ColorStripStage(this), // Remove colors if necessary
             new RythmStage(this), // Processes the Rythm syntax
             new ColorStage(), // Applies colors
             new SpecialStage(), // Handles methods from ChatterboxSpecialUtilities

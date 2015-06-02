@@ -7,7 +7,6 @@ package works.chatterbox.chatterbox.commands.impl.formats;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import works.chatterbox.chatterbox.Chatterbox;
@@ -39,7 +38,7 @@ public abstract class FormatCommand extends BaseCommand<Chatterbox> {
             variables
         );
         this.plugin.getServer().broadcastMessage(
-            ChatColor.translateAlternateColorCodes('&', rendered)
+            this.plugin.getAPI().getMessageAPI().parseLiterals(rendered)
         );
         return true;
     }
