@@ -41,7 +41,7 @@ public class ColorStripStage implements Stage {
         // If the player isn't online, don't colorize the message
         if (p == null) return;
         // Color the message
-        message.setMessage(this.chatterbox.getAPI().getMessageAPI().parseLiterals(message.getMessage()));
+        message.setMessage(this.chatterbox.getAPI().getMessageAPI().parseLiteralsIgnoreEscapes(message.getMessage()));
         // If the player sending the message doesn't have permission, strip the colors
         if (!this.canUseColors(p)) {
             message.setMessage(ChatColor.stripColor(message.getMessage()));

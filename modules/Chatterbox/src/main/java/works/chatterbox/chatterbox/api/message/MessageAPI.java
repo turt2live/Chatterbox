@@ -87,4 +87,28 @@ public class MessageAPI {
         }
         return sb.toString();
     }
+
+    public String parseLiteralsIgnoreEscapes(@NotNull final String original) {
+        Preconditions.checkNotNull(original, "original was null");
+        final StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < original.length(); i++) {
+            final char atIndex = original.charAt(i);
+            if (i + 1 < original.length()) {
+                final char plusOne = original.charAt(i + 1);
+                if (atIndex == '\\') {
+                    sb.append(atIndex).append(plusOne);
+                    i++;
+                    continue;
+                } else if (atIndex == '&') {
+                    if ("0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(plusOne) > -1) {
+                        sb.append('§').append(plusOne);
+                        i++;
+                        continue;
+                    }
+                }
+            }
+            sb.append(atIndex);
+        }
+        return sb.toString();
+    }
 }
