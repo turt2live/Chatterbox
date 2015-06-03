@@ -34,11 +34,11 @@ public class RecipientStage implements Stage {
     @Override
     public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
         if (message.isCancelled()) return;
-        final Matcher m = this.recipient.matcher(message.getFormat());
         final Map<UUID, String> messages = Maps.newHashMap();
         boolean isRecipient = false;
         for (final Player player : message.getRecipients()) {
             String playerFormat = message.getFormat();
+            final Matcher m = this.recipient.matcher(playerFormat);
             while (m.find()) {
                 String replace = message.getChannel().getRecipientSection(m.group(1));
                 if (replace != null) {
