@@ -73,9 +73,11 @@ public class MessageAPI {
                 final char plusOne = original.charAt(i + 1);
                 if (atIndex == '\\') {
                     sb.append(plusOne);
-                    i++;
                     continue;
                 } else if (atIndex == '&') {
+                    if (i - 1 >= 0) {
+                        if (original.charAt(i - 1) == '\\') continue;
+                    }
                     if ("0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(plusOne) > -1) {
                         sb.append('§').append(plusOne);
                         i++;
