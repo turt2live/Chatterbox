@@ -28,7 +28,7 @@ public class RythmAPI {
     public RythmAPI(@NotNull final Chatterbox chatterbox) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");
         final Map<String, Object> config = Maps.newHashMap();
-        config.put("engine.class_loader.parent.impl", chatterbox.getClass().getClassLoader());
+        config.put("engine.class_loader.parent.impl", new RythmClassLoader(chatterbox.getClass().getClassLoader(), chatterbox));
         config.put("feature.type_inference.enabled", true);
         this.rythm = new RythmEngine(config);
     }

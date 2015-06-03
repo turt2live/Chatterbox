@@ -184,6 +184,10 @@ public class Chatterbox extends JavaPlugin {
         return this.configurationNode;
     }
 
+    public HookManager getHookManager() {
+        return this.hm;
+    }
+
     public Language getLanguage() {
         return this.language;
     }
