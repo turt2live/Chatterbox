@@ -71,10 +71,7 @@ public class MessageAPI {
             final char atIndex = original.charAt(i);
             if (i + 1 < original.length()) {
                 final char plusOne = original.charAt(i + 1);
-                if (atIndex == '\\') {
-                    sb.append(plusOne);
-                    continue;
-                } else if (atIndex == '&') {
+                if (atIndex == '&') {
                     if (i - 1 >= 0) {
                         if (original.charAt(i - 1) == '\\') continue;
                     }
