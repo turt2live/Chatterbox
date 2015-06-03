@@ -131,7 +131,12 @@ public class Chatterbox extends JavaPlugin {
             // Copy the internal jar
             Files.copy(this.getResource("Vault.jar"), vaultJar.toPath());
         } catch (final IOException ex) {
-            ex.printStackTrace();
+            if (ex.getMessage().contains("being used by another process")) {
+                // I hate Windows so, so much.
+                this.getLogger().warning("If the Vault hook needs to be updated, please restart your server.");
+            } else {
+                ex.printStackTrace();
+            }
         }
     }
 
