@@ -5,8 +5,8 @@
  */
 package works.chatterbox.chatterbox.pipeline.stages.impl.color;
 
-import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
+import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.pipeline.PipelineContext;
 import works.chatterbox.chatterbox.pipeline.stages.Stage;
@@ -15,6 +15,12 @@ import works.chatterbox.chatterbox.pipeline.stages.Stage;
  * The color stage. This stage handles all color code processing.
  */
 public class ColorStage implements Stage {
+
+    private final Chatterbox chatterbox;
+
+    public ColorStage(final Chatterbox chatterbox) {
+        this.chatterbox = chatterbox;
+    }
 
     /**
      * Processes all the colors in the message's format, regardless of who is sending the message. Then, if the player
@@ -25,6 +31,6 @@ public class ColorStage implements Stage {
     public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
         if (message.isCancelled()) return;
         // Always color the format, since it has been defined by the config
-        message.setFormat(ChatColor.translateAlternateColorCodes('&', message.getFormat()));
+        message.setFormat(this.chatterbox.getAPI().getMessageAPI().parseLiterals(message.getFormat()));
     }
 }

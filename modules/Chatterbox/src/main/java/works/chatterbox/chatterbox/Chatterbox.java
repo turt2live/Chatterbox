@@ -70,7 +70,7 @@ public class Chatterbox extends JavaPlugin {
             new ChannelStage(), // Sets the base format
             new ColorStripStage(this), // Remove colors if necessary
             new RythmStage(this), // Processes the Rythm syntax
-            new ColorStage(), // Applies colors
+            new ColorStage(this), // Applies colors
             new SpecialStage(), // Handles methods from ChatterboxSpecialUtilities
             // Sanitization
             new LiteralStage(), // Handles literals
