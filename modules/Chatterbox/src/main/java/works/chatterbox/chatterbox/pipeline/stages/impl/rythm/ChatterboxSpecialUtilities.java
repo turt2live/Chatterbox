@@ -8,6 +8,8 @@ package works.chatterbox.chatterbox.pipeline.stages.impl.rythm;
 import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.regex.Pattern;
+
 /**
  * Special utilities to be made available for Rythm rendering.
  */
@@ -19,8 +21,19 @@ public class ChatterboxSpecialUtilities {
     private final static String SIGNIFIER = "[\u0001\u0002\u0003]";
 
     /**
+     * Gets the output of {@link Pattern#quote(String)} for {@link #getSignifier()}.
+     *
+     * @return Quoted signifier
+     */
+    @NotNull
+    public static String getQuotedSignifier() {
+        return Pattern.quote(ChatterboxSpecialUtilities.getSignifier());
+    }
+
+    /**
      * Gets the String that signifies the start of a special directive to the renderer.
      */
+    @NotNull
     public static String getSignifier() {
         return ChatterboxSpecialUtilities.SIGNIFIER;
     }

@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.messages.JSONSectionMessage;
 import works.chatterbox.chatterbox.messages.Message;
+import works.chatterbox.chatterbox.messages.PlayerMessage;
 import works.chatterbox.chatterbox.pipeline.PipelineContext;
 import works.chatterbox.chatterbox.pipeline.stages.Stage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.ChatterboxSpecialUtilities;
@@ -34,8 +35,8 @@ public class JSONStage implements Stage {
 
     private final static Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf('§') + "[0-9A-FK-OR]");
     private final Chatterbox chatterbox;
-    private final Pattern startJSON = Pattern.compile(Pattern.quote(ChatterboxSpecialUtilities.getSignifier()) + "Start JSON (.+?)" + Pattern.quote(ChatterboxSpecialUtilities.getSignifier()));
-    private final Pattern endJSON = Pattern.compile(Pattern.quote(ChatterboxSpecialUtilities.getSignifier()) + "End JSON (.+?)" + Pattern.quote(ChatterboxSpecialUtilities.getSignifier()));
+    private final Pattern startJSON = Pattern.compile(ChatterboxSpecialUtilities.getQuotedSignifier() + "Start JSON (.+?)" + ChatterboxSpecialUtilities.getQuotedSignifier());
+    private final Pattern endJSON = Pattern.compile(ChatterboxSpecialUtilities.getQuotedSignifier() + "End JSON (.+?)" + ChatterboxSpecialUtilities.getQuotedSignifier());
 
     public JSONStage(final Chatterbox chatterbox) {
         this.chatterbox = chatterbox;
@@ -214,9 +215,15 @@ public class JSONStage implements Stage {
         if (recipientMessages.isVirtual()) return false;
         for (final Player p : message.getRecipients()) {
             final String format = recipientMessages.getNode(p.getUniqueId()).getString();
-            p.sendMessage(format);
+            final Message playerMessage = new PlayerMessage(format, message.getMessage(), message.getRecipients(), message.getChannel(), message.getSender());
+            final FancyMessage fm = this.handleJSON(playerMessage);
+            if (fm == null) {
+                p.sendMessage(format);
+            } else {
+                fm.send(p);
+            }
         }
-        this.sendToConsole(message.getSender(), message.getFormat());
+        this.sendToConsole(message.getSender(), this.endJSON.matcher(this.startJSON.matcher(message.getFormat()).replaceAll("")).replaceAll(""));
         message.setCancelled(true);
         return true;
     }
