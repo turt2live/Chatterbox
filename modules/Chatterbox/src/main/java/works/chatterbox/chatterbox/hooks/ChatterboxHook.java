@@ -9,11 +9,12 @@ import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.api.ChatterboxAPI;
+import works.chatterbox.chatterbox.api.DataFolderHolder;
 
 import java.io.File;
 import java.util.logging.Logger;
 
-public abstract class ChatterboxHook {
+public abstract class ChatterboxHook implements DataFolderHolder {
 
     private Chatterbox chatterbox;
     private File dataFolder;

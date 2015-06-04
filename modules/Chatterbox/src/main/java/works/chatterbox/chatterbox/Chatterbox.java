@@ -5,7 +5,6 @@
  */
 package works.chatterbox.chatterbox;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
@@ -16,11 +15,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.api.ChatterboxAPI;
+import works.chatterbox.chatterbox.api.DataFolderHolder;
 import works.chatterbox.chatterbox.channels.tasks.MembershipTask;
 import works.chatterbox.chatterbox.commands.ReflectiveCommandRegistrar;
 import works.chatterbox.chatterbox.hooks.HookManager;
 import works.chatterbox.chatterbox.listeners.ChatterboxListener;
 import works.chatterbox.chatterbox.localization.Language;
+import works.chatterbox.chatterbox.localization.LanguageBuilder;
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelRecipientsStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.TagStage;
@@ -40,17 +41,12 @@ import works.chatterbox.chatterbox.wrappers.CPlayer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Enumeration;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 import java.util.stream.Stream;
 
-public class Chatterbox extends JavaPlugin {
+public class Chatterbox extends JavaPlugin implements DataFolderHolder {
 
     private final HookManager hm = new HookManager(this);
     private ReflectiveCommandRegistrar<Chatterbox> rcr;
@@ -82,16 +78,6 @@ public class Chatterbox extends JavaPlugin {
             // JSON
             new JSONStage(this) // Processes any JSON, if necessary
         ).forEach(this.api.getMessageAPI().getMessagePipeline()::addStage);
-    }
-
-    @Nullable
-    private JarFile getJarFile() {
-        try {
-            return new JarFile(new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()));
-        } catch (final IOException | URISyntaxException ex) {
-            ex.printStackTrace();
-            return null;
-        }
     }
 
     private boolean loadConfiguration() {
@@ -150,28 +136,6 @@ public class Chatterbox extends JavaPlugin {
         pm.registerEvents(new ChatterboxListener(this), this);
     }
 
-    private void saveLanguageFiles() {
-        final File langFile = new File(this.getDataFolder(), "lang");
-        if (!langFile.exists()) {
-            Preconditions.checkState(langFile.mkdir(), "Could not create lang directory");
-        }
-        final JarFile jar = this.getJarFile();
-        if (jar == null) return;
-        final Enumeration<JarEntry> e = jar.entries();
-        while (e.hasMoreElements()) {
-            final JarEntry entry = e.nextElement();
-            if (!entry.getName().startsWith("lang/")) continue;
-            final File location = new File(this.getDataFolder(), entry.getName());
-            if (!location.exists()) {
-                try (final InputStream is = jar.getInputStream(entry)) {
-                    Files.copy(is, location.toPath());
-                } catch (final IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-    }
-
     public ChatterboxAPI getAPI() {
         return this.api;
     }
@@ -204,9 +168,14 @@ public class Chatterbox extends JavaPlugin {
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        this.saveLanguageFiles();
         try {
             final String langLocation = this.getConfiguration().getNode("language").getNode("file").getString();
+            this.language = LanguageBuilder.create()
+                .languageFile(new File(this.getDataFolder(), langLocation))
+                .languageFolder("lang")
+                .saveLanguageFiles(true)
+                .dataFolderHolder(this)
+                .build();
             this.language = new Language(new InputStreamReader(new FileInputStream(new File(this.getDataFolder(), langLocation)), StandardCharsets.UTF_8));
         } catch (final IOException ex) {
             this.getLogger().severe("Could not load language file. Disabling plugin.");
