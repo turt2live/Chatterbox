@@ -1,6 +1,8 @@
 Chatterbox
 ==========
 
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/chatterbox/localized.png)](https://translate.chatterbox.works)
+
 *Minecraft chat that works for you.*
 
 Chat plugins are nothing new. In the Bukkit scene, there are tons of different plugins, approches, and varying levels of code quality. Every plugin was developed with a different set of needs in mind, and that leads to a lot of fragmentation.
@@ -18,7 +20,5 @@ To get a working jar for a server, use
 See the wiki.
 
 ## Translate
-Know another language? Feel free to [help us out](https://webtranslateit.com/en/projects/11623-Chatterbox) with
-translating Chatterbox to your language!
-
-![Translation progress](https://webtranslateit.com/api/projects/n02-HubG16hJFHcIcXtdKA/charts.png)
+Know another language? Feel free to [help us out](https://translate.chatterbox.works) with translating Chatterbox to
+your language!
