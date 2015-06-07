@@ -13,6 +13,7 @@ import com.google.common.io.CharSource;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.Chatterbox;
 
 import java.io.File;
@@ -90,6 +91,21 @@ public class HookManager {
     }
 
     /**
+     * Gets the first hook by the given name (case sensitive). This will return null if no hook could be found.
+     *
+     * @param name Name of hook to get
+     * @return Hook or null
+     */
+    @Nullable
+    public ChatterboxHook getHookByName(@NotNull final String name) {
+        Preconditions.checkNotNull(name, "name was null");
+        return this.getHooks().stream()
+            .filter(hook -> hook.getDescriptor().getName().equals(name))
+            .findFirst()
+            .orElse(null);
+    }
+
+    /**
      * Gets an immutable set of the loaded hooks.
      *
      * @return Immutable set
@@ -123,10 +139,13 @@ public class HookManager {
         Preconditions.checkArgument(file.isFile(), "file was not a file");
         final ChatterboxHook hook;
         final ConfigurationNode descriptor;
+        final String name;
         try {
             descriptor = this.getHookDescriptor(file);
             Preconditions.checkState(descriptor.getNode("name").getValue() != null, "Hook had no name in the hook.yml");
             Preconditions.checkState(descriptor.getNode("main").getValue() != null, "Hook had no main class in the hook.yml");
+            name = descriptor.getNode("name").getString();
+            Preconditions.checkState(this.getHookByName(name) == null, "A hook with the name " + name + " already exists.");
             final ClassLoader cl = new URLClassLoader(new URL[]{file.toURI().toURL()}, this.getClass().getClassLoader());
             final Class<?> mainClass = cl.loadClass(descriptor.getNode("main").getString());
             Preconditions.checkState(ChatterboxHook.class.isAssignableFrom(mainClass), "The main class did not extend ChatterboxHook");
@@ -134,7 +153,7 @@ public class HookManager {
         } catch (final Throwable ex) {
             throw new RuntimeException("An exception occurred while loading a hook.", ex);
         }
-        hook.internalInit(this.chatterbox, new File(this.getHooksDirectory(), descriptor.getNode("name").getString()), new HookDescriptor(descriptor));
+        hook.internalInit(this.chatterbox, new File(this.getHooksDirectory(), name), new HookDescriptor(descriptor));
         try {
             hook.init();
         } catch (final Throwable t) {
