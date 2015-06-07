@@ -54,9 +54,7 @@ public class HookManager {
         try (final ZipFile zf = new ZipFile(file)) {
             final ZipEntry hook = zf.getEntry("hook.yml");
             Preconditions.checkState(hook != null, "hook.yml didn't exist");
-            try (final InputStream is = zf.getInputStream(hook)) {
-                return this.loadYAML(this.inputStreamToString(is));
-            }
+            return this.loadYAML(this.inputStreamToString(zf.getInputStream(hook)));
         } catch (final IOException ex) {
             throw new RuntimeException(ex);
         }
