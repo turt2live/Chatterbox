@@ -133,6 +133,7 @@ public class HookManager {
      *
      * @param file Hook's jar
      * @throws RuntimeException      If anything is thrown while loading the hook
+     * @throws IllegalStateException If the hook is configured incorrectly
      */
     public void loadHook(@NotNull final File file) {
         Preconditions.checkNotNull(file, "file was null");
