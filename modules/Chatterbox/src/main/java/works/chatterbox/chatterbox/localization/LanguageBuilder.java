@@ -108,7 +108,7 @@ public class LanguageBuilder {
         if (this.saveLanguageFiles) {
             this.saveLanguageFiles();
         }
-        final File languageFile = this.languageFile != null ? this.languageFile : this.dataFolderHolder.getDataFolder().toPath().resolve(this.languageFolder).resolve(this.languageFileName).toFile();
+        final File languageFile = this.getLanguageFile();
         try (
             final FileInputStream fis = new FileInputStream(languageFile);
             final InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8)
