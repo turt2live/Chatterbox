@@ -5,6 +5,7 @@
  */
 package works.chatterbox.chatterbox.events;
 
+import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -21,6 +22,11 @@ public abstract class ChatterboxEvent extends Event {
                 return new HandlerList();
             }
         });
+
+    protected static HandlerList getHandlerList(@NotNull final String name) {
+        Preconditions.checkNotNull(name, "name was null");
+        return ChatterboxEvent.handlerLists.getUnchecked(name);
+    }
 
     @Override
     public HandlerList getHandlers() {

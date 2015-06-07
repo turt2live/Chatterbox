@@ -6,9 +6,11 @@
 package works.chatterbox.chatterbox.events.channels;
 
 import com.google.common.base.Preconditions;
+import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.events.CancellableChannelEvent;
+import works.chatterbox.chatterbox.events.ChatterboxEvent;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 public class ChannelJoinEvent extends CancellableChannelEvent {
@@ -19,6 +21,10 @@ public class ChannelJoinEvent extends CancellableChannelEvent {
         super(channel);
         Preconditions.checkNotNull(cplayer, "cplayer was null");
         this.cplayer = cplayer;
+    }
+
+    public static HandlerList getHandlerList() {
+        return ChatterboxEvent.getHandlerList(ChannelJoinEvent.class.getName());
     }
 
     public CPlayer getCPlayer() {
