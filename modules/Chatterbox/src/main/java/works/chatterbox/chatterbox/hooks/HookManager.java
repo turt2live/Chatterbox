@@ -116,7 +116,7 @@ public class HookManager {
      * loaded hooks.
      *
      * @param file Hook's jar
-     * @throws RuntimeException If any exception occurs while loading the hook
+     * @throws RuntimeException      If anything is thrown while loading the hook
      */
     public void loadHook(@NotNull final File file) {
         Preconditions.checkNotNull(file, "file was null");
@@ -158,7 +158,7 @@ public class HookManager {
             .forEach(hook -> {
                 try {
                     this.loadHook(hook);
-                } catch (final Exception ex) {
+                } catch (final Throwable ex) {
                     ex.printStackTrace();
                 }
             });
