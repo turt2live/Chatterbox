@@ -148,8 +148,7 @@ public class HookManager {
             Preconditions.checkState(this.getHookByName(name) == null, "A hook with the name " + name + " already exists.");
             final ClassLoader cl = new URLClassLoader(new URL[]{file.toURI().toURL()}, this.getClass().getClassLoader());
             final Class<?> mainClass = cl.loadClass(descriptor.getNode("main").getString());
-            Preconditions.checkState(ChatterboxHook.class.isAssignableFrom(mainClass), "The main class did not extend ChatterboxHook");
-            hook = (ChatterboxHook) mainClass.newInstance();
+            hook = mainClass.asSubclass(ChatterboxHook.class).newInstance();
         } catch (final Throwable ex) {
             throw new RuntimeException("An exception occurred while loading a hook.", ex);
         }
