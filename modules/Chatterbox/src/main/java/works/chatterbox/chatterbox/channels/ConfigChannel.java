@@ -127,7 +127,7 @@ public class ConfigChannel implements Channel {
     @Nullable
     private <T> T localOrMaster(@NotNull final Function<ConfigurationNode, T> function) {
         Preconditions.checkNotNull(function, "function was null");
-        final T local = function.apply(this.node);
+        final T local = function.apply(this.getNode());
         return local == null ? function.apply(this.chatterbox.getAPI().getChannelAPI().getMaster()) : local;
     }
 
@@ -182,7 +182,7 @@ public class ConfigChannel implements Channel {
     @Override
     public String getName() {
         // May not use master
-        final String name = this.node.getNode(ChannelConfiguration.NAME.getKey()).getString();
+        final String name = this.getNode().getNode(ChannelConfiguration.NAME.getKey()).getString();
         Preconditions.checkState(name != null, "No name specified for channel");
         return name;
     }
@@ -212,7 +212,7 @@ public class ConfigChannel implements Channel {
     @Override
     public String getTag() {
         // May not use master
-        final String tag = this.node.getNode(ChannelConfiguration.TAG.getKey()).getString();
+        final String tag = this.getNode().getNode(ChannelConfiguration.TAG.getKey()).getString();
         Preconditions.checkState(tag != null, "No tag specified for channel");
         return tag;
     }
