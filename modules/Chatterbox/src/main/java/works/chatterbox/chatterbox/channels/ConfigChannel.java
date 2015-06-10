@@ -34,6 +34,11 @@ public class ConfigChannel implements Channel {
     private final Set<CPlayer> members = Sets.newHashSet();
     private final Chatterbox chatterbox;
 
+    protected ConfigChannel(@NotNull final Chatterbox chatterbox) {
+        this.chatterbox = chatterbox;
+        this.node = null;
+    }
+
     public ConfigChannel(@NotNull final Chatterbox chatterbox, @NotNull final String name) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");
         Preconditions.checkNotNull(name, "name was null");
