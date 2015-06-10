@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import works.chatterbox.chatterbox.Chatterbox;
@@ -17,12 +18,28 @@ import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 import works.chatterbox.chatterbox.wrappers.UUIDCPlayer;
 
+import java.util.stream.Collectors;
+
 public class ChatterboxListener implements Listener {
 
     private final Chatterbox chatterbox;
 
     public ChatterboxListener(final Chatterbox chatterbox) {
         this.chatterbox = chatterbox;
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void atTagTabComplete(final PlayerChatTabCompleteEvent event) {
+        final String message = event.getChatMessage();
+        final String token = event.getLastToken();
+        if (!message.equals(token) && !token.startsWith("@")) return;
+        final String partialChannelTag = token.substring(1).toLowerCase();
+        event.getTabCompletions().addAll(
+            this.chatterbox.getAPI().getChannelAPI().getAllChannelTags().stream()
+                .filter(tag -> tag.toLowerCase().startsWith(partialChannelTag))
+                .map(tag -> "@" + tag)
+                .collect(Collectors.toSet())
+        );
     }
 
     @EventHandler(ignoreCancelled = true)
