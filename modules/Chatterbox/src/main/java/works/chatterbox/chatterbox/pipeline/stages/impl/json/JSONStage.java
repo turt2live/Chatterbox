@@ -141,7 +141,12 @@ public class JSONStage implements Stage {
             final String tooltip = this.getTooltip(message, sectionName);
             // If it isn't null, apply it
             if (tooltip != null) {
-                fm.tooltip(tooltip);
+                // Create a FancyMessage for the tooltip, which may contain old-style colors codes
+                final FancyMessage tooltipMessage = new FancyMessage(tooltip);
+                // Convert any old colors
+                this.oldColorsToNew(tooltipMessage);
+                // Apply the formatted tooltip to the message
+                fm.formattedTooltip(tooltipMessage);
                 // We need to send JSON messages now
                 isJSON = true;
             }
