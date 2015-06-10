@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package works.chatterbox.chatterbox.channels;
+package works.chatterbox.chatterbox.channels.configuration;
 
 import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 
-public enum ChannelConfiguration {
+public enum ChannelConfiguration implements KeyWithParents {
 
     NAME("name"),
     TAG("tag"),
@@ -39,10 +39,14 @@ public enum ChannelConfiguration {
         this.parents = parents;
     }
 
+    @NotNull
+    @Override
     public String getKey() {
         return this.key;
     }
 
+    @NotNull
+    @Override
     public String[] getParents() {
         return this.parents;
     }

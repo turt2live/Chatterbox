@@ -13,6 +13,7 @@ import ninja.leaping.configurate.ConfigurationNode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.Chatterbox;
+import works.chatterbox.chatterbox.channels.configuration.ChannelConfiguration;
 import works.chatterbox.chatterbox.channels.files.FormatFiles;
 import works.chatterbox.chatterbox.channels.radius.Radius;
 import works.chatterbox.chatterbox.channels.worlds.WorldRecipients;
@@ -122,13 +123,6 @@ public class ConfigChannel implements Channel {
     private String getTextFormat(@NotNull final ConfigurationNode formatNode) {
         Preconditions.checkNotNull(formatNode, "formatNode was null");
         return formatNode.getNode(ChannelConfiguration.FORMAT_TEXT.getKey()).getString();
-    }
-
-    @Nullable
-    private <T> T localOrMaster(@NotNull final Function<ConfigurationNode, T> function) {
-        Preconditions.checkNotNull(function, "function was null");
-        final T local = function.apply(this.getNode());
-        return local == null ? function.apply(this.chatterbox.getAPI().getChannelAPI().getMaster()) : local;
     }
 
     @Override
@@ -265,6 +259,13 @@ public class ConfigChannel implements Channel {
     @NotNull
     public ConfigurationNode getNode() {
         return this.node;
+    }
+
+    @Nullable
+    protected <T> T localOrMaster(@NotNull final Function<ConfigurationNode, T> function) {
+        Preconditions.checkNotNull(function, "function was null");
+        final T local = function.apply(this.getNode());
+        return local == null ? function.apply(this.chatterbox.getAPI().getChannelAPI().getMaster()) : local;
     }
 
     @Override
