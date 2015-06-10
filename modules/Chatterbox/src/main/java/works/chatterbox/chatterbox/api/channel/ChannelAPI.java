@@ -25,7 +25,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The Channel API handles the creation and parsing of chat channels.
@@ -55,8 +59,29 @@ public class ChannelAPI {
 
     @Nullable
     private Channel getDefaultChannelOrNull() {
-        final List<String> channelNames = this.getAllChannelNames();
+        final List<String> channelNames = this.getAllDefinedChannelNames();
         return channelNames.isEmpty() ? null : this.getChannelByName(channelNames.get(0));
+    }
+
+    @Nullable
+    private String getDefinedChannelNameByTag(@NotNull final String tag) {
+        Preconditions.checkNotNull(tag, "tag was null");
+        return this.chatterbox.getConfiguration().getNode("channels").getChildrenList().stream()
+            .filter(node -> tag.equalsIgnoreCase(node.getNode("tag").getString()))
+            .map(node -> node.getNode("name").getString())
+            .filter(name -> name != null)
+            .findFirst()
+            .orElse(null);
+    }
+
+    @Nullable
+    private String getLoadedChannelNameByTag(@NotNull final String tag) {
+        Preconditions.checkNotNull(tag, "tag was null");
+        return this.channels.asMap().entrySet().stream()
+            .filter(entry -> entry.getValue().getTag().equalsIgnoreCase(tag))
+            .map(Entry::getKey)
+            .findFirst()
+            .orElse(null);
     }
 
     /**
@@ -76,12 +101,44 @@ public class ChannelAPI {
     }
 
     /**
+     * Gets all channel names currently defined ({@link #getAllDefinedChannelNames()} in the config.yml and all channel
+     * names representative of all currently-loaded channels. This is returned in a set to prevent duplicates.
+     *
+     * @return Collection of channel names
+     */
+    @NotNull
+    public Set<String> getAllChannelNames() {
+        return Stream.concat(
+            this.getAllDefinedChannelNames().stream(),
+            this.channels.asMap().values().stream().map(Channel::getName)
+        )
+            .filter(name -> name != null)
+            .collect(Collectors.toSet());
+    }
+
+    /**
+     * Gets all channel tags currently defined ({@link #getAllDefinedChannelTags()} in the config.yml and all channel
+     * tags representative of all currently-loaded channels. This is returned in a set to prevent duplicates.
+     *
+     * @return Collection of channel tags
+     */
+    @NotNull
+    public Set<String> getAllChannelTags() {
+        return Stream.concat(
+            this.getAllDefinedChannelTags().stream(),
+            this.channels.asMap().values().stream().map(Channel::getTag)
+        )
+            .filter(name -> name != null)
+            .collect(Collectors.toSet());
+    }
+
+    /**
      * Gets all channel names defined in the currently loaded config.yml.
      *
      * @return Collection of channel names
      */
     @NotNull
-    public List<String> getAllChannelNames() {
+    public List<String> getAllDefinedChannelNames() {
         return this.chatterbox.getConfiguration().getNode("channels").getChildrenList().stream()
             .map(node -> node.getNode("name").getString())
             .filter(name -> name != null)
@@ -94,7 +151,7 @@ public class ChannelAPI {
      * @return Collection of channel tags
      */
     @NotNull
-    public List<String> getAllChannelTags() {
+    public List<String> getAllDefinedChannelTags() {
         return this.chatterbox.getConfiguration().getNode("channels").getChildrenList().stream()
             .map(node -> node.getNode("tag").getString())
             .filter(name -> name != null)
@@ -158,12 +215,11 @@ public class ChannelAPI {
     @Nullable
     public Channel getChannelByTag(@NotNull final String tag) {
         Preconditions.checkNotNull(tag, "tag was null");
-        final String channelName = this.chatterbox.getConfiguration().getNode("channels").getChildrenList().stream()
-            .filter(node -> tag.equalsIgnoreCase(node.getNode("tag").getString()))
-            .map(node -> node.getNode("name").getString())
-            .filter(name -> name != null)
-            .findFirst()
-            .orElse(null);
+        // First try defined channels. If null, try loaded channels.
+        final String channelName = Optional.ofNullable(this.getDefinedChannelNameByTag(tag))
+            // Use #orElseGet so we don't iterate unless necessary
+            .orElseGet(() -> this.getLoadedChannelNameByTag(tag));
+        // If no channel name, return null, otherwise get the channel by its name
         return channelName == null ? null : this.getChannelByName(channelName);
     }
 
