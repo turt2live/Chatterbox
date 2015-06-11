@@ -266,11 +266,18 @@ public class ConfigChannel implements Channel {
         return this.node;
     }
 
-    @Nullable
-    protected <T> T localOrMaster(@NotNull final Function<ConfigurationNode, T> function) {
-        Preconditions.checkNotNull(function, "function was null");
-        final T local = function.apply(this.getNode());
-        return local == null ? function.apply(this.chatterbox.getAPI().getChannelAPI().getMaster()) : local;
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(this.getName(), this.getTag());
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+        final ConfigChannel channel = (ConfigChannel) o;
+        return java.util.Objects.equals(this.getName(), channel.getName())
+            && java.util.Objects.equals(this.getTag(), channel.getTag());
     }
 
     @Override
@@ -278,7 +285,14 @@ public class ConfigChannel implements Channel {
         return Objects.toStringHelper(this)
             .add("name", this.getName())
             .add("tag", this.getTag())
-            .add("members", this.members)
+            .add("members", this.getMembers())
             .toString();
+    }
+
+    @Nullable
+    protected <T> T localOrMaster(@NotNull final Function<ConfigurationNode, T> function) {
+        Preconditions.checkNotNull(function, "function was null");
+        final T local = function.apply(this.getNode());
+        return local == null ? function.apply(this.chatterbox.getAPI().getChannelAPI().getMaster()) : local;
     }
 }

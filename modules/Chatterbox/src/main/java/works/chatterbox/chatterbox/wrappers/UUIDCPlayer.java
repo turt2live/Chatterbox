@@ -139,6 +139,9 @@ public class UUIDCPlayer implements CPlayer {
         if (!this.joinedChannels.contains(channel)) return false;
         if (!channel.removeMember(this)) return false;
         this.joinedChannels.remove(channel);
+        if (channel.equals(this.getMainChannel())) {
+            this.setMainChannel(this.chatterbox.getAPI().getChannelAPI().getDefaultChannel());
+        }
         return true;
     }
 
@@ -150,6 +153,21 @@ public class UUIDCPlayer implements CPlayer {
     @NotNull
     public UUID getUUID() {
         return this.uuid;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(this.uuid, this.joinedChannels, this.mainChannel);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+        final UUIDCPlayer player = (UUIDCPlayer) o;
+        return java.util.Objects.equals(this.uuid, player.uuid) &&
+            java.util.Objects.equals(this.joinedChannels, player.joinedChannels) &&
+            java.util.Objects.equals(this.mainChannel, player.mainChannel);
     }
 
     @Override
