@@ -19,6 +19,7 @@ import works.chatterbox.chatterbox.channels.radius.Radius;
 import works.chatterbox.chatterbox.channels.worlds.WorldRecipients;
 import works.chatterbox.chatterbox.events.channels.ChannelJoinEvent;
 import works.chatterbox.chatterbox.events.channels.ChannelLeaveEvent;
+import works.chatterbox.chatterbox.shaded.mkremins.fanciful.FancyMessage;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.io.File;
@@ -252,6 +253,22 @@ public class ConfigChannel implements Channel {
         this.members.remove(cp);
         cp.leaveChannel(this);
         return true;
+    }
+
+    @Override
+    public void sendMessage(@NotNull final String message) {
+        this.getMembers().stream()
+            .map(CPlayer::getPlayer)
+            .filter(player -> player != null)
+            .forEach(player -> player.sendMessage(message));
+    }
+
+    @Override
+    public void sendMessage(@NotNull final FancyMessage message) {
+        this.getMembers().stream()
+            .map(CPlayer::getPlayer)
+            .filter(player -> player != null)
+            .forEach(message::send);
     }
 
     /**

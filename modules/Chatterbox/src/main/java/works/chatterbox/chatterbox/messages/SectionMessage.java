@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.channels.radius.Radius;
 import works.chatterbox.chatterbox.channels.worlds.WorldRecipients;
+import works.chatterbox.chatterbox.shaded.mkremins.fanciful.FancyMessage;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.util.Set;
@@ -154,6 +155,16 @@ public abstract class SectionMessage implements Message {
         @Override
         public boolean removeMember(@NotNull final CPlayer cp) {
             return SectionMessage.this.base.getChannel().removeMember(cp);
+        }
+
+        @Override
+        public void sendMessage(@NotNull final String message) {
+            SectionMessage.this.base.getChannel().sendMessage(message);
+        }
+
+        @Override
+        public void sendMessage(@NotNull final FancyMessage message) {
+            SectionMessage.this.base.getChannel().sendMessage(message);
         }
     }
 

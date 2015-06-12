@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.channels.radius.Radius;
 import works.chatterbox.chatterbox.channels.worlds.WorldRecipients;
+import works.chatterbox.chatterbox.shaded.mkremins.fanciful.FancyMessage;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.util.Set;
@@ -118,5 +119,19 @@ public interface Channel {
      * @return If the member was removed
      */
     boolean removeMember(@NotNull final CPlayer cp);
+
+    /**
+     * Sends a message to all members of the channel.
+     *
+     * @param message Message to send
+     */
+    void sendMessage(@NotNull final String message);
+
+    /**
+     * Sends a message to all members of the channel.
+     *
+     * @param message Message to send
+     */
+    void sendMessage(@NotNull final FancyMessage message);
 
 }
