@@ -58,52 +58,6 @@ public class ConfigChannel implements Channel {
     }
 
     /**
-     * Determines the correct node under {@code format} to use for the format. If a {@code file} node is specified, this
-     * will load the file and return its contents. If not, this will return the contents of the {@code text} node. If
-     * both are missing, this returns null.
-     *
-     * @return Format or null
-     */
-    @Nullable
-    private String determineFormat() {
-        final ConfigurationNode format = this.getConfiguration(ChannelConfiguration.FORMAT, node -> node);
-        Preconditions.checkState(format != null, "No format specified for " + this.getName());
-        if (!format.getNode(ChannelConfiguration.FORMAT_FILE.getKey()).isVirtual()) {
-            return this.getFileFormat(format);
-        }
-        if (!format.getNode(ChannelConfiguration.FORMAT_TEXT.getKey()).isVirtual()) {
-            return this.getTextFormat(format);
-        }
-        return null;
-    }
-
-    /**
-     * Gets a configuration value from the given {@link ChannelConfiguration}.
-     * <p>This gets all parent nodes, then the node corresponding to {@code configuration}, which is then checked to see
-     * if it is virtual. If it is virtual, null is returned. If not, {@code function} is applied to the node. If
-     * {@code function} returns null for the channel, it is applied to the master node. If it still returns null, null
-     * is returned. If either the channel or master value is not null, that value is returned.
-     *
-     * @param configuration ChannelConfiguration that the value is desired of
-     * @param function      Function to apply on the node represented by {@code configuration}, on channel and possibly master
-     * @param <T>           Type that {@code function} returns, which this method returns
-     * @return Desired value, from channel or master, or null
-     */
-    @Nullable
-    private <T> T getConfiguration(@NotNull final ChannelConfiguration configuration, @NotNull final Function<ConfigurationNode, T> function) {
-        Preconditions.checkNotNull(configuration, "configuration was null");
-        Preconditions.checkNotNull(function, "function was null");
-        return this.localOrMaster(node -> {
-            ConfigurationNode child = node;
-            for (final String parent : configuration.getParents()) {
-                child = child.getNode(parent);
-            }
-            child = child.getNode(configuration.getKey());
-            return child.isVirtual() ? null : function.apply(child);
-        });
-    }
-
-    /**
      * Gets the cached contents of the {@code file} node in the given node. If there is any error, null will be
      * returned.
      *
@@ -257,6 +211,7 @@ public class ConfigChannel implements Channel {
 
     @Override
     public void sendMessage(@NotNull final String message) {
+        Preconditions.checkNotNull(message, "message was null");
         this.getMembers().stream()
             .map(CPlayer::getPlayer)
             .filter(player -> player != null)
@@ -265,10 +220,57 @@ public class ConfigChannel implements Channel {
 
     @Override
     public void sendMessage(@NotNull final FancyMessage message) {
+        Preconditions.checkNotNull(message, "message was null");
         this.getMembers().stream()
             .map(CPlayer::getPlayer)
             .filter(player -> player != null)
             .forEach(message::send);
+    }
+
+    /**
+     * Determines the correct node under {@code format} to use for the format. If a {@code file} node is specified, this
+     * will load the file and return its contents. If not, this will return the contents of the {@code text} node. If
+     * both are missing, this returns null.
+     *
+     * @return Format or null
+     */
+    @Nullable
+    protected String determineFormat() {
+        final ConfigurationNode format = this.getConfiguration(ChannelConfiguration.FORMAT, node -> node);
+        Preconditions.checkState(format != null, "No format specified for " + this.getName());
+        if (!format.getNode(ChannelConfiguration.FORMAT_FILE.getKey()).isVirtual()) {
+            return this.getFileFormat(format);
+        }
+        if (!format.getNode(ChannelConfiguration.FORMAT_TEXT.getKey()).isVirtual()) {
+            return this.getTextFormat(format);
+        }
+        return null;
+    }
+
+    /**
+     * Gets a configuration value from the given {@link ChannelConfiguration}.
+     * <p>This gets all parent nodes, then the node corresponding to {@code configuration}, which is then checked to see
+     * if it is virtual. If it is virtual, null is returned. If not, {@code function} is applied to the node. If
+     * {@code function} returns null for the channel, it is applied to the master node. If it still returns null, null
+     * is returned. If either the channel or master value is not null, that value is returned.
+     *
+     * @param configuration ChannelConfiguration that the value is desired of
+     * @param function      Function to apply on the node represented by {@code configuration}, on channel and possibly master
+     * @param <T>           Type that {@code function} returns, which this method returns
+     * @return Desired value, from channel or master, or null
+     */
+    @Nullable
+    protected <T> T getConfiguration(@NotNull final ChannelConfiguration configuration, @NotNull final Function<ConfigurationNode, T> function) {
+        Preconditions.checkNotNull(configuration, "configuration was null");
+        Preconditions.checkNotNull(function, "function was null");
+        return this.localOrMaster(node -> {
+            ConfigurationNode child = node;
+            for (final String parent : configuration.getParents()) {
+                child = child.getNode(parent);
+            }
+            child = child.getNode(configuration.getKey());
+            return child.isVirtual() ? null : function.apply(child);
+        });
     }
 
     /**
