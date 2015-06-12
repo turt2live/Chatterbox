@@ -137,11 +137,11 @@ public class UUIDCPlayer implements CPlayer {
     public boolean leaveChannel(@NotNull final Channel channel) {
         Preconditions.checkNotNull(channel, "channel was null");
         if (!this.joinedChannels.contains(channel)) return false;
-        if (!channel.removeMember(this)) return false;
         this.joinedChannels.remove(channel);
         if (channel.equals(this.getMainChannel())) {
             this.setMainChannel(this.chatterbox.getAPI().getChannelAPI().getDefaultChannel());
         }
+        channel.removeMember(this);
         return true;
     }
 
