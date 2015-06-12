@@ -15,7 +15,7 @@ import works.chatterbox.chatterbox.wrappers.CPlayer;
 public class ChannelPreMessageEvent extends ChannelMessageEvent {
 
     public ChannelPreMessageEvent(@NotNull final Channel channel, @NotNull final CPlayer cplayer, @NotNull final Message message) {
-        super(channel, cplayer, message);
+        super(true, channel, cplayer, message);
     }
 
     public static HandlerList getHandlerList() {
