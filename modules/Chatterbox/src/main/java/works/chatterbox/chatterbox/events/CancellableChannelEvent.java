@@ -14,8 +14,12 @@ public abstract class CancellableChannelEvent extends ChannelEvent implements Ca
 
     private boolean cancelled;
 
+    public CancellableChannelEvent(final boolean isAsync, @NotNull final Channel channel) {
+        super(isAsync, channel);
+    }
+
     public CancellableChannelEvent(@NotNull final Channel channel) {
-        super(channel);
+        this(false, channel);
     }
 
     @Override

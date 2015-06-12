@@ -14,9 +14,14 @@ public abstract class ChannelEvent extends ChatterboxEvent {
 
     protected Channel channel;
 
-    public ChannelEvent(@NotNull final Channel channel) {
+    public ChannelEvent(final boolean isAsync, @NotNull final Channel channel) {
+        super(isAsync);
         Preconditions.checkNotNull(channel, "channel was null");
         this.channel = channel;
+    }
+
+    public ChannelEvent(@NotNull final Channel channel) {
+        this(false, channel);
     }
 
     @NotNull

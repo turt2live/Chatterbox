@@ -23,6 +23,14 @@ public abstract class ChatterboxEvent extends Event {
             }
         });
 
+    public ChatterboxEvent(final boolean isAsync) {
+        super(isAsync);
+    }
+
+    public ChatterboxEvent() {
+        super(false);
+    }
+
     protected static HandlerList getHandlerList(@NotNull final String name) {
         Preconditions.checkNotNull(name, "name was null");
         return ChatterboxEvent.handlerLists.getUnchecked(name);

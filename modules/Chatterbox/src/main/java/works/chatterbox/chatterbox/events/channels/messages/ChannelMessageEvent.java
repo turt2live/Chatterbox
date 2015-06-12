@@ -18,7 +18,11 @@ public abstract class ChannelMessageEvent extends CancellableChannelEvent {
     private final Message message;
 
     public ChannelMessageEvent(@NotNull final Channel channel, @NotNull final CPlayer cplayer, @NotNull final Message message) {
-        super(channel);
+        this(false, channel, cplayer, message);
+    }
+
+    public ChannelMessageEvent(final boolean isAsync, @NotNull final Channel channel, @NotNull final CPlayer cplayer, @NotNull final Message message) {
+        super(isAsync, channel);
         Preconditions.checkNotNull(cplayer, "cplayer was null");
         Preconditions.checkNotNull(message, "message was null");
         this.cplayer = cplayer;
