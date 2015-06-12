@@ -268,7 +268,10 @@ public class ConfigChannel implements Channel {
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(this.getName(), this.getTag());
+        return java.util.Objects.hash(
+            this.getName(),
+            this.getTag()
+        );
     }
 
     @Override

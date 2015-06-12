@@ -157,7 +157,9 @@ public class UUIDCPlayer implements CPlayer {
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(this.uuid, this.joinedChannels, this.mainChannel);
+        return java.util.Objects.hash(
+            this.uuid
+        );
     }
 
     @Override
