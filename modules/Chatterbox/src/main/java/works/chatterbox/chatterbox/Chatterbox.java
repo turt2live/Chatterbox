@@ -34,6 +34,7 @@ import works.chatterbox.chatterbox.pipeline.stages.impl.recipient.RecipientStage
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.RythmStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.SpecialStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.sanitize.SanitizeStage;
+import works.chatterbox.chatterbox.pipeline.stages.impl.sanitize.TrimStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.validation.ValidationStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.world.WorldStage;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
@@ -65,6 +66,7 @@ public class Chatterbox extends JavaPlugin implements DataFolderHolder {
             // Formatting
             new ChannelStage(), // Sets the base format
             new ColorStripStage(this), // Remove colors if necessary
+            new TrimStage(), // Trim leading and ending colors and spaces if necessary
             new RythmStage(this), // Processes the Rythm syntax
             new ColorStage(this), // Applies colors
             new SpecialStage(), // Handles methods from ChatterboxSpecialUtilities
