@@ -5,6 +5,7 @@
  */
 package works.chatterbox.chatterbox.pipeline.stages.impl.validation;
 
+import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.messages.PlayerMessage;
@@ -16,7 +17,7 @@ public class ValidationStage implements Stage {
     @Override
     public void process(@NotNull final Message message, @NotNull final PipelineContext context) {
         // No empty messages from players!
-        if (message instanceof PlayerMessage && message.getMessage().isEmpty()) {
+        if (message instanceof PlayerMessage && ChatColor.stripColor(message.getMessage()).isEmpty()) {
             message.setCancelled(true);
         }
     }
