@@ -13,6 +13,8 @@ reflectcommands:
 - commands.impl.ReloadCommand
 - commands.impl.formats.action.ActionCommand
 - commands.impl.formats.say.SayCommand
+- commands.impl.messaging.MessageCommand
+- commands.impl.messaging.ReplyCommand
 
 commands:
   chatterbox:

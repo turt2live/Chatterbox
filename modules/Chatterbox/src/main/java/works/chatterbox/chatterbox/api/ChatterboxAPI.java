@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.Chatterbox;
 import works.chatterbox.chatterbox.api.channel.ChannelAPI;
 import works.chatterbox.chatterbox.api.message.MessageAPI;
+import works.chatterbox.chatterbox.api.messaging.MessagingAPI;
 import works.chatterbox.chatterbox.api.player.PlayerAPI;
 import works.chatterbox.chatterbox.api.rythm.RythmAPI;
 import works.chatterbox.chatterbox.api.title.TitleAPI;
@@ -22,6 +23,7 @@ public class ChatterboxAPI {
     private final ChannelAPI channelAPI;
     private final RythmAPI rythmAPI;
     private final TitleAPI titleAPI;
+    private final MessagingAPI messagingAPI;
 
     public ChatterboxAPI(@NotNull final Chatterbox chatterbox) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");
@@ -31,6 +33,7 @@ public class ChatterboxAPI {
         this.channelAPI = new ChannelAPI(this.chatterbox);
         this.rythmAPI = new RythmAPI(this.chatterbox);
         this.titleAPI = new TitleAPI(this.chatterbox);
+        this.messagingAPI = new MessagingAPI(this.chatterbox);
     }
 
     /**
@@ -61,6 +64,16 @@ public class ChatterboxAPI {
     @NotNull
     public MessageAPI getMessageAPI() {
         return this.messageAPI;
+    }
+
+    /**
+     * Gets the Messaging API, which is used in processing private messages.
+     *
+     * @return MessagingAPI
+     */
+    @NotNull
+    public MessagingAPI getMessagingAPI() {
+        return this.messagingAPI;
     }
 
     /**

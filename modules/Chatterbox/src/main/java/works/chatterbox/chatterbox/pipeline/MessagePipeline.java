@@ -152,6 +152,11 @@ public class MessagePipeline {
         Preconditions.checkNotNull(context, "context was null");
         this.stages.forEach(stage -> {
             try {
+                final List<String> skipStages = context.getProperties().getNode("chatterbox_skip_stages").getList(input -> {
+                    if (input == null) return null;
+                    return input.toString();
+                });
+                if (skipStages.contains(stage.getClass().getCanonicalName())) return;
                 stage.process(message, context);
             } catch (final Throwable t) {
                 new RuntimeException("An exception occurred while running the stage " + stage.getClass().getSimpleName(), t).printStackTrace();

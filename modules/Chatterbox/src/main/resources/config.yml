@@ -20,6 +20,20 @@ formats:
   say: "[@(sender.getName())] @(message)"
   action: "* @(sender.getName()) @(message)"
 
+#################
+### MESSAGING ###
+#################
+
+# Options for messaging (/message and /reply)
+messaging:
+  # The messaging "channel." All messaging messages are sent through this channel, but they are only ever delivered to
+  # the sender and recipient.
+  channel:
+    # Really the only thing that needs defining in this channel is the format. JSON and recipient sections may be used,
+    # but the recipient section is redundant and unnecessary, since there is already a recipient variable.
+    format:
+      text: '[@(player.getDisplayName()) -> @(recipient.getDisplayName())] @(message)'
+
 ##############
 ### TITLES ###
 ##############
