@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.api.ChatterboxAPI;
 import works.chatterbox.chatterbox.api.DataFolderHolder;
+import works.chatterbox.chatterbox.api.impl.DefaultChatterboxAPI;
 import works.chatterbox.chatterbox.channels.tasks.MembershipTask;
 import works.chatterbox.chatterbox.commands.ReflectiveCommandRegistrar;
 import works.chatterbox.chatterbox.hooks.HookManager;
@@ -47,7 +48,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.stream.Stream;
 
-public class Chatterbox extends JavaPlugin implements DataFolderHolder {
+public class Chatterbox extends JavaPlugin implements DataFolderHolder, ChatterboxAPIHolder {
 
     private final HookManager hm = new HookManager(this);
     private ReflectiveCommandRegistrar<Chatterbox> rcr;
@@ -138,6 +139,8 @@ public class Chatterbox extends JavaPlugin implements DataFolderHolder {
         pm.registerEvents(new ChatterboxListener(this), this);
     }
 
+    @Override
+    @NotNull
     public ChatterboxAPI getAPI() {
         return this.api;
     }
@@ -184,7 +187,7 @@ public class Chatterbox extends JavaPlugin implements DataFolderHolder {
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        this.api = new ChatterboxAPI(this);
+        this.api = new DefaultChatterboxAPI(this);
         // Rejoin all previous channels
         Sets.newHashSet(this.getServer().getOnlinePlayers()).stream()
             .map(this.api.getPlayerAPI()::getCPlayer)

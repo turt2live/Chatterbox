@@ -1,40 +1,9 @@
-/*
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- */
 package works.chatterbox.chatterbox.api;
 
-import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.Chatterbox;
-import works.chatterbox.chatterbox.api.channel.ChannelAPI;
-import works.chatterbox.chatterbox.api.message.MessageAPI;
-import works.chatterbox.chatterbox.api.messaging.MessagingAPI;
-import works.chatterbox.chatterbox.api.player.PlayerAPI;
-import works.chatterbox.chatterbox.api.rythm.RythmAPI;
-import works.chatterbox.chatterbox.api.title.TitleAPI;
 
-public class ChatterboxAPI {
-
-    private final Chatterbox chatterbox;
-    private final PlayerAPI playerAPI;
-    private final MessageAPI messageAPI;
-    private final ChannelAPI channelAPI;
-    private final RythmAPI rythmAPI;
-    private final TitleAPI titleAPI;
-    private final MessagingAPI messagingAPI;
-
-    public ChatterboxAPI(@NotNull final Chatterbox chatterbox) {
-        Preconditions.checkNotNull(chatterbox, "chatterbox was null");
-        this.chatterbox = chatterbox;
-        this.playerAPI = new PlayerAPI(this.chatterbox);
-        this.messageAPI = new MessageAPI(this.chatterbox);
-        this.channelAPI = new ChannelAPI(this.chatterbox);
-        this.rythmAPI = new RythmAPI(this.chatterbox);
-        this.titleAPI = new TitleAPI(this.chatterbox);
-        this.messagingAPI = new MessagingAPI(this.chatterbox);
-    }
+public interface ChatterboxAPI {
 
     /**
      * Gets the Channel API, which is used for channel functions.
@@ -42,9 +11,7 @@ public class ChatterboxAPI {
      * @return ChannelAPI
      */
     @NotNull
-    public ChannelAPI getChannelAPI() {
-        return this.channelAPI;
-    }
+    ChannelAPI getChannelAPI();
 
     /**
      * Gets the instance of Chatterbox that this API interfaces with.
@@ -52,9 +19,7 @@ public class ChatterboxAPI {
      * @return Chatterbox
      */
     @NotNull
-    public Chatterbox getChatterbox() {
-        return this.chatterbox;
-    }
+    Chatterbox getChatterbox();
 
     /**
      * Gets the Message API, which is used to make and process messages.
@@ -62,9 +27,7 @@ public class ChatterboxAPI {
      * @return MessageAPI
      */
     @NotNull
-    public MessageAPI getMessageAPI() {
-        return this.messageAPI;
-    }
+    MessageAPI getMessageAPI();
 
     /**
      * Gets the Messaging API, which is used in processing private messages.
@@ -72,9 +35,7 @@ public class ChatterboxAPI {
      * @return MessagingAPI
      */
     @NotNull
-    public MessagingAPI getMessagingAPI() {
-        return this.messagingAPI;
-    }
+    MessagingAPI getMessagingAPI();
 
     /**
      * Gets the Player API, which has methods pertaining to players and their various functions in Chatterbox.
@@ -82,9 +43,7 @@ public class ChatterboxAPI {
      * @return PlayerAPI
      */
     @NotNull
-    public PlayerAPI getPlayerAPI() {
-        return this.playerAPI;
-    }
+    PlayerAPI getPlayerAPI();
 
     /**
      * Gets the Rythm API, which is used to format templates and add custom variables to the formatting engine.
@@ -92,9 +51,7 @@ public class ChatterboxAPI {
      * @return RythmAPI
      */
     @NotNull
-    public RythmAPI getRythmAPI() {
-        return this.rythmAPI;
-    }
+    RythmAPI getRythmAPI();
 
     /**
      * Gets the Title API, which is used to manage player titles.
@@ -102,7 +59,5 @@ public class ChatterboxAPI {
      * @return TitleAPI
      */
     @NotNull
-    public TitleAPI getTitleAPI() {
-        return this.titleAPI;
-    }
+    TitleAPI getTitleAPI();
 }

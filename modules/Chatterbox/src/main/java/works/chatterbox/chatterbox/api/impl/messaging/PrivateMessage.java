@@ -1,4 +1,4 @@
-package works.chatterbox.chatterbox.api.messaging;
+package works.chatterbox.chatterbox.api.impl.messaging;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;

@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package works.chatterbox.chatterbox.api.message;
+package works.chatterbox.chatterbox.api.impl.message;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.Chatterbox;
+import works.chatterbox.chatterbox.api.MessageAPI;
 import works.chatterbox.chatterbox.messages.Message;
 import works.chatterbox.chatterbox.messages.PlayerMessage;
 import works.chatterbox.chatterbox.pipeline.MessagePipeline;
@@ -18,33 +19,24 @@ import works.chatterbox.chatterbox.wrappers.CPlayer;
 /**
  * The Message API handles all things messages.
  */
-public class MessageAPI {
+public class DefaultMessageAPI implements MessageAPI {
 
     private final Chatterbox chatterbox;
     private final MessagePipeline pipeline;
 
-    public MessageAPI(@NotNull final Chatterbox chatterbox) {
+    public DefaultMessageAPI(@NotNull final Chatterbox chatterbox) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");
         this.chatterbox = chatterbox;
         this.pipeline = new MessagePipeline();
     }
 
-    /**
-     * Gets the message pipeline. All messages should pass through this pipeline to be properly formatted.
-     *
-     * @return Message pipeline
-     */
+    @Override
     @NotNull
     public MessagePipeline getMessagePipeline() {
         return this.pipeline;
     }
 
-    /**
-     * Makes a message from an async chat event.
-     *
-     * @param event Event to make message from
-     * @return New message object
-     */
+    @Override
     @NotNull
     public Message makeMessage(@NotNull final AsyncPlayerChatEvent event) {
         Preconditions.checkNotNull(event, "event was null");
@@ -58,12 +50,7 @@ public class MessageAPI {
         );
     }
 
-    /**
-     * Parses literals, like escapes ({@code \}), and color codes (for example, {@code &e}).
-     *
-     * @param original Non-parsed String
-     * @return Parsed String
-     */
+    @Override
     public String parseLiterals(@NotNull final String original) {
         Preconditions.checkNotNull(original, "original was null");
         final StringBuilder sb = new StringBuilder();
@@ -88,6 +75,7 @@ public class MessageAPI {
         return sb.toString();
     }
 
+    @Override
     public String parseLiteralsIgnoreEscapes(@NotNull final String original) {
         Preconditions.checkNotNull(original, "original was null");
         final StringBuilder sb = new StringBuilder();

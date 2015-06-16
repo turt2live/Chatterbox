@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package works.chatterbox.chatterbox.api.title;
+package works.chatterbox.chatterbox.api.impl.title;
 
 import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
@@ -12,13 +12,14 @@ import com.google.common.cache.LoadingCache;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.jetbrains.annotations.NotNull;
 import works.chatterbox.chatterbox.Chatterbox;
+import works.chatterbox.chatterbox.api.TitleAPI;
 import works.chatterbox.chatterbox.titles.Prefix;
 import works.chatterbox.chatterbox.titles.Suffix;
 import works.chatterbox.chatterbox.titles.Titles;
 
 import java.util.UUID;
 
-public class TitleAPI {
+public class DefaultTitleAPI implements TitleAPI {
 
     private final Chatterbox chatterbox;
     private final LoadingCache<UUID, Titles> titlesCache = CacheBuilder.newBuilder()
@@ -29,7 +30,7 @@ public class TitleAPI {
             }
         });
 
-    public TitleAPI(@NotNull final Chatterbox chatterbox) {
+    public DefaultTitleAPI(@NotNull final Chatterbox chatterbox) {
         Preconditions.checkNotNull(chatterbox, "chatterbox was null");
         this.chatterbox = chatterbox;
     }
@@ -57,11 +58,13 @@ public class TitleAPI {
         return titles;
     }
 
+    @Override
     @NotNull
     public Titles getTitles(@NotNull final UUID uuid) {
         return this.titlesCache.getUnchecked(uuid);
     }
 
+    @Override
     public void invalidate(@NotNull final UUID uuid) {
         Preconditions.checkNotNull(uuid, "uuid was null");
     }

@@ -56,7 +56,7 @@ public class RythmStage implements Stage {
 
     /**
      * This will process the message's format using the RythmEngine provided by
-     * {@link works.chatterbox.chatterbox.api.rythm.RythmAPI RythmAPI}. Certain variables, such as the player, channel,
+     * {@link works.chatterbox.chatterbox.api.RythmAPI RythmAPI}. Certain variables, such as the player, channel,
      * and message, are provided to the engine.
      * <p>Intended effect: The message's format is processed by Rythm
      */
