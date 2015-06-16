@@ -26,7 +26,7 @@ public class DefaultTitleAPI implements TitleAPI {
         .build(new CacheLoader<UUID, Titles>() {
             @Override
             public Titles load(@NotNull final UUID key) throws Exception {
-                return TitleAPI.this.populateDefaultTitles(key, new Titles());
+                return DefaultTitleAPI.this.populateDefaultTitles(key, new Titles());
             }
         });
 
