@@ -8,6 +8,7 @@ package works.chatterbox.chatterbox;
 import com.google.common.collect.Sets;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
@@ -38,6 +39,7 @@ import works.chatterbox.chatterbox.pipeline.stages.impl.sanitize.SanitizeStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.sanitize.TrimStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.validation.ValidationStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.world.WorldStage;
+import works.chatterbox.chatterbox.shaded.mkremins.fanciful.FancyMessage;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.io.File;
@@ -204,8 +206,12 @@ public class Chatterbox extends JavaPlugin implements DataFolderHolder, Chatterb
     @Override
     public boolean onCommand(final CommandSender cs, final Command command, final String label, final String[] args) {
         if (args.length < 1) {
-            cs.sendMessage(command.getDescription());
-            return false;
+            new FancyMessage(this.getLanguage().getAString("SEE_DOCUMENTATION"))
+                .color(ChatColor.RED)
+                .tooltip(this.getLanguage().getAString("CLICK_FOR_DOCUMENTATION"))
+                .link("https://github.com/Chatterbox/Chatterbox/wiki/Commands")
+                .send(cs);
+            return true;
         }
         final ReflectiveCommandRegistrar<Chatterbox> rcr = this.getReflectiveCommandRegistrar();
         if (rcr == null) {
