@@ -230,7 +230,9 @@ public class Chatterbox extends JavaPlugin implements DataFolderHolder, Chatterb
         // Cancel all of our tasks
         this.getServer().getScheduler().cancelTasks(this);
         // Save all memberships
-        this.membershipTask.run();
+        if (this.membershipTask != null) {
+            this.membershipTask.run();
+        }
     }
 
     @Override
