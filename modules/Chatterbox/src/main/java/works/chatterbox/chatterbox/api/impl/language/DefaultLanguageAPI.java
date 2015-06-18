@@ -69,9 +69,7 @@ public class DefaultLanguageAPI implements LanguageAPI {
     @Override
     public Language getLanguage(@NotNull final String locale) {
         Preconditions.checkNotNull(locale, "locale was null");
-        final String matchedLocale = this.findLocale(locale);
-        // If there were no matching locales, we don't have a Language for it
-        if (matchedLocale == null) return null;
+        final String matchedLocale = Optional.ofNullable(this.findLocale(locale)).orElse(locale);
         final Language cached = this.languages.getIfPresent(matchedLocale);
         if (cached != null) {
             return cached;
