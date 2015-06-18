@@ -36,6 +36,7 @@ public class DefaultLanguageAPI implements LanguageAPI {
         Preconditions.checkNotNull(base, "base was null");
         final String baseBase = base.split("_")[0];
         final File langFolder = new File(this.chatterbox.getDataFolder(), "lang");
+        if (!langFolder.exists() || !langFolder.isDirectory()) return null;
         final List<String> matches = Arrays.stream(langFolder.list())
             .filter(file -> file.startsWith(baseBase))
             .map(file -> {
