@@ -164,8 +164,8 @@ public abstract class BaseCommand<T extends Chatterbox> implements CommandExecut
     }
 
     public void dispNoPerms(final CommandSender cs, final String... permissionsNeeded) {
-        final String noPermission = this.plugin.getLanguage().getAString("NO_PERMISSION");
-        final String missingPermissions = this.plugin.getLanguage().getAString("MISSING_PERMISSIONS");
+        final String noPermission = this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getAString("NO_PERMISSION");
+        final String missingPermissions = this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getAString("MISSING_PERMISSIONS");
         this.dispNoPerms(cs, noPermission, missingPermissions, permissionsNeeded);
     }
 

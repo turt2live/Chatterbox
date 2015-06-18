@@ -4,8 +4,9 @@
 
 # Language options
 language:
-  # The language file to use for in-game messages
-  file: "lang/en_US.properties"
+  # The default locale to use for in-game messages. Locales are searched for in the "lang" folder. For example, "en_US"
+  # should be located at "plugins/Chatterbox/lang/en_US.properties"
+  locale: "en_US"
 
 ###############
 ### FORMATS ###

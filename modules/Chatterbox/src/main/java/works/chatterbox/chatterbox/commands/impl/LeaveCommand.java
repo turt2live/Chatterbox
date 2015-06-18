@@ -42,29 +42,29 @@ public class LeaveCommand extends ChannelTabCommand {
         final String channelName = eargs[0];
         final Channel channel = this.plugin.getAPI().getChannelAPI().getChannel(channelName);
         if (channel == null) {
-            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getAString("NO_SUCH_CHANNEL"));
+            cs.sendMessage(ChatColor.RED + this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getAString("NO_SUCH_CHANNEL"));
             return true;
         }
         final CPlayer cp = this.plugin.getAPI().getPlayerAPI().getCPlayer(player);
         if (!cp.getChannels().contains(channel)) {
-            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getAString("NOT_IN_CHANNEL"));
+            cs.sendMessage(ChatColor.RED + this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getAString("NOT_IN_CHANNEL"));
             return true;
         }
         if (channel.isPermanent()) {
-            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getAString("CANNOT_LEAVE_CHANNEL"));
+            cs.sendMessage(ChatColor.RED + this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getAString("CANNOT_LEAVE_CHANNEL"));
             return true;
         }
         final boolean wasMainChannel = channel.equals(cp.getMainChannel());
         if (!cp.leaveChannel(channel)) {
-            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getFormattedString("COULD_NOT_LEAVE_CHANNEL"));
+            cs.sendMessage(ChatColor.RED + this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getFormattedString("COULD_NOT_LEAVE_CHANNEL"));
             return true;
         }
-        cs.sendMessage(ChatColor.BLUE + this.plugin.getLanguage().getFormattedString("LEFT_CHANNEL", ChatColor.GRAY + channel.getName() + ChatColor.BLUE));
+        cs.sendMessage(ChatColor.BLUE + this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getFormattedString("LEFT_CHANNEL", ChatColor.GRAY + channel.getName() + ChatColor.BLUE));
         if (wasMainChannel) {
             final Iterator<Channel> channels = cp.getChannels().iterator();
             final Channel newMain = channels.hasNext() ? channels.next() : this.plugin.getAPI().getChannelAPI().getDefaultChannel();
             cp.setMainChannel(newMain);
-            cs.sendMessage(ChatColor.BLUE + this.plugin.getLanguage().getFormattedString("NEW_MAIN_CHANNEL", ChatColor.GRAY + newMain.getName() + ChatColor.BLUE));
+            cs.sendMessage(ChatColor.BLUE + this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getFormattedString("NEW_MAIN_CHANNEL", ChatColor.GRAY + newMain.getName() + ChatColor.BLUE));
         }
         return true;
     }

@@ -64,7 +64,7 @@ public class CommandHandler {
         }
         final OptionalInt optionalInt = matches.keySet().stream().mapToInt(i -> i).max();
         if (!optionalInt.isPresent()) {
-            cs.sendMessage(ChatColor.RED + this.chatterbox.getLanguage().getAString("NO_SUCH_COMMAND"));
+            cs.sendMessage(ChatColor.RED + this.chatterbox.getAPI().getLanguageAPI().getLanguage(cs).getAString("NO_SUCH_COMMAND"));
             return;
         }
         final CommandCoupling command = matches.get(optionalInt.getAsInt());

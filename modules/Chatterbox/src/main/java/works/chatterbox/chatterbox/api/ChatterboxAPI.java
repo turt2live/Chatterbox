@@ -22,6 +22,14 @@ public interface ChatterboxAPI {
     Chatterbox getChatterbox();
 
     /**
+     * Gets the Language API, which is used to access localization.
+     *
+     * @return LanguageAPI
+     */
+    @NotNull
+    LanguageAPI getLanguageAPI();
+
+    /**
      * Gets the Message API, which is used to make and process messages.
      *
      * @return MessageAPI

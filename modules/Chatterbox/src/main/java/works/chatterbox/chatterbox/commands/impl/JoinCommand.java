@@ -40,7 +40,7 @@ public class JoinCommand extends ChannelTabCommand {
         final String channelName = eargs[0];
         final Channel channel = this.plugin.getAPI().getChannelAPI().getChannel(channelName);
         if (channel == null) {
-            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getAString("NO_SUCH_CHANNEL"));
+            cs.sendMessage(ChatColor.RED + this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getAString("NO_SUCH_CHANNEL"));
             return true;
         }
         if (this.plugin.getConfiguration().getNode("options").getNode("permissions").getNode("channels").getNode("per-channel").getBoolean(true)) {
@@ -52,14 +52,14 @@ public class JoinCommand extends ChannelTabCommand {
         }
         final CPlayer cp = this.plugin.getAPI().getPlayerAPI().getCPlayer(player);
         if (cp.getChannels().contains(channel)) {
-            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getAString("ALREADY_IN_CHANNEL"));
+            cs.sendMessage(ChatColor.RED + this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getAString("ALREADY_IN_CHANNEL"));
             return true;
         }
         if (!cp.joinChannel(channel)) {
-            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getAString("COULD_NOT_JOIN_CHANNEL"));
+            cs.sendMessage(ChatColor.RED + this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getAString("COULD_NOT_JOIN_CHANNEL"));
             return true;
         }
-        cs.sendMessage(ChatColor.BLUE + this.plugin.getLanguage().getFormattedString("JOINED_CHANNEL", ChatColor.GRAY + channel.getName() + ChatColor.BLUE));
+        cs.sendMessage(ChatColor.BLUE + this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getFormattedString("JOINED_CHANNEL", ChatColor.GRAY + channel.getName() + ChatColor.BLUE));
         return true;
     }
 }

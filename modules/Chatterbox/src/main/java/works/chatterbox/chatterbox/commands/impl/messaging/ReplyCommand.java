@@ -36,12 +36,12 @@ public class ReplyCommand extends TabCommand<Chatterbox> {
         final Player p = (Player) cs;
         final UUID uuid = this.plugin.getAPI().getMessagingAPI().getLastSenders().get(p.getUniqueId());
         if (uuid == null) {
-            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getAString("NO_REPLY"));
+            cs.sendMessage(ChatColor.RED + this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getAString("NO_REPLY"));
             return true;
         }
         final Player t = this.plugin.getServer().getPlayer(uuid);
         if (t == null) {
-            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getAString("NO_SUCH_PLAYER"));
+            cs.sendMessage(ChatColor.RED + this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getAString("NO_SUCH_PLAYER"));
             return true;
         }
         final String message = CommandUtils.getSpaceJoiner().join(eargs);

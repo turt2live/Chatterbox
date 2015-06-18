@@ -43,7 +43,7 @@ public class MessageCommand extends TabCommand<Chatterbox> {
         final Player p = (Player) cs;
         final Player t = this.plugin.getServer().getPlayer(eargs[0]);
         if (t == null) {
-            cs.sendMessage(ChatColor.RED + this.plugin.getLanguage().getAString("NO_SUCH_PLAYER"));
+            cs.sendMessage(ChatColor.RED + this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getAString("NO_SUCH_PLAYER"));
             return true;
         }
         final String message = CommandUtils.joinFrom(eargs, 1);

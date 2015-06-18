@@ -17,13 +17,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.api.ChatterboxAPI;
 import works.chatterbox.chatterbox.api.DataFolderHolder;
+import works.chatterbox.chatterbox.api.LanguageAPI;
 import works.chatterbox.chatterbox.api.impl.DefaultChatterboxAPI;
 import works.chatterbox.chatterbox.channels.tasks.MembershipTask;
 import works.chatterbox.chatterbox.commands.ReflectiveCommandRegistrar;
 import works.chatterbox.chatterbox.hooks.HookManager;
 import works.chatterbox.chatterbox.listeners.ChatterboxListener;
 import works.chatterbox.chatterbox.localization.Language;
-import works.chatterbox.chatterbox.localization.LanguageBuilder;
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelRecipientsStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.ChannelStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.channel.TagStage;
@@ -43,10 +43,7 @@ import works.chatterbox.chatterbox.shaded.mkremins.fanciful.FancyMessage;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.stream.Stream;
 
@@ -159,6 +156,14 @@ public class Chatterbox extends JavaPlugin implements DataFolderHolder, Chatterb
         return this.hm;
     }
 
+    /**
+     * Gets the default language for the plugin.
+     *
+     * @return Language
+     * @deprecated Use {@link LanguageAPI#getLanguage()} instead
+     */
+    @Deprecated
+    @NotNull
     public Language getLanguage() {
         return this.language;
     }
@@ -175,21 +180,14 @@ public class Chatterbox extends JavaPlugin implements DataFolderHolder, Chatterb
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
+        this.api = new DefaultChatterboxAPI(this);
         try {
-            final String langLocation = this.getConfiguration().getNode("language").getNode("file").getString();
-            this.language = LanguageBuilder.create()
-                .languageFile(new File(this.getDataFolder(), langLocation))
-                .languageFolder("lang")
-                .saveLanguageFiles(true)
-                .dataFolderHolder(this)
-                .build();
-            this.language = new Language(new InputStreamReader(new FileInputStream(new File(this.getDataFolder(), langLocation)), StandardCharsets.UTF_8));
-        } catch (final IOException ex) {
+            this.language = this.getAPI().getLanguageAPI().getLanguage();
+        } catch (final NullPointerException ex) {
             this.getLogger().severe("Could not load language file. Disabling plugin.");
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        this.api = new DefaultChatterboxAPI(this);
         // Rejoin all previous channels
         Sets.newHashSet(this.getServer().getOnlinePlayers()).stream()
             .map(this.api.getPlayerAPI()::getCPlayer)
@@ -206,9 +204,9 @@ public class Chatterbox extends JavaPlugin implements DataFolderHolder, Chatterb
     @Override
     public boolean onCommand(final CommandSender cs, final Command command, final String label, final String[] args) {
         if (args.length < 1) {
-            new FancyMessage(this.getLanguage().getAString("SEE_DOCUMENTATION"))
+            new FancyMessage(this.getAPI().getLanguageAPI().getLanguage(cs).getAString("SEE_DOCUMENTATION"))
                 .color(ChatColor.RED)
-                .tooltip(this.getLanguage().getAString("CLICK_FOR_DOCUMENTATION"))
+                .tooltip(this.getAPI().getLanguageAPI().getLanguage(cs).getAString("CLICK_FOR_DOCUMENTATION"))
                 .link("https://github.com/Chatterbox/Chatterbox/wiki/Commands")
                 .send(cs);
             return true;

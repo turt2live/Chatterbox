@@ -30,7 +30,7 @@ public class ReloadCommand extends BaseCommand<Chatterbox> {
     protected boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         this.plugin.onDisable();
         this.plugin.load(true);
-        cs.sendMessage(ChatColor.BLUE + this.plugin.getLanguage().getAString("RELOADED"));
+        cs.sendMessage(ChatColor.BLUE + this.plugin.getAPI().getLanguageAPI().getLanguage(cs).getAString("RELOADED"));
         return true;
     }
 }
