@@ -41,7 +41,7 @@ public class DefaultLanguageAPI implements LanguageAPI {
             .filter(file -> file.startsWith(baseBase))
             .map(file -> {
                 final String[] parts = file.split("\\.");
-                return CommandUtils.joinUntil(parts, parts.length - 1);
+                return CommandUtils.joinUntil(parts, parts.length - 1, ".");
             })
             .collect(Collectors.toList());
         if (matches.isEmpty()) return null;
@@ -105,6 +105,7 @@ public class DefaultLanguageAPI implements LanguageAPI {
     @Nullable
     @Override
     public String getLocale(@NotNull final CommandSender cs) {
+        Preconditions.checkNotNull(cs, "cs was null");
         if (!(cs instanceof Player)) {
             return this.getLocale();
         }
@@ -121,6 +122,7 @@ public class DefaultLanguageAPI implements LanguageAPI {
     @NotNull
     @Override
     public String getLocaleOrDefault(@NotNull final CommandSender cs) {
+        Preconditions.checkNotNull(cs, "cs was null");
         return Optional.ofNullable(this.getLocale(cs)).orElseGet(this::getLocale);
     }
 }
