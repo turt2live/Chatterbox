@@ -19,6 +19,9 @@ import works.chatterbox.chatterbox.channels.radius.Radius;
 import works.chatterbox.chatterbox.channels.worlds.WorldRecipients;
 import works.chatterbox.chatterbox.events.channels.ChannelJoinEvent;
 import works.chatterbox.chatterbox.events.channels.ChannelLeaveEvent;
+import works.chatterbox.chatterbox.pipeline.stages.impl.json.JSONSection;
+import works.chatterbox.chatterbox.pipeline.stages.impl.json.JSONSectionPart;
+import works.chatterbox.chatterbox.pipeline.stages.impl.json.JSONSectionPart.JSONSectionType;
 import works.chatterbox.chatterbox.shaded.mkremins.fanciful.FancyMessage;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
@@ -109,9 +112,19 @@ public class ConfigChannel implements Channel {
 
     @Override
     @Nullable
-    public String getJSONSection(@NotNull final String sectionName) {
+    public JSONSection getJSONSection(@NotNull final String sectionName) {
         Preconditions.checkNotNull(sectionName, "sectionName was null");
-        final String section = this.getConfiguration(ChannelConfiguration.FORMAT_JSON, node -> node.getNode(sectionName).getString());
+        final JSONSection section = this.getConfiguration(ChannelConfiguration.FORMAT_JSON, node -> {
+            final ConfigurationNode sectionNode = node.getNode(sectionName);
+            if (sectionNode.isVirtual()) return null;
+            final JSONSection jsonSection = new JSONSection();
+            for (final JSONSectionType jst : JSONSectionType.values()) {
+                final ConfigurationNode typeNode = sectionNode.getNode(jst.name().toLowerCase());
+                if (typeNode.isVirtual()) continue;
+                jsonSection.addPart(new JSONSectionPart(typeNode.getString(), jst));
+            }
+            return jsonSection.getParts().size() > 0 ? jsonSection : null;
+        });
         if (section == null) return null;
         return section;
     }

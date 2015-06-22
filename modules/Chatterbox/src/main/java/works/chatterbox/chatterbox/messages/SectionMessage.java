@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.channels.Channel;
 import works.chatterbox.chatterbox.channels.radius.Radius;
 import works.chatterbox.chatterbox.channels.worlds.WorldRecipients;
+import works.chatterbox.chatterbox.pipeline.stages.impl.json.JSONSection;
 import works.chatterbox.chatterbox.shaded.mkremins.fanciful.FancyMessage;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
@@ -102,7 +103,7 @@ public abstract class SectionMessage implements Message {
 
         @Nullable
         @Override
-        public String getJSONSection(@NotNull final String sectionName) {
+        public JSONSection getJSONSection(@NotNull final String sectionName) {
             return SectionMessage.this.base.getChannel().getJSONSection(sectionName);
         }
 

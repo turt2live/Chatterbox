@@ -89,9 +89,10 @@ master:
   format:
     text: '@(chatterbox.startJSON("display-name"))@(playerName)@(chatterbox.endJSON("display-name")): @(message)'
     json:
-      display-name: |
-                    Display name:%n
-                    @(playerDisplayName)
+      display-name:
+        tooltip: |
+                 Display name:%n
+                 @(playerDisplayName)
   # If a channel is permanent, it will always be joined by every player, and it can never be left. This is useful for
   # channels that are intended to be global.
   permanent: false
@@ -164,22 +165,24 @@ channels:
         # channel.getName().equals(channel.getTag()) is equivalent, but using s() is null-safe
         # Here, Rythm's len() is used, to get the length of the members, regardless of if they're contained in an array
         # or a collection.
-        channel: |
-                 &9&lChannel%n
-                 @if (!s().eq(channel.getName(), channel.getTag())) {
-                     &9Name: &7@channel.getName()%n
-                 }
-                 &9Members: &7@channel.getMembers().len()
+        channel:
+          tooltip: |
+                   &9&lChannel%n
+                   @if (!s().eq(channel.getName(), channel.getTag())) {
+                       &9Name: &7@channel.getName()%n
+                   }
+                   &9Members: &7@channel.getMembers().len()
         # @chatterbox.cancelJSON() outputs a special string that completely disables the current JSON segment. If the
         # player's real name is the same as his display name, this whole JSON segment should not be included in the
         # final result.
-        player-info: |
-                     &9&lPlayer%n
-                     @if (s().eq(player.getDisplayName(), player.getName())) {
-                         @chatterbox.cancelJSON()
-                     } else {
-                         &9Real name: &7@player.getName()
-                     }
+        player-info:
+          tooltip: |
+                   &9&lPlayer%n
+                   @if (s().eq(player.getDisplayName(), player.getName())) {
+                       @chatterbox.cancelJSON()
+                   } else {
+                       &9Real name: &7@player.getName()
+                   }
   - name: Rythm in a file
     tag: rif
     format:
@@ -188,9 +191,10 @@ channels:
       # as spaces to mimic the behavior seen in this file.
       file: rif.txt
       json:
-        channel: |
-                 &9&lChannel%n
-                 @channel.getName()
+        channel:
+          tooltip: |
+                   &9&lChannel%n
+                   @channel.getName()
 
 ################
 ### ADVANCED ###

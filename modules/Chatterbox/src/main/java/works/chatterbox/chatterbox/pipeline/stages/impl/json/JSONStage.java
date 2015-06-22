@@ -9,6 +9,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.bukkit.ChatColor;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -85,26 +86,6 @@ public class JSONStage implements Stage {
     }
 
     @Nullable
-    private String getTooltip(@NotNull final Message message, @NotNull final String sectionName) {
-        Preconditions.checkNotNull(message, "message was null");
-        Preconditions.checkNotNull(sectionName, "sectionName was null");
-        // Get the section for this section name
-        String section = message.getChannel().getJSONSection(sectionName);
-        // Assert that we have some JSON
-        Preconditions.checkState(section != null, "JSON section " + sectionName + " was empty");
-        // Remove the ending newline
-        if (section.endsWith("\n")) {
-            section = section.substring(0, section.length() - 1);
-        }
-        // Make a special JSONSectionMessage for it
-        final JSONSectionMessage jsonMessage = new JSONSectionMessage(message, section);
-        // Run it through the pipeline
-        this.chatterbox.getAPI().getMessageAPI().getMessagePipeline().send(jsonMessage);
-        // If something cancelled it, move on (like cancelJSON())
-        return jsonMessage.isCancelled() ? null : jsonMessage.getFormat();
-    }
-
-    @Nullable
     private FancyMessage handleJSON(@NotNull final Message message) {
         Preconditions.checkNotNull(message, "message was null");
         final String format = message.getFormat();
@@ -137,16 +118,12 @@ public class JSONStage implements Stage {
             fm.then(format.substring(start.end(), end.start()));
             // Add any necessary colors
             this.getLastColors(format.substring(0, start.start())).forEach(cc -> this.addToFancyMessage(fm, cc));
-            // Get the tooltip
-            final String tooltip = this.getTooltip(message, sectionName);
-            // If it isn't null, apply it
-            if (tooltip != null) {
-                // Create a FancyMessage for the tooltip, which may contain old-style colors codes
-                final FancyMessage tooltipMessage = new FancyMessage(tooltip);
-                // Convert any old colors
-                this.oldColorsToNew(tooltipMessage);
-                // Apply the formatted tooltip to the message
-                fm.formattedTooltip(tooltipMessage);
+            // Get the JSONSection
+            final JSONSection section = message.getChannel().getJSONSection(sectionName);
+            // If it isn't null and has contents, apply it
+            if (section != null && section.getParts().size() > 0) {
+                // Handle the various types of JSON in JSON sections
+                this.handleJSONSection(message, fm, section);
                 // We need to send JSON messages now
                 isJSON = true;
             }
@@ -168,6 +145,52 @@ public class JSONStage implements Stage {
             return fm;
         }
         return null;
+    }
+
+    private void handleJSONSection(@NotNull final Message message, @NotNull final FancyMessage fancyMessage, @NotNull final JSONSection section) {
+        Preconditions.checkNotNull(message, "message was null");
+        Preconditions.checkNotNull(fancyMessage, "fancyMessage was null");
+        Preconditions.checkNotNull(section, "section was null");
+        for (final JSONSectionPart jsp : section) {
+            final String sectionMessage = this.processSectionMessage(message, jsp.getSection());
+            if (sectionMessage == null) continue;
+            switch (jsp.getType()) {
+                case TOOLTIP:
+                    // Create a FancyMessage for the tooltip, which may contain old-style colors codes
+                    final FancyMessage tooltip = new FancyMessage(sectionMessage);
+                    // Convert any old colors
+                    this.oldColorsToNew(tooltip);
+                    // Apply the formatted tooltip to the message
+                    fancyMessage.formattedTooltip(tooltip);
+                    break;
+                case LINK:
+                    fancyMessage.link(sectionMessage);
+                    break;
+                case EXECUTE_COMMAND:
+                    fancyMessage.command(sectionMessage);
+                    break;
+                case SUGGEST_COMMAND:
+                    fancyMessage.suggest(sectionMessage);
+                    break;
+                case FILE:
+                    fancyMessage.file(sectionMessage);
+                    break;
+                case ACHIEVEMENT:
+                    fancyMessage.achievementTooltip(sectionMessage);
+                    break;
+                case ITEM:
+                    // This must be a JSON representation of an ItemStack (with NBT)
+                    fancyMessage.itemTooltip(sectionMessage);
+                    break;
+                case STATISTIC:
+                    try {
+                        fancyMessage.statisticTooltip(Statistic.valueOf(sectionMessage.toUpperCase()));
+                    } catch (final IllegalArgumentException ex) {
+                        this.chatterbox.getLogger().warning("Invalid statistic: " + ex.getMessage());
+                    }
+                    break;
+            }
+        }
     }
 
     @NotNull
@@ -211,6 +234,22 @@ public class JSONStage implements Stage {
         }
         message.getMessageParts().clear();
         message.getMessageParts().addAll(newParts);
+    }
+
+    @Nullable
+    private String processSectionMessage(@NotNull final Message message, @NotNull String sectionMessage) {
+        Preconditions.checkNotNull(message, "message was null");
+        Preconditions.checkNotNull(sectionMessage, "sectionMessage was null");
+        // Remove the ending newline
+        if (sectionMessage.endsWith("\n")) {
+            sectionMessage = sectionMessage.substring(0, sectionMessage.length() - 1);
+        }
+        // Make a special JSONSectionMessage for it
+        final JSONSectionMessage jsonMessage = new JSONSectionMessage(message, sectionMessage);
+        // Run it through the pipeline
+        this.chatterbox.getAPI().getMessageAPI().getMessagePipeline().send(jsonMessage);
+        // If something cancelled it, move on (like cancelJSON())
+        return jsonMessage.isCancelled() ? null : jsonMessage.getFormat();
     }
 
     private boolean recipient(@NotNull final Message message, @NotNull final PipelineContext context) {

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import works.chatterbox.chatterbox.channels.radius.Radius;
 import works.chatterbox.chatterbox.channels.worlds.WorldRecipients;
+import works.chatterbox.chatterbox.pipeline.stages.impl.json.JSONSection;
 import works.chatterbox.chatterbox.shaded.mkremins.fanciful.FancyMessage;
 import works.chatterbox.chatterbox.wrappers.CPlayer;
 
@@ -41,10 +42,10 @@ public interface Channel {
      * <p>This may return null if there is no such section.
      *
      * @param sectionName Name of the JSON section
-     * @return String value of the section or null
+     * @return JSONSection or null
      */
     @Nullable
-    String getJSONSection(@NotNull final String sectionName);
+    JSONSection getJSONSection(@NotNull final String sectionName);
 
     /**
      * Gets the maximum amount of members this channel is allowed to have. If this is less than or equal to 0, it
