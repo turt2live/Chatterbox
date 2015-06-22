@@ -92,6 +92,7 @@ public class ChatterboxListener implements Listener {
         this.chatterbox.getServer().getPluginManager().callEvent(preMessageEvent);
         if (preMessageEvent.isCancelled()) {
             event.setCancelled(true);
+            return;
         }
         // Pass it through the pipeline
         this.chatterbox.getAPI().getMessageAPI().getMessagePipeline().send(message);
@@ -104,6 +105,7 @@ public class ChatterboxListener implements Listener {
         event.getRecipients().addAll(message.getRecipients());
         if (message.isCancelled()) {
             event.setCancelled(true);
+            return;
         }
         // Run a ChannelPostMessageEvent
         final ChannelMessageEvent postMessageEvent = new ChannelPostMessageEvent(message.getChannel(), message.getSender(), message);
