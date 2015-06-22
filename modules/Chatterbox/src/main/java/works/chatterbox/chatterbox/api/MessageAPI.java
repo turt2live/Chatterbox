@@ -32,5 +32,12 @@ public interface MessageAPI {
      */
     String parseLiterals(@NotNull String original);
 
+    /**
+     * Parses literals, leaving escapes (@{code \}) alone.
+     *
+     * @param original Non-parsed String
+     * @return Partially-parsed String
+     * @see #parseLiterals(String)
+     */
     String parseLiteralsIgnoreEscapes(@NotNull String original);
 }
