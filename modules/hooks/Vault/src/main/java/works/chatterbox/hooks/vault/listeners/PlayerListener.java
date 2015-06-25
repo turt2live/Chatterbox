@@ -88,7 +88,9 @@ public class PlayerListener implements Listener {
                 }
             }
         }
-        this.addOtherPlayerTitles(titles, vm.getChat(), player);
+        if (vm.hasChat()) {
+            this.addOtherPlayerTitles(titles, vm.getChat(), player);
+        }
     }
 
 }
