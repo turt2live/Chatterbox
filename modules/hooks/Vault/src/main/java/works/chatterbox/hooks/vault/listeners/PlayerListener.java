@@ -37,7 +37,7 @@ public class PlayerListener implements Listener {
         this.addTitles(70, titles, groupNode);
     }
 
-    private void addOtherTitles(@NotNull final Titles titles, @NotNull final String group, @NotNull final Chat chat, @NotNull final Player player) {
+    private void addOtherGroupTitles(@NotNull final Titles titles, @NotNull final String group, @NotNull final Chat chat, @NotNull final Player player) {
         final String prefix = chat.getGroupPrefix((String) null, group);
         final String suffix = chat.getGroupSuffix((String) null, group);
         if (prefix != null && !prefix.isEmpty()) {
@@ -46,6 +46,9 @@ public class PlayerListener implements Listener {
         if (suffix != null && !suffix.isEmpty()) {
             titles.addSuffix(50, new Suffix(suffix));
         }
+    }
+
+    private void addOtherPlayerTitles(@NotNull final Titles titles, @NotNull final Chat chat, @NotNull final Player player) {
         final String playerPrefix = chat.getPlayerPrefix(player);
         final String playerSuffix = chat.getPlayerSuffix(player);
         if (playerPrefix != null && !playerPrefix.isEmpty()) {
@@ -76,14 +79,16 @@ public class PlayerListener implements Listener {
         final Permission permission = vm.getPermission();
         final Player player = event.getPlayer();
         final Titles titles = this.vaultHook.getChatterbox().getAPI().getTitleAPI().getTitles(player.getUniqueId());
-        final String group = permission.getPrimaryGroup(player);
-        if (group != null) {
-            this.addChatterboxTitles(titles, group);
-            if (vm.hasChat()) {
-                this.addOtherTitles(titles, group, vm.getChat(), player);
+        if (permission.hasGroupSupport()) {
+            final String group = permission.getPrimaryGroup(player);
+            if (group != null) {
+                this.addChatterboxTitles(titles, group);
+                if (vm.hasChat()) {
+                    this.addOtherGroupTitles(titles, group, vm.getChat(), player);
+                }
             }
         }
-
+        this.addOtherPlayerTitles(titles, vm.getChat(), player);
     }
 
 }
