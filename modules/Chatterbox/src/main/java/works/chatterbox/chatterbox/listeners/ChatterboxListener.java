@@ -96,7 +96,7 @@ public class ChatterboxListener implements Listener {
         // Pass it through the pipeline
         this.chatterbox.getAPI().getMessageAPI().getMessagePipeline().send(message);
         // Set the new format
-        event.setFormat(message.getFormat());
+        event.setFormat(message.getFormat().replace("%", "%%"));
         // Set the new message
         event.setMessage(message.getMessage());
         // Set the new recipients
