@@ -35,7 +35,6 @@ import works.chatterbox.chatterbox.pipeline.stages.impl.radius.RadiusStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.recipient.RecipientStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.RythmStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.rythm.SpecialStage;
-import works.chatterbox.chatterbox.pipeline.stages.impl.sanitize.SanitizeStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.sanitize.TrimStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.validation.ValidationStage;
 import works.chatterbox.chatterbox.pipeline.stages.impl.world.WorldStage;
@@ -72,7 +71,6 @@ public class Chatterbox extends JavaPlugin implements DataFolderHolder, Chatterb
             new SpecialStage(), // Handles methods from ChatterboxSpecialUtilities
             // Sanitization
             new LiteralStage(), // Handles literals
-            new SanitizeStage(), // Sanitize message
             // Validation
             new ValidationStage(),
             // Recipients
