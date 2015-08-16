@@ -58,7 +58,7 @@ public class DefaultMessageAPI implements MessageAPI {
             final char atIndex = original.charAt(i);
             if (i + 1 < original.length()) {
                 final char plusOne = original.charAt(i + 1);
-                if (atIndex == '\\') {
+                if (atIndex == '\\' && "@&/".indexOf(plusOne) > -1) {
                     sb.append(plusOne);
                     i++;
                     continue;
@@ -83,7 +83,7 @@ public class DefaultMessageAPI implements MessageAPI {
             final char atIndex = original.charAt(i);
             if (i + 1 < original.length()) {
                 final char plusOne = original.charAt(i + 1);
-                if (atIndex == '\\') {
+                if (atIndex == '\\' && "@&/".indexOf(plusOne) > -1) {
                     sb.append(atIndex).append(plusOne);
                     i++;
                     continue;
